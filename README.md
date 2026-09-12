@@ -1,6 +1,6 @@
 # Chinese Learning App 🇨🇳
 
-A mobile-first Chinese vocabulary quiz app designed for reviewing technical vocabulary used in Product Management, Core Banking, IT, Testing, Deployment, and AI-related work.
+A mobile-first Chinese vocabulary quiz app designed for reviewing technical vocabulary used in Product Management, Core Banking, System Integration, Testing, Deployment, Incident Management, and AI-related work.
 
 Created by **pollyleadsforward** 🌸
 
@@ -16,38 +16,82 @@ The goal is to make technical Chinese vocabulary easier to remember through:
 - Immediate feedback
 - Repeated review of incorrectly answered words
 - Vocabulary grouping by topic
-- Mobile-friendly UI
-- Pastel visual design
+- Separate progress tracking for each vocabulary set
+- Mobile-first responsive design
+- Pastel visual theme
 
-The application currently contains more than **500 vocabulary items across 5 learning sets**.
+The application contains more than **500 vocabulary items across 5 learning sets**.
 
 ---
 
 ## Vocabulary Sets
 
 ### 1. CBS — Core Banking System
+
 Core banking and digital lending vocabulary.
 
 Examples:
 
 - 系统 — System
 - 数据库 — Database
-- 接口 — Interface
 - 数据源 — Data Source
+- 接口 — Interface
 - 根本原因 — Root Cause
 - 回滚 — Rollback
 
 ### 2. System & API
-System architecture, API, parameters, data transmission, access, and integration vocabulary.
+
+Vocabulary related to:
+
+- System architecture
+- APIs
+- Parameters
+- Requests and responses
+- Data transmission
+- Authentication
+- Authorization
+- Integration
 
 ### 3. Incident & Operations
-Incident management, monitoring, troubleshooting, operations, risk, and corrective action vocabulary.
+
+Vocabulary related to:
+
+- Incident management
+- Troubleshooting
+- Monitoring
+- Risk
+- Operations
+- Corrective actions
+- Root cause analysis
 
 ### 4. AI / LLM / Platform
-Vocabulary related to AI, Large Language Models, RAG, embeddings, model evaluation, monitoring, cost, and platform operations.
+
+Vocabulary related to:
+
+- Artificial Intelligence
+- Large Language Models
+- RAG
+- Embeddings
+- Model evaluation
+- Hallucination
+- Prompt engineering
+- Monitoring
+- Platform operations
 
 ### 5. Testing / UAT / Deployment
-Testing, UAT, regression testing, environments, deployment, migration, release, and production vocabulary.
+
+Vocabulary related to:
+
+- Test cases
+- Integration testing
+- UAT
+- Regression testing
+- Performance testing
+- Test environments
+- Production environments
+- Deployment
+- Migration
+- Release
 
 ---
 
@@ -71,13 +115,14 @@ This helps reinforce vocabulary that is harder to remember.
 - 3 multiple-choice answers
 - Automatic next question
 - Incorrect-answer review queue
-- Separate score tracking for each vocabulary set
+- Separate progress for each vocabulary category
 - Correct / Answered / Score dashboard
-- 5 selectable vocabulary categories
-- Responsive mobile-first interface
+- 5 selectable vocabulary sets
+- Mobile-first interface
 - Pastel rainbow visual theme
+- Custom rabbit illustrations
 - Android PWA support
-- Custom app icon
+- Custom application icon
 
 ---
 
@@ -87,7 +132,8 @@ Built with:
 
 - Python
 - Streamlit
-- HTML / CSS
+- HTML
+- CSS
 - GitHub
 - Streamlit Community Cloud
 - GitHub Pages
@@ -95,9 +141,21 @@ Built with:
 
 ---
 
-## Run Locally
+## Live App
 
-Install the required packages:
+The application is deployed on **Streamlit Community Cloud** and can be accessed on desktop and mobile.
 
-```bash
-pip install -r requirements.txt
+For Android, the application can also be installed as a **Progressive Web App (PWA)** with a custom app icon.
+
+---
+
+## Architecture
+
+```text
+Android / Mobile
+      ↓
+GitHub Pages PWA
+      ↓
+Streamlit Community Cloud
+      ↓
+GitHub app.py
