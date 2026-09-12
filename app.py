@@ -2,6 +2,8 @@ import streamlit as st
 import random
 import time
 import os
+import html
+import base64
 
 # =========================================================
 # APP ICON
@@ -25,7 +27,7 @@ st.set_page_config(
 )
 
 # =========================================================
-# FIND DECORATION IMAGES
+# FIND IMAGE
 # =========================================================
 
 def find_image(names):
@@ -36,63 +38,110 @@ def find_image(names):
 
 
 left_image = find_image([
-    "bunny_left.png",
     "bunny_left.jpg",
-    "bunny_left.jpeg"
+    "bunny_left.jpeg",
+    "bunny_left.png"
 ])
 
 right_image = find_image([
-    "bunny_right.png",
     "bunny_right.jpg",
-    "bunny_right.jpeg"
+    "bunny_right.jpeg",
+    "bunny_right.png",
+    "bunny_right2.jpg",
+    "bunny_right2.jpeg",
+    "bunny_right2.png"
 ])
 
+# ถ้ามีแค่รูปเดียว ให้ใช้รูปเดิมทั้งซ้ายและขวา
+if left_image is None and right_image is not None:
+    left_image = right_image
+
+if right_image is None and left_image is not None:
+    right_image = left_image
+
 # =========================================================
-# STYLE
+# IMAGE -> BASE64
+# =========================================================
+
+def image_to_base64(path):
+    if not path or not os.path.exists(path):
+        return None
+
+    ext = os.path.splitext(path)[1].lower()
+    mime_map = {
+        ".png": "image/png",
+        ".jpg": "image/jpeg",
+        ".jpeg": "image/jpeg",
+        ".webp": "image/webp",
+    }
+    mime_type = mime_map.get(ext, "image/png")
+
+    with open(path, "rb") as f:
+        encoded = base64.b64encode(f.read()).decode("utf-8")
+
+    return f"data:{mime_type};base64,{encoded}"
+
+
+left_bunny_b64 = image_to_base64(left_image)
+right_bunny_b64 = image_to_base64(right_image)
+
+# =========================================================
+# CSS
 # =========================================================
 
 st.markdown(
     """
 <style>
 
-.block-container {
-    max-width: 820px;
-    padding-top: 2.8rem !important;
-    padding-bottom: 2rem !important;
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
+/* ======================================
+   PAGE
+====================================== */
+
+[data-testid="stAppViewContainer"] {
+    background: #fffdfd;
 }
 
-/* =========================
+.block-container {
+    max-width: 560px !important;
+    padding-top: 0.45rem !important;
+    padding-bottom: 1.3rem !important;
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+}
+
+header,
+footer,
+#MainMenu,
+[data-testid="stToolbar"],
+[data-testid="stStatusWidget"],
+[data-testid="stDecoration"] {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* ======================================
    TITLE
-========================= */
+====================================== */
 
 .main-title {
-    width: 100%;
-    box-sizing: border-box;
     text-align: center;
-
-    font-size: clamp(30px, 6vw, 48px);
+    font-size: clamp(27px, 7vw, 40px);
     font-weight: 900;
-    line-height: 1.25;
-
-    padding: 12px 8px 4px 8px;
-    margin: 0;
-
-    overflow: visible;
+    line-height: 1.12;
+    margin-top: 0;
+    margin-bottom: 3px;
 
     background: linear-gradient(
         90deg,
-        #f4a7c5,
-        #e1b5f5,
-        #bfc4ff,
-        #a9d9ff,
-        #a9ead8,
-        #c9efb7,
-        #ffd2a6,
-        #f7b4ca
+        #f3a4c6,
+        #deb5f5,
+        #bfc5ff,
+        #a9dbff,
+        #a7ead8,
+        #c9edb5,
+        #ffd2a5,
+        #f5b1c8
     );
-
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -100,362 +149,310 @@ st.markdown(
 
 .by-line {
     text-align: center;
-    color: #697386;
-
-    font-size: clamp(16px, 3vw, 21px);
+    color: #707583;
+    font-size: 14px;
     font-weight: 700;
-
-    margin-top: 3px;
+    margin-bottom: 7px;
 }
 
 .badge-wrap {
     text-align: center;
-
-    margin-top: 12px;
-    margin-bottom: 20px;
+    margin-bottom: 11px;
 }
 
-.polly-badge {
+.badge {
     display: inline-block;
-
-    padding: 8px 16px;
+    padding: 6px 13px;
     border-radius: 999px;
-
     background: linear-gradient(
         90deg,
-        #ffd9e8,
+        #ffdbe8,
         #eadfff,
-        #dcedff,
-        #dcf7e6
+        #dcecff,
+        #ddf6e7
     );
-
-    color: #5d6170;
-
-    font-size: 14px;
+    color: #5e6270;
+    font-size: 12px;
     font-weight: 800;
 }
 
-/* =========================
-   SCORE
-========================= */
+/* ======================================
+   SCORE CARDS
+====================================== */
 
 .score-grid {
-    width: 100%;
-
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-
-    gap: 12px;
-
-    margin: 0 0 24px 0;
+    gap: 7px;
+    width: 100%;
+    margin-bottom: 10px;
 }
 
 .score-card {
     min-width: 0;
-    min-height: 126px;
-
-    border-radius: 22px;
-
+    min-height: 74px;
+    padding: 7px 3px;
+    box-sizing: border-box;
+    border-radius: 16px;
     display: flex;
     flex-direction: column;
-
-    align-items: center;
     justify-content: center;
-
-    padding: 10px 5px;
-
-    box-sizing: border-box;
-
-    box-shadow:
-        0 5px 16px
-        rgba(70, 60, 95, 0.06);
+    align-items: center;
+    box-shadow: 0 3px 9px rgba(50, 45, 65, 0.04);
 }
 
 .score-purple {
-    background: #ead8fb;
-    border: 2px solid #d7b1fa;
+    background: #edddfb;
+    border: 1.5px solid #d7b3f6;
 }
 
 .score-pink {
-    background: #ffdbe7;
-    border: 2px solid #f6b1cb;
+    background: #ffdee9;
+    border: 1.5px solid #f4b4cc;
 }
 
 .score-green {
-    background: #dcf5e4;
-    border: 2px solid #98dfad;
+    background: #ddf4e4;
+    border: 1.5px solid #9cddae;
 }
 
 .score-label {
-    text-align: center;
-
-    color: #4e5260;
-
-    font-size: clamp(13px, 2.4vw, 18px);
+    color: #515563;
+    font-size: 10px;
     font-weight: 800;
-
-    margin-bottom: 5px;
-
     white-space: nowrap;
+    margin-bottom: 3px;
 }
 
 .score-number {
-    text-align: center;
-
-    color: #2d2f3b;
-
-    font-size: clamp(31px, 6vw, 46px);
+    color: #2e303b;
+    font-size: 23px;
+    line-height: 1;
     font-weight: 900;
-
-    line-height: 1.05;
 }
 
-/* =========================
-   QUESTION
-========================= */
+/* ======================================
+   QUESTION SHELL
+====================================== */
+
+.question-shell {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 4px;
+    margin-bottom: 8px;
+}
+
+.question-bunny {
+    width: 72px;
+    flex: 0 0 72px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.question-bunny img {
+    width: 72px;
+    height: auto;
+    display: block;
+}
+
+.question-bunny-fallback {
+    font-size: 28px;
+    line-height: 1;
+}
+
+.question-center {
+    flex: 1 1 auto;
+    text-align: center;
+    min-width: 0;
+}
 
 .question-label {
     text-align: center;
-
-    color: #4d5260;
-
-    font-size: clamp(20px, 4vw, 27px);
-    font-weight: 800;
-
-    margin-top: 6px;
-    margin-bottom: 8px;
+    color: #707583;
+    font-size: 16px;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 4px;
 }
 
 .review-label {
     text-align: center;
-
-    color: #9161b5;
-
-    font-size: clamp(15px, 3vw, 19px);
+    color: #8c62b0;
+    font-size: 13px;
     font-weight: 800;
-
-    margin-top: 6px;
-    margin-bottom: 8px;
+    margin-top: 0;
+    margin-bottom: 4px;
 }
 
-.quiz-word {
-    text-align: center;
+/* ======================================
+   CHINESE WORD
+====================================== */
 
-    color: #292b38;
-
-    font-size: clamp(58px, 14vw, 105px);
+.chinese-short,
+.chinese-four,
+.chinese-long {
     font-weight: 900;
+    line-height: 1.03;
+    text-align: center;
+    display: inline-block;
 
-    line-height: 1.1;
-
-    padding:
-        4px
-        2px
-        12px
-        2px;
-
-    word-break: break-word;
+    background: linear-gradient(
+        90deg,
+        #f3a4c6,
+        #deb5f5,
+        #bfc5ff,
+        #a9dbff,
+        #a7ead8,
+        #c9edb5,
+        #ffd2a5,
+        #f5b1c8
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
-/* =========================
-   DECORATION
-========================= */
-
-.decor-fallback {
-    min-height: 120px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 20px;
-
-    background: #fffafb;
-
-    border: 1px solid #f2dfe8;
-
-    font-size: 48px;
+.chinese-short {
+    font-size: clamp(58px, 16vw, 82px);
 }
 
-/* =========================
+.chinese-four {
+    font-size: clamp(50px, 14vw, 70px);
+}
+
+.chinese-long {
+    font-size: clamp(32px, 9vw, 52px);
+    white-space: nowrap;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+/* ======================================
    ANSWER BUTTONS
-========================= */
+====================================== */
 
 div[data-testid="stButton"] > button {
     width: 100% !important;
-
-    min-height: 76px !important;
-
-    border-radius: 20px !important;
-
-    border:
-        1.5px solid
-        #e1dce8 !important;
-
-    background:
-        linear-gradient(
-            90deg,
-            #fffefe,
-            #fffafd
-        ) !important;
-
-    margin-bottom: 10px !important;
-
-    box-shadow:
-        0 3px 10px
-        rgba(40, 35, 55, 0.03) !important;
+    min-height: 62px !important;
+    border-radius: 17px !important;
+    border: 1.4px solid #e4dfe8 !important;
+    background: linear-gradient(90deg, #fffefe, #fffafd) !important;
+    margin-bottom: 6px !important;
+    box-shadow: 0 2px 7px rgba(45, 40, 60, 0.025) !important;
 }
 
-/* ตัวหนังสือ Choice */
-div[data-testid="stButton"] > button * {
-    font-size:
-        clamp(
-            21px,
-            4vw,
-            27px
-        ) !important;
-
-    font-weight:
-        700 !important;
-
-    color:
-        #3f4250 !important;
-
-    line-height:
-        1.35 !important;
+div[data-testid="stButton"] > button p {
+    color: #4b5160 !important;
+    font-size: 18px !important;
+    font-weight: 800 !important;
+    line-height: 1.25 !important;
 }
 
 div[data-testid="stButton"] > button:hover {
-    border-color:
-        #d9b4ea !important;
-
-    background:
-        linear-gradient(
-            90deg,
-            #fff4fa,
-            #f8f2ff,
-            #f1fbff
-        ) !important;
+    border-color: #d7b5e8 !important;
+    background: linear-gradient(
+        90deg,
+        #fff4fa,
+        #faf5ff,
+        #f3fbff
+    ) !important;
 }
 
-/* =========================
-   REVIEW STATUS
-========================= */
+/* ======================================
+   SMALL TEXT
+====================================== */
 
-.review-status {
+.small-note {
     text-align: center;
-
-    color: #8d8498;
-
-    font-size: 15px;
-
-    margin-top: 8px;
+    color: #958d9e;
+    font-size: 11px;
+    margin-top: 3px;
+    margin-bottom: 3px;
 }
 
-/* =========================
-   FOOTER
-========================= */
+/* ======================================
+   DIVIDER
+====================================== */
 
-.footer {
-    text-align: center;
-
-    color: #a39bad;
-
-    font-size: 14px;
-
-    margin-top: 14px;
+hr {
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
 }
 
-footer {
-    visibility: hidden;
-}
-
-/* =========================
+/* ======================================
    MOBILE
-========================= */
+====================================== */
 
-@media (max-width: 600px) {
+@media (max-width: 480px) {
 
     .block-container {
-        padding-top:
-            2rem !important;
-
-        padding-left:
-            0.65rem !important;
-
-        padding-right:
-            0.65rem !important;
+        padding-top: 0.3rem !important;
+        padding-left: 0.55rem !important;
+        padding-right: 0.55rem !important;
     }
 
     .main-title {
-        font-size:
-            clamp(
-                28px,
-                8.5vw,
-                36px
-            );
-
-        padding-top: 10px;
-    }
-
-    .score-grid {
-        gap: 7px;
-
-        margin-bottom: 18px;
+        font-size: clamp(25px, 7.1vw, 30px);
     }
 
     .score-card {
-        min-height: 98px;
-
-        border-radius: 17px;
-
-        padding: 7px 2px;
+        min-height: 68px;
     }
 
     .score-label {
-        font-size:
-            clamp(
-                10px,
-                3vw,
-                13px
-            );
+        font-size: 9.5px;
     }
 
     .score-number {
-        font-size:
-            clamp(
-                26px,
-                8vw,
-                34px
-            );
+        font-size: 21px;
     }
 
-    .quiz-word {
-        font-size:
-            clamp(
-                52px,
-                17vw,
-                82px
-            );
+    .question-shell {
+        gap: 8px;
+        margin-top: 3px;
+        margin-bottom: 6px;
+    }
+
+    .question-bunny {
+        width: 62px;
+        flex: 0 0 62px;
+    }
+
+    .question-bunny img {
+        width: 62px;
+    }
+
+    .question-label {
+        font-size: 15px;
+    }
+
+    .review-label {
+        font-size: 13px;
+    }
+
+    .chinese-short {
+        font-size: clamp(54px, 16.5vw, 72px);
+    }
+
+    .chinese-four {
+        font-size: clamp(46px, 13vw, 60px);
+    }
+
+    .chinese-long {
+        font-size: clamp(28px, 8.2vw, 40px);
     }
 
     div[data-testid="stButton"] > button {
-        min-height:
-            74px !important;
-
-        border-radius:
-            18px !important;
+        min-height: 60px !important;
+        border-radius: 16px !important;
     }
 
-    div[data-testid="stButton"] > button * {
-
-        font-size:
-            clamp(
-                20px,
-                5.2vw,
-                24px
-            ) !important;
+    div[data-testid="stButton"] > button p {
+        font-size: 17px !important;
     }
 }
 
@@ -469,7 +466,6 @@ footer {
 # =========================================================
 
 vocab = [
-
     ("系统", "System"),
     ("做系统", "Build System"),
     ("开发", "Development"),
@@ -611,24 +607,14 @@ if "last_question_id" not in st.session_state:
 # =========================================================
 
 def schedule_retry(vocab_id, stage, due_at):
-
     for item in st.session_state.retry_queue:
-
-        if (
-            item["vocab_id"] == vocab_id
-            and
-            item["stage"] == stage
-        ):
+        if item["vocab_id"] == vocab_id and item["stage"] == stage:
             return
 
     st.session_state.retry_queue.append({
-
         "vocab_id": vocab_id,
-
         "stage": stage,
-
         "due_at": due_at
-
     })
 
 # =========================================================
@@ -636,144 +622,115 @@ def schedule_retry(vocab_id, stage, due_at):
 # =========================================================
 
 def new_question():
-
     current_total = st.session_state.total
 
-    # -----------------------------------------
-    # CHECK WHETHER A REVIEW WORD IS DUE
-    # -----------------------------------------
-
     due_items = [
-
         item
-
-        for item
-        in st.session_state.retry_queue
-
+        for item in st.session_state.retry_queue
         if item["due_at"] <= current_total
     ]
 
     if due_items:
-
-        due_items.sort(
-            key=lambda item:
-            item["due_at"]
-        )
-
+        due_items.sort(key=lambda item: item["due_at"])
         retry_item = due_items[0]
 
         question_id = retry_item["vocab_id"]
-
         stage = retry_item["stage"]
 
-        st.session_state.retry_queue.remove(
-            retry_item
-        )
+        st.session_state.retry_queue.remove(retry_item)
 
     else:
-
-        # -------------------------------------
-        # DON'T SHOW RETRY WORD EARLY
-        # -------------------------------------
-
         blocked_ids = {
-
             item["vocab_id"]
-
-            for item
-            in st.session_state.retry_queue
+            for item in st.session_state.retry_queue
         }
 
         candidates = [
-
             i
-
-            for i
-            in range(len(vocab))
-
+            for i in range(len(vocab))
             if i not in blocked_ids
         ]
 
-        # Don't show same word twice in a row
         if (
-            st.session_state.last_question_id
-            in candidates
-
-            and
-
-            len(candidates) > 1
+            st.session_state.last_question_id in candidates
+            and len(candidates) > 1
         ):
-
-            candidates.remove(
-                st.session_state.last_question_id
-            )
+            candidates.remove(st.session_state.last_question_id)
 
         if not candidates:
+            candidates = list(range(len(vocab)))
 
-            candidates = list(
-                range(len(vocab))
-            )
-
-        question_id = random.choice(
-            candidates
-        )
-
+        question_id = random.choice(candidates)
         stage = 0
-
-    # -----------------------------------------
-    # CREATE 3 CHOICES
-    # -----------------------------------------
 
     correct_answer = vocab[question_id][1]
 
     wrong_pool = list({
-
         meaning
-
-        for _, meaning
-        in vocab
-
+        for _, meaning in vocab
         if meaning != correct_answer
     })
 
-    wrong_answers = random.sample(
-        wrong_pool,
-        2
-    )
-
-    options = [
-
-        correct_answer,
-
-        wrong_answers[0],
-
-        wrong_answers[1]
-    ]
-
+    wrong_answers = random.sample(wrong_pool, 2)
+    options = [correct_answer, wrong_answers[0], wrong_answers[1]]
     random.shuffle(options)
 
-    st.session_state.question_id = (
-        question_id
-    )
+    st.session_state.question_id = question_id
+    st.session_state.question_stage = stage
+    st.session_state.options = options
+    st.session_state.last_question_id = question_id
 
-    st.session_state.question_stage = (
-        stage
-    )
+# =========================================================
+# FORMAT CHINESE
+# =========================================================
 
-    st.session_state.options = (
-        options
-    )
+def chinese_html(word):
+    safe_word = html.escape(word)
+    length = len(word)
 
-    st.session_state.last_question_id = (
-        question_id
-    )
+    if length <= 3:
+        return f'<div class="chinese-short">{safe_word}</div>'
+
+    elif length == 4:
+        first_line = html.escape(word[:2])
+        second_line = html.escape(word[2:])
+        return f'<div class="chinese-four">{first_line}<br>{second_line}</div>'
+
+    else:
+        return f'<div class="chinese-long">{safe_word}</div>'
+
+# =========================================================
+# RENDER QUESTION AREA
+# =========================================================
+
+def render_question_area(label_html, chinese_word_html):
+    if left_bunny_b64:
+        left_html = f'<img src="{left_bunny_b64}" alt="left bunny">'
+    else:
+        left_html = '<div class="question-bunny-fallback">🐰</div>'
+
+    if right_bunny_b64:
+        right_html = f'<img src="{right_bunny_b64}" alt="right bunny">'
+    else:
+        right_html = '<div class="question-bunny-fallback">🐰</div>'
+
+    question_html = f"""
+    <div class="question-shell">
+        <div class="question-bunny">{left_html}</div>
+        <div class="question-center">
+            {label_html}
+            {chinese_word_html}
+        </div>
+        <div class="question-bunny">{right_html}</div>
+    </div>
+    """
+    st.markdown(question_html, unsafe_allow_html=True)
 
 # =========================================================
 # INITIAL QUESTION
 # =========================================================
 
 if st.session_state.question_id is None:
-
     new_question()
 
 # =========================================================
@@ -781,25 +738,17 @@ if st.session_state.question_id is None:
 # =========================================================
 
 st.markdown(
-    '<div class="main-title">'
-    'Chinese Learning App'
-    '</div>',
+    '<div class="main-title">Chinese Learning App</div>',
     unsafe_allow_html=True
 )
 
 st.markdown(
-    '<div class="by-line">'
-    'by pollyleadsforward'
-    '</div>',
+    '<div class="by-line">by pollyleadsforward</div>',
     unsafe_allow_html=True
 )
 
 st.markdown(
-    '<div class="badge-wrap">'
-    '<span class="polly-badge">'
-    '🌸 pollyleadsforward'
-    '</span>'
-    '</div>',
+    '<div class="badge-wrap"><span class="badge">🌸 pollyleadsforward</span></div>',
     unsafe_allow_html=True
 )
 
@@ -808,352 +757,122 @@ st.markdown(
 # =========================================================
 
 if st.session_state.total > 0:
-
-    percentage = round(
-
-        st.session_state.score
-
-        /
-
-        st.session_state.total
-
-        *
-
-        100
-    )
-
+    percentage = round((st.session_state.score / st.session_state.total) * 100)
 else:
-
     percentage = 0
 
-# Keep this HTML as ONE string
-# to prevent Streamlit from showing <div> as text.
-
 score_html = (
-
     f'<div class="score-grid">'
-
     f'<div class="score-card score-purple">'
-    f'<div class="score-label">'
-    f'✅ Correct'
+    f'<div class="score-label">✅ Correct</div>'
+    f'<div class="score-number">{st.session_state.score}</div>'
     f'</div>'
-    f'<div class="score-number">'
-    f'{st.session_state.score}'
-    f'</div>'
-    f'</div>'
-
     f'<div class="score-card score-pink">'
-    f'<div class="score-label">'
-    f'📝 Answered'
+    f'<div class="score-label">📝 Answered</div>'
+    f'<div class="score-number">{st.session_state.total}</div>'
     f'</div>'
-    f'<div class="score-number">'
-    f'{st.session_state.total}'
-    f'</div>'
-    f'</div>'
-
     f'<div class="score-card score-green">'
-    f'<div class="score-label">'
-    f'🎯 Score'
+    f'<div class="score-label">🎯 Score</div>'
+    f'<div class="score-number">{percentage}%</div>'
     f'</div>'
-    f'<div class="score-number">'
-    f'{percentage}%'
-    f'</div>'
-    f'</div>'
-
     f'</div>'
 )
 
-st.markdown(
-    score_html,
-    unsafe_allow_html=True
-)
+st.markdown(score_html, unsafe_allow_html=True)
 
 # =========================================================
 # CURRENT QUESTION
 # =========================================================
 
-question_id = (
-    st.session_state.question_id
-)
+question_id = st.session_state.question_id
+stage = st.session_state.question_stage
+chinese_word = vocab[question_id][0]
+correct_answer = vocab[question_id][1]
 
-stage = (
-    st.session_state.question_stage
-)
+if stage == 1:
+    label_html = '<div class="review-label">🧠 Review 1 • คำที่ตอบผิดกลับมาแล้ว</div>'
+elif stage == 2:
+    label_html = '<div class="review-label">🌷 Review 2 • ทบทวนอีกครั้ง</div>'
+else:
+    label_html = '<div class="question-label">คำนี้แปลว่าอะไร?</div>'
 
-chinese_word = (
-    vocab[question_id][0]
-)
-
-correct_answer = (
-    vocab[question_id][1]
+render_question_area(
+    label_html=label_html,
+    chinese_word_html=chinese_html(chinese_word)
 )
 
 # =========================================================
-# QUESTION + RABBITS
+# ANSWERS
 # =========================================================
 
-left_col, middle_col, right_col = st.columns(
-    [1.1, 2.2, 1.1]
-)
+letters = ["A", "B", "C"]
 
-with left_col:
-
-    if left_image:
-
-        st.image(
-            left_image,
-            use_container_width=True
-        )
-
-    else:
-
-        st.markdown(
-            '<div class="decor-fallback">'
-            '🌸🐰'
-            '</div>',
-            unsafe_allow_html=True
-        )
-
-with middle_col:
-
-    if stage == 1:
-
-        st.markdown(
-            '<div class="review-label">'
-            '🧠 Review 1'
-            '<br>'
-            'คำที่ตอบผิดกลับมาแล้ว'
-            '</div>',
-            unsafe_allow_html=True
-        )
-
-    elif stage == 2:
-
-        st.markdown(
-            '<div class="review-label">'
-            '🌷 Review 2'
-            '<br>'
-            'ทบทวนอีกครั้ง'
-            '</div>',
-            unsafe_allow_html=True
-        )
-
-    else:
-
-        st.markdown(
-            '<div class="question-label">'
-            'คำนี้แปลว่าอะไร?'
-            '</div>',
-            unsafe_allow_html=True
-        )
-
-    st.markdown(
-        f'<div class="quiz-word">'
-        f'{chinese_word}'
-        f'</div>',
-        unsafe_allow_html=True
-    )
-
-with right_col:
-
-    if right_image:
-
-        st.image(
-            right_image,
-            use_container_width=True
-        )
-
-    else:
-
-        st.markdown(
-            '<div class="decor-fallback">'
-            '🐰🌷'
-            '</div>',
-            unsafe_allow_html=True
-        )
-
-st.write("")
-
-# =========================================================
-# ANSWER BUTTONS
-# =========================================================
-
-letters = [
-    "A",
-    "B",
-    "C"
-]
-
-for i, option in enumerate(
-    st.session_state.options
-):
-
+for i, option in enumerate(st.session_state.options):
     if st.button(
-
         f"{letters[i]}. {option}",
-
         use_container_width=True,
-
-        key=(
-            f"answer_"
-            f"{question_id}_"
-            f"{stage}_"
-            f"{i}"
-        )
-
+        key=f"answer_{question_id}_{stage}_{i}"
     ):
-
-        # Count this attempt
         st.session_state.total += 1
-
-        is_correct = (
-            option == correct_answer
-        )
-
-        # =================================================
-        # CORRECT
-        # =================================================
+        is_correct = (option == correct_answer)
 
         if is_correct:
-
             st.session_state.score += 1
 
-            # If this was Review 1,
-            # ask again after another 10 answers.
             if stage == 1:
-
                 schedule_retry(
-
                     vocab_id=question_id,
-
                     stage=2,
-
-                    due_at=(
-                        st.session_state.total
-                        + 10
-                    )
+                    due_at=st.session_state.total + 10
                 )
 
-            # Correct = immediately next question
             new_question()
-
             st.rerun()
-
-        # =================================================
-        # WRONG
-        # =================================================
 
         else:
-
-            # ---------------------------------------------
-            # WRONG FIRST TIME
-            # Return after 5 other answers
-            # ---------------------------------------------
-
             if stage == 0:
-
                 schedule_retry(
-
                     vocab_id=question_id,
-
                     stage=1,
-
-                    due_at=(
-                        st.session_state.total
-                        + 5
-                    )
+                    due_at=st.session_state.total + 5
                 )
 
                 st.error(
-
                     f"❌ คำตอบที่ถูกคือ\n\n"
-
-                    f"### "
-                    f"{chinese_word}"
-                    f" = "
-                    f"{correct_answer}"
-
-                    f"\n\n"
-
-                    f"🌸 คำนี้จะกลับมา"
-                    f"หลังจากตอบคำอื่นอีก 5 คำ"
+                    f"### {chinese_word} = {correct_answer}\n\n"
+                    f"🌸 จะถามคำนี้ใหม่หลังคำอื่นอีก 5 คำ"
                 )
-
-            # ---------------------------------------------
-            # WRONG ON REVIEW 1
-            # Return after another 10 answers
-            # ---------------------------------------------
 
             elif stage == 1:
-
                 schedule_retry(
-
                     vocab_id=question_id,
-
                     stage=2,
-
-                    due_at=(
-                        st.session_state.total
-                        + 10
-                    )
+                    due_at=st.session_state.total + 10
                 )
 
                 st.error(
-
                     f"❌ คำตอบที่ถูกคือ\n\n"
-
-                    f"### "
-                    f"{chinese_word}"
-                    f" = "
-                    f"{correct_answer}"
-
-                    f"\n\n"
-
-                    f"🌷 คำนี้จะกลับมาอีก"
-                    f"หลังจากตอบคำอื่นอีก 10 คำ"
+                    f"### {chinese_word} = {correct_answer}\n\n"
+                    f"🌷 จะถามคำนี้ใหม่หลังคำอื่นอีก 10 คำ"
                 )
-
-            # ---------------------------------------------
-            # REVIEW 2
-            # ---------------------------------------------
 
             else:
-
                 st.error(
-
                     f"❌ คำตอบที่ถูกคือ\n\n"
-
-                    f"### "
-                    f"{chinese_word}"
-                    f" = "
-                    f"{correct_answer}"
+                    f"### {chinese_word} = {correct_answer}"
                 )
 
-            # Give time to read the answer
-            time.sleep(2)
-
+            time.sleep(1.5)
             new_question()
-
             st.rerun()
 
 # =========================================================
-# WAITING FOR REVIEW
+# REVIEW STATUS
 # =========================================================
 
-if len(
-    st.session_state.retry_queue
-) > 0:
-
+if len(st.session_state.retry_queue) > 0:
     st.markdown(
-
-        f'<div class="review-status">'
-
-        f'🌷 Waiting for review: '
-
-        f'{len(st.session_state.retry_queue)}'
-
-        f'</div>',
-
+        f'<div class="small-note">🌷 Waiting for review: {len(st.session_state.retry_queue)}</div>',
         unsafe_allow_html=True
     )
 
@@ -1163,39 +882,18 @@ if len(
 
 st.divider()
 
-if st.button(
-    "↻ Reset",
-    use_container_width=True
-):
-
+if st.button("↻ Reset", use_container_width=True):
     st.session_state.score = 0
-
     st.session_state.total = 0
-
     st.session_state.question_id = None
-
     st.session_state.question_stage = 0
-
     st.session_state.options = []
-
     st.session_state.retry_queue = []
-
     st.session_state.last_question_id = None
-
     new_question()
-
     st.rerun()
 
-# =========================================================
-# FOOTER
-# =========================================================
-
 st.markdown(
-
-    '<div class="footer">'
-    '🌸 Made with love by '
-    'pollyleadsforward 🌷'
-    '</div>',
-
+    '<div class="small-note">🌸 Made by pollyleadsforward</div>',
     unsafe_allow_html=True
 )
