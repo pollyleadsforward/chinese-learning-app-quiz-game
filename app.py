@@ -718,6 +718,129 @@ with st.container(key="category_selector"):
     background: #ffffff !important;
     border: 4px solid #ff6f83 !important;
 }
+/* ===== FINAL MOBILE CATEGORY FIX ONLY ===== */
+@media (max-width: 520px) {
+
+    .bottom-category-title {
+        color: #707583 !important;
+        font-size: 12px !important;
+        font-weight: 800 !important;
+        text-align: center !important;
+        margin: 12px 0 6px 0 !important;
+    }
+
+    .st-key-category_selector {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow: visible !important;
+    }
+
+    .st-key-category_selector [data-testid="stHorizontalBlock"] {
+        display: grid !important;
+
+        grid-template-columns:
+            1.20fr
+            1.38fr
+            0.62fr
+            0.82fr
+            1.28fr !important;
+
+        gap: 3px !important;
+
+        width: 100% !important;
+        max-width: 100% !important;
+
+        align-items: center !important;
+    }
+
+    .st-key-category_selector [data-testid="column"] {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .st-key-category_selector div[data-testid="stButton"] {
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    .st-key-category_selector div[data-testid="stButton"] > button {
+        width: 100% !important;
+        min-width: 0 !important;
+
+        height: 32px !important;
+        min-height: 32px !important;
+
+        padding: 0 2px !important;
+
+        border-radius: 999px !important;
+        border: 1px solid #dedfe5 !important;
+
+        background: #ffffff !important;
+        color: #555b69 !important;
+
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+
+        gap: 2px !important;
+
+        overflow: visible !important;
+        box-shadow: none !important;
+    }
+
+    .st-key-category_selector div[data-testid="stButton"] > button::before {
+        content: "" !important;
+
+        width: 8px !important;
+        height: 8px !important;
+        min-width: 8px !important;
+
+        border-radius: 50% !important;
+
+        background: #ffffff !important;
+        border: 1.2px solid #d4d7df !important;
+    }
+
+    .st-key-category_selector div[data-testid="stButton"] > button p,
+    .st-key-category_selector div[data-testid="stButton"] > button span {
+        color: #555b69 !important;
+        -webkit-text-fill-color: #555b69 !important;
+
+        font-size: 8.2px !important;
+        font-weight: 800 !important;
+
+        white-space: nowrap !important;
+
+        overflow: visible !important;
+        text-overflow: clip !important;
+
+        letter-spacing: -0.1px !important;
+    }
+
+    /* selected category */
+    .st-key-category_selector button[kind="primary"],
+    .st-key-category_selector [data-testid="stBaseButton-primary"] {
+        background: linear-gradient(
+            135deg,
+            #f8d8e8,
+            #e6ddff,
+            #dcecff,
+            #dff4e7
+        ) !important;
+
+        border-color: #dfc7e8 !important;
+    }
+
+    .st-key-category_selector button[kind="primary"]::before,
+    .st-key-category_selector [data-testid="stBaseButton-primary"]::before {
+        background: #ffffff !important;
+        border: 2px solid #ff6576 !important;
+    }
+}
 </style>
 """, unsafe_allow_html=True)
 
