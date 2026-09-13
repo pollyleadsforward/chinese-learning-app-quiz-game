@@ -283,7 +283,6 @@ header, footer, #MainMenu,
     font-size: 16px !important;
     font-weight: 500 !important;
 }
-
 # =========================================================
 # CATEGORY SELECTOR
 # =========================================================
@@ -301,36 +300,31 @@ CATEGORY_ITEMS = [
     (5, "Testing / UAT"),
 ]
 
-display_labels = [
-    label
-    for _, label in CATEGORY_ITEMS
-]
+with st.container(key="category_selector"):
 
-label_to_set = {
-    label: set_id
-    for set_id, label in CATEGORY_ITEMS
-}
+    category_cols = st.columns(
+        [1.20, 1.30, 0.70, 0.85, 1.18],
+        gap="small"
+    )
 
-current_label = next(
-    label
-    for set_id, label in CATEGORY_ITEMS
-    if set_id == st.session_state.selected_set
-)
+    for i, (set_id, label) in enumerate(CATEGORY_ITEMS):
 
-selected_label = st.radio(
-    "เลือกหมวดคำศัพท์",
-    options=display_labels,
-    index=display_labels.index(current_label),
-    horizontal=True,
-    label_visibility="collapsed",
-    key="bottom_set_radio"
-)
+        is_selected = (
+            set_id == st.session_state.selected_set
+        )
 
-new_set = label_to_set[selected_label]
+        with category_cols[i]:
 
-if new_set != st.session_state.selected_set:
-    st.session_state.selected_set = new_set
-    st.rerun()
+            if st.button(
+                label,
+                key=f"category_{set_id}",
+                type="primary" if is_selected else "secondary",
+                use_container_width=True
+            ):
+
+                if not is_selected:
+                    st.session_state.selected_set = set_id
+                    st.rerun()
     /* =======================================================
    RESET + QUOTE
    ======================================================= */
