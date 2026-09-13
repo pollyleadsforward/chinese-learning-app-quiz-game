@@ -26,7 +26,9 @@ st.set_page_config(
 st.markdown("""
 <style>
 /* =======================================================
-   MOBILE-FIRST CLEAN UI
+   CLEAN RESPONSIVE UI
+   Desktop/tablet keeps comfortable spacing.
+   Only small phones get tighter spacing.
    ======================================================= */
 
 html, body,
@@ -36,22 +38,14 @@ html, body,
 }
 
 .block-container {
-    max-width: 560px !important;
-    padding-top: 0.22rem !important;
-    padding-bottom: 0.35rem !important;
-    padding-left: 0.58rem !important;
-    padding-right: 0.58rem !important;
+    max-width: 820px !important;
+    padding-top: 0.70rem !important;
+    padding-bottom: 1.20rem !important;
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
 }
 
-/* Reduce Streamlit's default vertical spacing */
-[data-testid="stVerticalBlock"] {
-    gap: 0.42rem !important;
-}
-
-[data-testid="stElementContainer"] {
-    margin-bottom: 0 !important;
-}
-
+/* Hide Streamlit chrome */
 header, footer, #MainMenu,
 [data-testid="stToolbar"],
 [data-testid="stStatusWidget"],
@@ -65,10 +59,10 @@ header, footer, #MainMenu,
 /* ---------- header ---------- */
 .main-title {
     text-align: center;
-    font-size: clamp(26px, 7vw, 39px);
+    font-size: clamp(34px, 5vw, 48px);
     font-weight: 900;
-    line-height: 1.06;
-    margin: 0 0 1px 0;
+    line-height: 1.08;
+    margin: 0 0 4px 0;
     background: linear-gradient(
         90deg,
         #f3a4c6,
@@ -88,67 +82,67 @@ header, footer, #MainMenu,
 .by-line {
     text-align: center;
     color: #707583;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 700;
-    margin: 0 0 2px 0;
+    margin-bottom: 8px;
 }
 
 .active-category {
     text-align: center;
     color: #707583;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 700;
-    margin: 0 0 3px 0;
+    margin: 3px 0 10px 0;
 }
 
-/* ---------- score cards: KEEP Correct / Answered / Score ---------- */
+/* ---------- score cards ---------- */
 .score-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 6px;
+    gap: 12px;
     width: 100%;
-    margin: 0 0 3px 0;
+    margin-bottom: 14px;
 }
 
 .score-card {
     min-width: 0;
-    min-height: 62px;
-    padding: 5px 2px;
+    min-height: 82px;
+    padding: 10px 6px;
     box-sizing: border-box;
-    border-radius: 15px;
+    border-radius: 18px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 2px 7px rgba(50,45,65,0.035);
+    box-shadow: 0 3px 10px rgba(50,45,65,0.04);
 }
 
 .score-purple {
     background: #edddfb;
-    border: 1.4px solid #d7b3f6;
+    border: 1.5px solid #d7b3f6;
 }
 
 .score-pink {
     background: #ffdee9;
-    border: 1.4px solid #f4b4cc;
+    border: 1.5px solid #f4b4cc;
 }
 
 .score-green {
     background: #ddf4e4;
-    border: 1.4px solid #9cddae;
+    border: 1.5px solid #9cddae;
 }
 
 .score-label {
     color: #515563;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 800;
     white-space: nowrap;
-    margin-bottom: 2px;
+    margin-bottom: 4px;
 }
 
 .score-number {
     color: #2e303b;
-    font-size: 22px;
+    font-size: 29px;
     line-height: 1;
     font-weight: 900;
 }
@@ -159,7 +153,8 @@ header, footer, #MainMenu,
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0 0 2px 0;
+    margin-top: 5px;
+    margin-bottom: 12px;
 }
 
 .question-center {
@@ -172,9 +167,9 @@ header, footer, #MainMenu,
 .review-label {
     text-align: center;
     color: #707583;
-    font-size: 14px;
+    font-size: 17px;
     font-weight: 700;
-    margin: 0 0 1px 0;
+    margin: 0 0 7px 0;
 }
 
 .review-label {
@@ -185,7 +180,7 @@ header, footer, #MainMenu,
 .chinese-medium,
 .chinese-long {
     font-weight: 900;
-    line-height: 1.00;
+    line-height: 1.02;
     text-align: center;
     display: inline-block;
     white-space: nowrap;
@@ -207,35 +202,27 @@ header, footer, #MainMenu,
     background-clip: text;
 }
 
-/* 1–4 Chinese characters = one line */
 .chinese-short {
-    font-size: clamp(46px, 13vw, 66px);
+    font-size: clamp(58px, 9vw, 86px);
 }
 
-/* 5–6 = still one line, smaller */
 .chinese-medium {
-    font-size: clamp(31px, 8.9vw, 46px);
+    font-size: clamp(42px, 7vw, 62px);
 }
 
 .chinese-long {
-    font-size: clamp(22px, 6.1vw, 33px);
+    font-size: clamp(30px, 5vw, 46px);
 }
 
-/* ---------- ANSWER BUTTONS ----------
-   Force white even when phone / webview uses dark theme.
-*/
-div[data-testid="stButton"] {
-    margin: 0 !important;
-}
-
+/* ---------- answer buttons ---------- */
 div[data-testid="stButton"] > button,
 div[data-testid="stButton"] > button:hover,
 div[data-testid="stButton"] > button:focus,
 div[data-testid="stButton"] > button:active {
     width: 100% !important;
-    min-height: 43px !important;
-    padding: 0.38rem 0.65rem !important;
-    border-radius: 13px !important;
+    min-height: 56px !important;
+    padding: 0.65rem 0.9rem !important;
+    border-radius: 15px !important;
     background: #ffffff !important;
     background-color: #ffffff !important;
     color: #414653 !important;
@@ -248,7 +235,7 @@ div[data-testid="stButton"] > button p,
 div[data-testid="stButton"] > button span {
     color: #414653 !important;
     -webkit-text-fill-color: #414653 !important;
-    font-size: 15px !important;
+    font-size: 17px !important;
     font-weight: 500 !important;
 }
 
@@ -256,32 +243,27 @@ div[data-testid="stButton"] > button span {
 .bottom-category-title {
     text-align: center;
     color: #707583;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 700;
-    margin: 1px 0 2px 0;
-}
-
-div[data-testid="stRadio"] {
-    margin: 0 !important;
+    margin-top: 14px;
+    margin-bottom: 7px;
 }
 
 div[data-testid="stRadio"] > div {
     justify-content: center !important;
-    gap: 0.26rem !important;
+    gap: 0.45rem !important;
     flex-wrap: wrap !important;
 }
 
-/* Unselected category pills = WHITE */
 div[data-testid="stRadio"] label {
     background: #ffffff !important;
     background-color: #ffffff !important;
     border-radius: 999px !important;
-    padding: 4px 8px !important;
+    padding: 6px 11px !important;
     border: 1px solid #e0dfe5 !important;
     margin: 0 !important;
 }
 
-/* Selected category = pastel */
 div[data-testid="stRadio"] label:has(input:checked) {
     background: linear-gradient(
         135deg,
@@ -295,43 +277,18 @@ div[data-testid="stRadio"] label:has(input:checked) {
 div[data-testid="stRadio"] label p {
     color: #525866 !important;
     -webkit-text-fill-color: #525866 !important;
-    font-size: 11.5px !important;
+    font-size: 13px !important;
     font-weight: 800 !important;
 }
 
-/* ---------- reset + quote on SAME ROW on mobile ---------- */
-div[data-testid="stHorizontalBlock"] {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: nowrap !important;
-    align-items: center !important;
-    gap: 1rem !important;
-    margin-top: 1px !important;
-}
-
-div[data-testid="stHorizontalBlock"] > div[data-testid="column"] {
-    min-width: 0 !important;
-}
-
-/* Reset is a tiny icon button, not a large block */
-div[data-testid="stHorizontalBlock"]
-div[data-testid="stButton"] > button {
-    width: 38px !important;
-    min-width: 38px !important;
-    max-width: 38px !important;
-    min-height: 34px !important;
-    height: 34px !important;
-    padding: 0 !important;
-    border-radius: 10px !important;
-}
-
+/* ---------- bottom reset + quote ---------- */
 .quote-text {
-    padding: 0 2px;
+    padding-top: 6px;
     text-align: center;
-    font-size: clamp(9.8px, 2.7vw, 12px);
+    font-size: 13px;
     font-weight: 800;
     font-style: italic;
-    line-height: 1.18;
+    line-height: 1.3;
     background: linear-gradient(
         90deg,
         #eea5c9,
@@ -346,83 +303,138 @@ div[data-testid="stButton"] > button {
     background-clip: text;
 }
 
-/* ---------- very small phones ---------- */
-@media (max-width: 480px) {
+/* Only the reset button inside the bottom columns is small */
+div[data-testid="stHorizontalBlock"]
+div[data-testid="stButton"] > button {
+    width: 42px !important;
+    min-width: 42px !important;
+    max-width: 42px !important;
+    min-height: 38px !important;
+    height: 38px !important;
+    padding: 0 !important;
+    border-radius: 10px !important;
+}
+
+/* =======================================================
+   PHONE ONLY
+   Keep everything visible without crushing desktop layout.
+   ======================================================= */
+@media (max-width: 520px) {
     .block-container {
-        padding-top: 0.15rem !important;
-        padding-bottom: 0.2rem !important;
-        padding-left: 0.48rem !important;
-        padding-right: 0.48rem !important;
+        max-width: 100% !important;
+        padding-top: 0.35rem !important;
+        padding-bottom: 0.55rem !important;
+        padding-left: 0.70rem !important;
+        padding-right: 0.70rem !important;
     }
 
     [data-testid="stVerticalBlock"] {
-        gap: 0.34rem !important;
+        gap: 0.48rem !important;
     }
 
     .main-title {
-        font-size: clamp(25px, 7.2vw, 35px);
+        font-size: clamp(29px, 8.8vw, 38px);
+        margin-bottom: 2px;
     }
 
     .by-line {
-        font-size: 12px;
+        font-size: 13px;
+        margin-bottom: 4px;
     }
 
     .active-category {
-        font-size: 11.5px;
+        font-size: 12px;
+        margin-bottom: 7px;
+    }
+
+    .score-grid {
+        gap: 7px;
+        margin-bottom: 8px;
     }
 
     .score-card {
-        min-height: 58px;
-        border-radius: 14px;
+        min-height: 68px;
+        padding: 7px 3px;
+        border-radius: 16px;
+    }
+
+    .score-label {
+        font-size: 10px;
+        margin-bottom: 3px;
     }
 
     .score-number {
-        font-size: 21px;
+        font-size: 24px;
+    }
+
+    .question-shell {
+        margin-top: 2px;
+        margin-bottom: 6px;
     }
 
     .question-label,
     .review-label {
-        font-size: 13.5px;
+        font-size: 15px;
+        margin-bottom: 3px;
     }
 
     .chinese-short {
-        font-size: clamp(44px, 13vw, 60px);
+        font-size: clamp(49px, 14vw, 68px);
     }
 
     .chinese-medium {
-        font-size: clamp(29px, 8.5vw, 42px);
+        font-size: clamp(34px, 10vw, 50px);
     }
 
     .chinese-long {
-        font-size: clamp(21px, 5.8vw, 30px);
+        font-size: clamp(24px, 7vw, 36px);
     }
 
     div[data-testid="stButton"] > button,
     div[data-testid="stButton"] > button:hover,
     div[data-testid="stButton"] > button:focus,
     div[data-testid="stButton"] > button:active {
-        min-height: 41px !important;
+        min-height: 48px !important;
+        padding: 0.5rem 0.7rem !important;
+        border-radius: 14px !important;
     }
 
     div[data-testid="stButton"] > button p,
     div[data-testid="stButton"] > button span {
-        font-size: 14.5px !important;
+        font-size: 15.5px !important;
     }
 
     .bottom-category-title {
-        margin-top: 0 !important;
+        font-size: 12px;
+        margin-top: 8px;
+        margin-bottom: 4px;
     }
 
     div[data-testid="stRadio"] > div {
-        gap: 0.20rem !important;
+        gap: 0.28rem !important;
     }
 
     div[data-testid="stRadio"] label {
-        padding: 3px 7px !important;
+        padding: 4px 8px !important;
     }
 
     div[data-testid="stRadio"] label p {
-        font-size: 11px !important;
+        font-size: 11.5px !important;
+    }
+
+    .quote-text {
+        font-size: 10.5px;
+        line-height: 1.2;
+        padding-top: 4px;
+    }
+
+    div[data-testid="stHorizontalBlock"]
+    div[data-testid="stButton"] > button {
+        width: 38px !important;
+        min-width: 38px !important;
+        max-width: 38px !important;
+        min-height: 34px !important;
+        height: 34px !important;
     }
 }
 </style>
