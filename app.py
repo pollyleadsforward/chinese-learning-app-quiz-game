@@ -285,10 +285,11 @@ header, footer, #MainMenu,
 }
 
 /* =======================================================
-   CATEGORY SELECTOR — FINAL READABILITY FIX ONLY
+   CATEGORY SELECTOR — FINAL MOCKUP
    - five pills stay on ONE row
-   - labels are readable
-   - selected item clearly shows ✓ + pastel/pink state
+   - NO check mark
+   - labels readable; long labels may wrap to 2 lines
+   - selected item = pastel pill + pink-ring circle
    - exactly ONE CSS circle per pill
    ======================================================= */
 
@@ -310,16 +311,16 @@ header, footer, #MainMenu,
     display: grid !important;
     grid-template-columns:
         minmax(0, 1.20fr)
-        minmax(0, 1.28fr)
-        minmax(0, 0.68fr)
+        minmax(0, 1.25fr)
         minmax(0, 0.78fr)
-        minmax(0, 1.18fr) !important;
+        minmax(0, 0.88fr)
+        minmax(0, 1.16fr) !important;
 
-    gap: 3px !important;
+    gap: 4px !important;
     width: 100% !important;
     max-width: 100% !important;
 
-    align-items: center !important;
+    align-items: stretch !important;
     justify-content: stretch !important;
 
     overflow: hidden !important;
@@ -342,6 +343,7 @@ header, footer, #MainMenu,
     width: 100% !important;
     min-width: 0 !important;
     max-width: 100% !important;
+    height: 100% !important;
     margin: 0 !important;
 }
 
@@ -353,12 +355,12 @@ header, footer, #MainMenu,
     min-width: 0 !important;
     max-width: 100% !important;
 
-    min-height: 34px !important;
-    height: 34px !important;
+    min-height: 42px !important;
+    height: 42px !important;
 
-    padding: 0 2px !important;
+    padding: 0 5px !important;
 
-    border-radius: 999px !important;
+    border-radius: 14px !important;
     border: 1px solid #e0e1e6 !important;
 
     background: #ffffff !important;
@@ -373,30 +375,29 @@ header, footer, #MainMenu,
     align-items: center !important;
     justify-content: center !important;
 
-    gap: 2px !important;
+    gap: 5px !important;
 
-    white-space: nowrap !important;
     overflow: hidden !important;
 }
 
-/* Exactly ONE circle per pill */
+/* Exactly ONE category circle */
 .st-key-category_selector div[data-testid="stButton"] > button::before {
     content: "";
     display: inline-block;
 
-    width: 8px;
-    height: 8px;
-    min-width: 8px;
-    flex: 0 0 8px;
+    width: 12px;
+    height: 12px;
+    min-width: 12px;
+    flex: 0 0 12px;
 
     border-radius: 50%;
     box-sizing: border-box;
 
     background: #ffffff !important;
-    border: 1.3px solid #d4d7df !important;
+    border: 1.5px solid #d4d7df !important;
 }
 
-/* Selected pill: pastel background */
+/* Selected pill */
 .st-key-category_selector button[kind="primary"],
 .st-key-category_selector [data-testid="stBaseButton-primary"] {
     background: linear-gradient(
@@ -409,14 +410,13 @@ header, footer, #MainMenu,
     border-color: #dfc3e7 !important;
 }
 
-/* Selected circle: pink ring */
+/* Selected circle = white center + pink ring */
 .st-key-category_selector button[kind="primary"]::before,
 .st-key-category_selector [data-testid="stBaseButton-primary"]::before {
     background: #ffffff !important;
-    border: 2px solid #ff6477 !important;
+    border: 3px solid #ff6477 !important;
 }
 
-/* Normal text */
 .st-key-category_selector div[data-testid="stButton"] > button p,
 .st-key-category_selector div[data-testid="stButton"] > button span {
     color: #555b69 !important;
@@ -424,21 +424,25 @@ header, footer, #MainMenu,
 
     opacity: 1 !important;
 
-    font-size: 10px !important;
+    font-size: 10.5px !important;
     font-weight: 800 !important;
-    line-height: 1 !important;
+    line-height: 1.05 !important;
 
-    white-space: nowrap !important;
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+
+    text-align: center !important;
     min-width: 0 !important;
 }
 
-/* Selected text including ✓ */
+/* Selected text stays the same dark gray; no ✓ */
 .st-key-category_selector button[kind="primary"] p,
 .st-key-category_selector button[kind="primary"] span,
 .st-key-category_selector [data-testid="stBaseButton-primary"] p,
 .st-key-category_selector [data-testid="stBaseButton-primary"] span {
-    color: #d95b78 !important;
-    -webkit-text-fill-color: #d95b78 !important;
+    color: #555b69 !important;
+    -webkit-text-fill-color: #555b69 !important;
     font-weight: 900 !important;
 }
 
@@ -634,7 +638,7 @@ header, footer, #MainMenu,
         font-size: 14.5px !important;
     }
 
-    /* Category selector — readable + selected ✓, still one row */
+    /* Category selector — FINAL S23 mockup, one row */
     .bottom-category-title {
         font-size: 11.5px !important;
         margin-top: 12px !important;
@@ -652,16 +656,17 @@ header, footer, #MainMenu,
 
         grid-template-columns:
             minmax(0, 1.20fr)
-            minmax(0, 1.28fr)
-            minmax(0, 0.68fr)
+            minmax(0, 1.25fr)
             minmax(0, 0.78fr)
-            minmax(0, 1.18fr) !important;
+            minmax(0, 0.88fr)
+            minmax(0, 1.16fr) !important;
 
         gap: 3px !important;
 
         width: 100% !important;
         max-width: 100% !important;
 
+        align-items: stretch !important;
         overflow: hidden !important;
     }
 
@@ -680,6 +685,7 @@ header, footer, #MainMenu,
         width: 100% !important;
         min-width: 0 !important;
         max-width: 100% !important;
+        height: 100% !important;
     }
 
     .st-key-category_selector div[data-testid="stButton"] > button,
@@ -690,11 +696,11 @@ header, footer, #MainMenu,
         min-width: 0 !important;
         max-width: 100% !important;
 
-        min-height: 32px !important;
-        height: 32px !important;
+        min-height: 48px !important;
+        height: 48px !important;
 
-        padding: 0 1px !important;
-        gap: 1.5px !important;
+        padding: 0 3px !important;
+        gap: 3px !important;
 
         background: #ffffff !important;
         background-color: #ffffff !important;
@@ -702,25 +708,25 @@ header, footer, #MainMenu,
         color: #555b69 !important;
 
         border: 1px solid #e0e1e6 !important;
-        border-radius: 999px !important;
+        border-radius: 14px !important;
 
         overflow: hidden !important;
     }
 
     .st-key-category_selector div[data-testid="stButton"] > button::before {
-        width: 7px !important;
-        height: 7px !important;
-        min-width: 7px !important;
-        flex: 0 0 7px !important;
+        width: 11px !important;
+        height: 11px !important;
+        min-width: 11px !important;
+        flex: 0 0 11px !important;
 
         background: #ffffff !important;
-        border: 1.2px solid #d4d7df !important;
+        border: 1.4px solid #d4d7df !important;
     }
 
     .st-key-category_selector button[kind="primary"]::before,
     .st-key-category_selector [data-testid="stBaseButton-primary"]::before {
         background: #ffffff !important;
-        border: 1.8px solid #ff6477 !important;
+        border: 2.6px solid #ff6477 !important;
     }
 
     .st-key-category_selector div[data-testid="stButton"] > button p,
@@ -729,11 +735,14 @@ header, footer, #MainMenu,
         -webkit-text-fill-color: #555b69 !important;
         opacity: 1 !important;
 
-        font-size: 9.2px !important;
+        font-size: 9.8px !important;
         font-weight: 800 !important;
-        line-height: 1 !important;
+        line-height: 1.04 !important;
 
-        white-space: nowrap !important;
+        white-space: normal !important;
+        overflow: visible !important;
+
+        text-align: center !important;
         min-width: 0 !important;
     }
 
@@ -741,8 +750,8 @@ header, footer, #MainMenu,
     .st-key-category_selector button[kind="primary"] span,
     .st-key-category_selector [data-testid="stBaseButton-primary"] p,
     .st-key-category_selector [data-testid="stBaseButton-primary"] span {
-        color: #d95b78 !important;
-        -webkit-text-fill-color: #d95b78 !important;
+        color: #555b69 !important;
+        -webkit-text-fill-color: #555b69 !important;
         font-weight: 900 !important;
     }
 
@@ -1862,14 +1871,8 @@ with st.container(key="category_selector"):
 
         with category_columns[index]:
 
-            button_label = (
-                f"✓ {label}"
-                if is_selected
-                else label
-            )
-
             if st.button(
-                button_label,
+                label,
                 key=(
                     f"category_"
                     f"{set_id}_"
