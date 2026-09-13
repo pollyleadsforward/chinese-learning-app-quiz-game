@@ -285,11 +285,11 @@ header, footer, #MainMenu,
 }
 
 /* =======================================================
-   CATEGORY SELECTOR — FINAL MOCKUP
+   CATEGORY SELECTOR — FINAL S23 LAYOUT
    - five pills stay on ONE row
-   - NO check mark
-   - labels readable; long labels may wrap to 2 lines
-   - selected item = pastel pill + pink-ring circle
+   - no check mark
+   - full labels stay readable
+   - selected = pastel pill + pink-ring circle
    - exactly ONE CSS circle per pill
    ======================================================= */
 
@@ -309,18 +309,20 @@ header, footer, #MainMenu,
 
 .st-key-category_selector [data-testid="stHorizontalBlock"] {
     display: grid !important;
+
     grid-template-columns:
-        minmax(0, 1.20fr)
-        minmax(0, 1.25fr)
-        minmax(0, 0.78fr)
-        minmax(0, 0.88fr)
-        minmax(0, 1.16fr) !important;
+        minmax(0, 1.34fr)
+        minmax(0, 1.44fr)
+        minmax(0, 0.62fr)
+        minmax(0, 0.82fr)
+        minmax(0, 1.30fr) !important;
 
     gap: 4px !important;
+
     width: 100% !important;
     max-width: 100% !important;
 
-    align-items: stretch !important;
+    align-items: center !important;
     justify-content: stretch !important;
 
     overflow: hidden !important;
@@ -343,7 +345,6 @@ header, footer, #MainMenu,
     width: 100% !important;
     min-width: 0 !important;
     max-width: 100% !important;
-    height: 100% !important;
     margin: 0 !important;
 }
 
@@ -355,12 +356,12 @@ header, footer, #MainMenu,
     min-width: 0 !important;
     max-width: 100% !important;
 
-    min-height: 42px !important;
-    height: 42px !important;
+    min-height: 34px !important;
+    height: 34px !important;
 
-    padding: 0 5px !important;
+    padding: 0 4px !important;
 
-    border-radius: 14px !important;
+    border-radius: 999px !important;
     border: 1px solid #e0e1e6 !important;
 
     background: #ffffff !important;
@@ -375,26 +376,27 @@ header, footer, #MainMenu,
     align-items: center !important;
     justify-content: center !important;
 
-    gap: 5px !important;
+    gap: 3px !important;
 
+    white-space: nowrap !important;
     overflow: hidden !important;
 }
 
-/* Exactly ONE category circle */
+/* Exactly ONE circle */
 .st-key-category_selector div[data-testid="stButton"] > button::before {
     content: "";
     display: inline-block;
 
-    width: 12px;
-    height: 12px;
-    min-width: 12px;
-    flex: 0 0 12px;
+    width: 10px;
+    height: 10px;
+    min-width: 10px;
+    flex: 0 0 10px;
 
     border-radius: 50%;
     box-sizing: border-box;
 
     background: #ffffff !important;
-    border: 1.5px solid #d4d7df !important;
+    border: 1.4px solid #d4d7df !important;
 }
 
 /* Selected pill */
@@ -410,11 +412,11 @@ header, footer, #MainMenu,
     border-color: #dfc3e7 !important;
 }
 
-/* Selected circle = white center + pink ring */
+/* Selected circle */
 .st-key-category_selector button[kind="primary"]::before,
 .st-key-category_selector [data-testid="stBaseButton-primary"]::before {
     background: #ffffff !important;
-    border: 3px solid #ff6477 !important;
+    border: 2.4px solid #ff6477 !important;
 }
 
 .st-key-category_selector div[data-testid="stButton"] > button p,
@@ -424,19 +426,18 @@ header, footer, #MainMenu,
 
     opacity: 1 !important;
 
-    font-size: 10.5px !important;
+    font-size: 10px !important;
     font-weight: 800 !important;
-    line-height: 1.05 !important;
+    line-height: 1 !important;
 
-    white-space: normal !important;
-    overflow: visible !important;
-    text-overflow: clip !important;
+    white-space: nowrap !important;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
 
-    text-align: center !important;
     min-width: 0 !important;
 }
 
-/* Selected text stays the same dark gray; no ✓ */
+/* Selected text stays dark gray — NO check mark */
 .st-key-category_selector button[kind="primary"] p,
 .st-key-category_selector button[kind="primary"] span,
 .st-key-category_selector [data-testid="stBaseButton-primary"] p,
@@ -548,7 +549,7 @@ header, footer, #MainMenu,
 
     /* +20% from previous mockup, but still single line */
     .main-title {
-        font-size: clamp(36px, 10.6vw, 42px) !important;
+        font-size: clamp(35.28px, 10.388vw, 41.16px) !important;
         line-height: 1.01 !important;
         margin-bottom: 4px !important;
 
@@ -638,7 +639,7 @@ header, footer, #MainMenu,
         font-size: 14.5px !important;
     }
 
-    /* Category selector — FINAL S23 mockup, one row */
+    /* Category selector — S23: all FIVE pills on one row */
     .bottom-category-title {
         font-size: 11.5px !important;
         margin-top: 12px !important;
@@ -655,18 +656,18 @@ header, footer, #MainMenu,
         display: grid !important;
 
         grid-template-columns:
-            minmax(0, 1.20fr)
-            minmax(0, 1.25fr)
-            minmax(0, 0.78fr)
-            minmax(0, 0.88fr)
-            minmax(0, 1.16fr) !important;
+            minmax(0, 1.34fr)
+            minmax(0, 1.44fr)
+            minmax(0, 0.62fr)
+            minmax(0, 0.82fr)
+            minmax(0, 1.30fr) !important;
 
         gap: 3px !important;
 
         width: 100% !important;
         max-width: 100% !important;
 
-        align-items: stretch !important;
+        align-items: center !important;
         overflow: hidden !important;
     }
 
@@ -685,7 +686,6 @@ header, footer, #MainMenu,
         width: 100% !important;
         min-width: 0 !important;
         max-width: 100% !important;
-        height: 100% !important;
     }
 
     .st-key-category_selector div[data-testid="stButton"] > button,
@@ -696,11 +696,11 @@ header, footer, #MainMenu,
         min-width: 0 !important;
         max-width: 100% !important;
 
-        min-height: 48px !important;
-        height: 48px !important;
+        min-height: 31px !important;
+        height: 31px !important;
 
-        padding: 0 3px !important;
-        gap: 3px !important;
+        padding: 0 2px !important;
+        gap: 2px !important;
 
         background: #ffffff !important;
         background-color: #ffffff !important;
@@ -708,25 +708,26 @@ header, footer, #MainMenu,
         color: #555b69 !important;
 
         border: 1px solid #e0e1e6 !important;
-        border-radius: 14px !important;
+        border-radius: 999px !important;
 
+        white-space: nowrap !important;
         overflow: hidden !important;
     }
 
     .st-key-category_selector div[data-testid="stButton"] > button::before {
-        width: 11px !important;
-        height: 11px !important;
-        min-width: 11px !important;
-        flex: 0 0 11px !important;
+        width: 8px !important;
+        height: 8px !important;
+        min-width: 8px !important;
+        flex: 0 0 8px !important;
 
         background: #ffffff !important;
-        border: 1.4px solid #d4d7df !important;
+        border: 1.25px solid #d4d7df !important;
     }
 
     .st-key-category_selector button[kind="primary"]::before,
     .st-key-category_selector [data-testid="stBaseButton-primary"]::before {
         background: #ffffff !important;
-        border: 2.6px solid #ff6477 !important;
+        border: 1.9px solid #ff6477 !important;
     }
 
     .st-key-category_selector div[data-testid="stButton"] > button p,
@@ -735,14 +736,14 @@ header, footer, #MainMenu,
         -webkit-text-fill-color: #555b69 !important;
         opacity: 1 !important;
 
-        font-size: 9.8px !important;
+        font-size: 8.35px !important;
         font-weight: 800 !important;
-        line-height: 1.04 !important;
+        line-height: 1 !important;
 
-        white-space: normal !important;
-        overflow: visible !important;
+        white-space: nowrap !important;
+        word-break: keep-all !important;
+        overflow-wrap: normal !important;
 
-        text-align: center !important;
         min-width: 0 !important;
     }
 
@@ -1886,11 +1887,20 @@ with st.container(key="category_selector"):
                     st.rerun()
 
 
-# Reset left + quote right.
+# Quote first, reset button last.
 # Reset DOES NOT change the quote.
 with st.container(key="bottom_actions"):
 
-    reset_col, quote_col = st.columns(
+    safe_quote = html.escape(
+        st.session_state.quote_of_the_day
+    )
+
+    st.markdown(
+        f'<div class="quote-text">“{safe_quote}”</div>',
+        unsafe_allow_html=True
+    )
+
+    reset_col, reset_spacer = st.columns(
         [0.65, 5.35],
         gap="large",
         vertical_alignment="center"
@@ -1909,15 +1919,4 @@ with st.container(key="bottom_actions"):
             ] = blank_progress()
 
             st.rerun()
-
-    with quote_col:
-
-        safe_quote = html.escape(
-            st.session_state.quote_of_the_day
-        )
-
-        st.markdown(
-            f'<div class="quote-text">“{safe_quote}”</div>',
-            unsafe_allow_html=True
-        )
 
