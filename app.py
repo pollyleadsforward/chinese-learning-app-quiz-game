@@ -26,7 +26,7 @@ st.set_page_config(
 st.markdown("""
 <style>
 /* =======================================================
-   CHINESE LEARNING APP — CLEAN RESPONSIVE UI
+   FINAL LAUNCH UI
    ======================================================= */
 
 html {
@@ -41,10 +41,10 @@ html, body,
 
 .block-container {
     max-width: 800px !important;
-    padding-top: 0.70rem !important;
-    padding-bottom: 1.00rem !important;
-    padding-left: 1.10rem !important;
-    padding-right: 1.10rem !important;
+    padding-top: 0.65rem !important;
+    padding-bottom: 0.85rem !important;
+    padding-left: 1.05rem !important;
+    padding-right: 1.05rem !important;
 }
 
 /* Hide Streamlit chrome inside the app */
@@ -58,26 +58,29 @@ header, footer, #MainMenu,
     visibility: hidden !important;
 }
 
-/* ---------- Header ---------- */
+/* =======================================================
+   HEADER
+   ======================================================= */
 
 .main-title {
     text-align: center;
-    font-size: clamp(34px, 5vw, 46px);
+    font-size: clamp(33px, 5vw, 45px);
     font-weight: 900;
-    line-height: 1.06;
+    line-height: 1.02;
     margin: 0 0 3px 0;
     white-space: nowrap;
+    letter-spacing: -0.35px;
 
     background: linear-gradient(
         90deg,
-        #f3a4c6,
-        #deb5f5,
-        #bfc5ff,
-        #a9dbff,
-        #a7ead8,
-        #c9edb5,
-        #ffd2a5,
-        #f5b1c8
+        #f2a8d0,
+        #d9b6f6,
+        #b9c1ff,
+        #a4dfff,
+        #a3e3cf,
+        #c8e9ad,
+        #f2d89f,
+        #f4b9bf
     );
 
     -webkit-background-clip: text;
@@ -87,34 +90,38 @@ header, footer, #MainMenu,
 
 .by-line {
     text-align: center;
-    color: #707583;
-    font-size: 15px;
+    color: #737784;
+    font-size: 10.8px;
     font-weight: 700;
-    margin: 0 0 6px 0;
+    line-height: 1.15;
+    margin: 0 0 9px 0;
 }
 
 .active-category {
     text-align: center;
-    color: #707583;
+    color: #737784;
     font-size: 14px;
-    font-weight: 700;
-    margin: 2px 0 9px 0;
+    font-weight: 750;
+    line-height: 1.2;
+    margin: 0 0 12px 0;
 }
 
-/* ---------- Score cards ---------- */
+/* =======================================================
+   SCORE
+   ======================================================= */
 
 .score-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 11px;
+    gap: 10px;
     width: 100%;
-    margin-bottom: 13px;
+    margin: 0 0 28px 0;
 }
 
 .score-card {
     min-width: 0;
-    min-height: 78px;
-    padding: 9px 5px;
+    min-height: 72px;
+    padding: 8px 5px;
     box-sizing: border-box;
     border-radius: 18px;
 
@@ -123,48 +130,51 @@ header, footer, #MainMenu,
     justify-content: center;
     align-items: center;
 
-    box-shadow: 0 3px 9px rgba(50,45,65,0.035);
+    box-shadow: 0 2px 8px rgba(50,45,65,0.03);
 }
 
 .score-purple {
     background: #edddfb;
-    border: 1.5px solid #d7b3f6;
+    border: 1.4px solid #d7b3f6;
 }
 
 .score-pink {
     background: #ffdee9;
-    border: 1.5px solid #f4b4cc;
+    border: 1.4px solid #f4b4cc;
 }
 
 .score-green {
     background: #ddf4e4;
-    border: 1.5px solid #9cddae;
+    border: 1.4px solid #9cddae;
 }
 
+/* Same gray family as line 3 */
 .score-label {
-    color: #515563;
-    font-size: 12px;
+    color: #737784;
+    font-size: 11px;
     font-weight: 800;
     white-space: nowrap;
-    margin-bottom: 3px;
+    margin-bottom: 4px;
 }
 
+/* About 20% darker than line 3 */
 .score-number {
-    color: #2e303b;
-    font-size: 28px;
+    color: #555965;
+    font-size: 27px;
     line-height: 1;
     font-weight: 900;
 }
 
-/* ---------- Question ---------- */
+/* =======================================================
+   QUESTION
+   ======================================================= */
 
 .question-shell {
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 7px;
-    margin-bottom: 10px;
+    margin: 0 0 10px 0;
 }
 
 .question-center {
@@ -176,17 +186,20 @@ header, footer, #MainMenu,
 .question-label,
 .review-label {
     text-align: center;
-    color: #707583;
+    color: #737784;
     font-size: 17px;
-    font-weight: 700;
-    margin: 0 0 6px 0;
+    font-weight: 750;
+    line-height: 1.2;
+    margin: 0 0 14px 0;
 }
 
 .review-label {
     color: #8c7b91;
 }
 
-/* ---------- Chinese word ---------- */
+/* =======================================================
+   CHINESE WORD
+   ======================================================= */
 
 .chinese-short,
 .chinese-medium,
@@ -201,14 +214,14 @@ header, footer, #MainMenu,
 
     background: linear-gradient(
         90deg,
-        #f3a4c6,
-        #deb5f5,
-        #bfc5ff,
-        #a9dbff,
-        #a7ead8,
-        #c9edb5,
-        #ffd2a5,
-        #f5b1c8
+        #f2a8d0,
+        #d9b6f6,
+        #b9c1ff,
+        #a4dfff,
+        #a3e3cf,
+        #c8e9ad,
+        #f2d89f,
+        #f4b9bf
     );
 
     -webkit-background-clip: text;
@@ -216,82 +229,126 @@ header, footer, #MainMenu,
     background-clip: text;
 }
 
-/* 1–4 characters always stay on ONE LINE */
+/* 1–4 characters: one line and large */
 .chinese-short {
-    font-size: clamp(58px, 9vw, 84px);
+    font-size: clamp(60px, 9vw, 84px);
 }
 
-/* 5–6 characters also stay on one line */
+/* 5–6 characters: one line, smaller */
 .chinese-medium {
-    font-size: clamp(41px, 6.8vw, 60px);
+    font-size: clamp(42px, 6.8vw, 60px);
 }
 
-/* Longer phrases stay on one line at a smaller size */
+/* Longer phrases: one line, smaller again */
 .chinese-long {
     font-size: clamp(29px, 4.8vw, 44px);
 }
 
-/* ---------- Answer buttons ---------- */
+/* =======================================================
+   ANSWER BUTTONS
+   ======================================================= */
 
-div[data-testid="stButton"] > button,
-div[data-testid="stButton"] > button:hover,
-div[data-testid="stButton"] > button:focus,
-div[data-testid="stButton"] > button:active {
+.st-key-answer_area div[data-testid="stVerticalBlock"] {
+    gap: 0.45rem !important;
+}
+
+.st-key-answer_area div[data-testid="stButton"] > button,
+.st-key-answer_area div[data-testid="stButton"] > button:hover,
+.st-key-answer_area div[data-testid="stButton"] > button:focus,
+.st-key-answer_area div[data-testid="stButton"] > button:active {
     width: 100% !important;
-    min-height: 54px !important;
-    padding: 0.60rem 0.85rem !important;
+    min-height: 50px !important;
+    padding: 0.50rem 0.75rem !important;
 
     border-radius: 15px !important;
 
     background: #ffffff !important;
     background-color: #ffffff !important;
 
-    color: #414653 !important;
+    color: #4d5260 !important;
 
-    border: 1px solid #dcdde4 !important;
+    border: 1px solid #dedfe5 !important;
 
     box-shadow: none !important;
     outline: none !important;
 }
 
-div[data-testid="stButton"] > button p,
-div[data-testid="stButton"] > button span {
-    color: #414653 !important;
-    -webkit-text-fill-color: #414653 !important;
-    font-size: 17px !important;
+.st-key-answer_area div[data-testid="stButton"] > button p,
+.st-key-answer_area div[data-testid="stButton"] > button span {
+    color: #4d5260 !important;
+    -webkit-text-fill-color: #4d5260 !important;
+    font-size: 16px !important;
     font-weight: 500 !important;
 }
 
-/* ---------- Category selector ---------- */
+/* =======================================================
+   CATEGORY AREA
+   Uses BUTTONS, not st.radio.
+   Therefore there is NO native radio circle to turn black
+   and NO possibility of two radio circles stacking.
+   The one circle shown is created only by CSS ::before.
+   ======================================================= */
 
 .bottom-category-title {
     text-align: center;
-    color: #707583;
-    font-size: 14px;
-    font-weight: 700;
-    margin-top: 13px;
-    margin-bottom: 6px;
+    color: #737784;
+    font-size: 12px;
+    font-weight: 750;
+    margin: 17px 0 6px 0;
 }
 
-div[data-testid="stRadio"] > div,
-div[data-testid="stRadio"] [role="radiogroup"] {
-    justify-content: center !important;
-    gap: 0.38rem !important;
-    flex-wrap: wrap !important;
+.st-key-category_selector [data-testid="stHorizontalBlock"] {
+    align-items: center !important;
+    gap: 0.28rem !important;
 }
 
-div[data-testid="stRadio"] label {
+.st-key-category_selector div[data-testid="stButton"] > button {
+    width: 100% !important;
+    min-height: 34px !important;
+    height: 34px !important;
+
+    padding: 0 5px !important;
+
+    border-radius: 999px !important;
+
+    border: 1px solid #e0e1e6 !important;
+
     background: #ffffff !important;
     background-color: #ffffff !important;
 
-    border-radius: 999px !important;
-    padding: 5px 10px !important;
+    color: #555b69 !important;
 
-    border: 1px solid #e0dfe5 !important;
-    margin: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 5px !important;
+
+    white-space: nowrap !important;
 }
 
-div[data-testid="stRadio"] label:has(input:checked) {
+/* Exactly ONE circle per category */
+.st-key-category_selector div[data-testid="stButton"] > button::before {
+    content: "";
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    min-width: 12px;
+    border-radius: 50%;
+
+    background: #ffffff;
+    border: 1.5px solid #d8d9df;
+
+    box-sizing: border-box;
+}
+
+/* Selected pill */
+.st-key-category_selector
+button[kind="primary"],
+.st-key-category_selector
+[data-testid="stBaseButton-primary"] {
     background: linear-gradient(
         135deg,
         #f8d8e8,
@@ -299,116 +356,104 @@ div[data-testid="stRadio"] label:has(input:checked) {
         #dff4e7
     ) !important;
 
-    border: 1px solid rgba(170,160,185,0.18) !important;
+    border-color: #dfc3e7 !important;
 }
 
-div[data-testid="stRadio"] label p {
-    color: #525866 !important;
-    -webkit-text-fill-color: #525866 !important;
+/* Selected circle = white center, pink border */
+.st-key-category_selector
+button[kind="primary"]::before,
+.st-key-category_selector
+[data-testid="stBaseButton-primary"]::before {
+    background: #ffffff !important;
+    border: 2.5px solid #ff6677 !important;
+}
 
-    font-size: 13px !important;
+.st-key-category_selector div[data-testid="stButton"] > button p,
+.st-key-category_selector div[data-testid="stButton"] > button span {
+    color: #555b69 !important;
+    -webkit-text-fill-color: #555b69 !important;
+
+    font-size: 10.4px !important;
     font-weight: 800 !important;
+
+    white-space: nowrap !important;
 }
 
-/*
-   IMPORTANT:
-   Use exactly ONE visible category circle.
-   Streamlit's native radio marker is hidden completely.
-   The visible marker is the label character:
-   ○ = unselected
-   ⭕ = selected
+/* =======================================================
+   RESET + QUOTE
+   ======================================================= */
 
-   This is intentional because Android/PWA dark mode can render
-   Streamlit's native radio marker black.
-*/
-div[data-testid="stRadio"] input[type="radio"] {
-    position: absolute !important;
-    opacity: 0 !important;
-    width: 1px !important;
-    height: 1px !important;
-    pointer-events: none !important;
+.st-key-bottom_actions {
+    margin-top: 10px;
 }
 
-/* Hide BaseWeb/Streamlit native radio visual indicator */
-div[data-testid="stRadio"] label[data-baseweb="radio"] > div:first-child,
-div[data-testid="stRadio"] label > div:first-child:has(input[type="radio"]),
-div[data-testid="stRadio"] label [aria-hidden="true"] {
-    display: none !important;
+.st-key-bottom_actions [data-testid="stHorizontalBlock"] {
+    align-items: center !important;
+    gap: 1.2rem !important;
 }
 
-/* ---------- Quote ---------- */
+.st-key-bottom_actions div[data-testid="stButton"] > button,
+.st-key-bottom_actions div[data-testid="stButton"] > button:hover,
+.st-key-bottom_actions div[data-testid="stButton"] > button:focus,
+.st-key-bottom_actions div[data-testid="stButton"] > button:active {
+    width: 40px !important;
+    min-width: 40px !important;
+    max-width: 40px !important;
 
-.quote-text {
-    padding: 2px 0 0 0;
-    text-align: center;
-
-    font-size: 16px;
-    font-weight: 800;
-    font-style: italic;
-    line-height: 1.45;
-
-    white-space: normal;
-
-    background: linear-gradient(
-        90deg,
-        #eea5c9,
-        #d6b3f5,
-        #a9d9f7,
-        #a7dfd1,
-        #d5dfa4,
-        #efb9ce
-    );
-
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-/* ---------- Small white reset button ---------- */
-
-div[data-testid="stHorizontalBlock"]
-div[data-testid="stButton"] > button,
-div[data-testid="stHorizontalBlock"]
-div[data-testid="stButton"] > button:hover,
-div[data-testid="stHorizontalBlock"]
-div[data-testid="stButton"] > button:focus,
-div[data-testid="stHorizontalBlock"]
-div[data-testid="stButton"] > button:active {
-    width: 42px !important;
-    min-width: 42px !important;
-    max-width: 42px !important;
-
-    min-height: 38px !important;
-    height: 38px !important;
+    min-height: 36px !important;
+    height: 36px !important;
 
     padding: 0 !important;
+
     border-radius: 10px !important;
 
     background: #ffffff !important;
     background-color: #ffffff !important;
 
-    color: #707583 !important;
+    color: #737784 !important;
 
     border: 1px solid #dedfe5 !important;
+
     box-shadow: none !important;
+    outline: none !important;
 }
 
-div[data-testid="stHorizontalBlock"]
-div[data-testid="stButton"] > button p,
-div[data-testid="stHorizontalBlock"]
-div[data-testid="stButton"] > button span {
-    color: #707583 !important;
-    -webkit-text-fill-color: #707583 !important;
+.st-key-bottom_actions div[data-testid="stButton"] > button p,
+.st-key-bottom_actions div[data-testid="stButton"] > button span {
+    color: #737784 !important;
+    -webkit-text-fill-color: #737784 !important;
+    font-size: 17px !important;
+    font-weight: 500 !important;
 }
 
-/* Extra specificity for Android/PWA themes */
-div[data-testid="stHorizontalBlock"] button,
-div[data-testid="stHorizontalBlock"] button[kind="secondary"],
-div[data-testid="stHorizontalBlock"] button[data-testid*="button"] {
-    background: #ffffff !important;
-    background-color: #ffffff !important;
-    color: #707583 !important;
-    border-color: #dedfe5 !important;
+.quote-text {
+    padding: 0;
+    margin: 0;
+
+    text-align: center;
+
+    font-size: clamp(19px, 3.5vw, 27px);
+    font-weight: 800;
+    font-style: italic;
+    line-height: 1.35;
+
+    white-space: normal;
+
+    background: linear-gradient(
+        90deg,
+        #f2a8d0,
+        #d9b6f6,
+        #b9c1ff,
+        #a4dfff,
+        #a3e3cf,
+        #c8e9ad,
+        #f2d89f,
+        #f4b9bf
+    );
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 /* =======================================================
@@ -420,185 +465,183 @@ div[data-testid="stHorizontalBlock"] button[data-testid*="button"] {
     .block-container {
         max-width: 100% !important;
 
-        padding-top: 0.32rem !important;
+        padding-top: 0.38rem !important;
         padding-bottom: 0.55rem !important;
 
         padding-left: 0.62rem !important;
         padding-right: 0.62rem !important;
     }
 
-    [data-testid="stVerticalBlock"] {
-        gap: 0.45rem !important;
-    }
-
-    /* One line, but not oversized */
+    /* Title stays one line and visually spans roughly the
+       same width as the 3 score cards. */
     .main-title {
-        font-size: clamp(28px, 8vw, 33px) !important;
-        line-height: 1.03 !important;
+        font-size: clamp(27px, 8vw, 33px) !important;
+        line-height: 1.02 !important;
         white-space: nowrap !important;
-        letter-spacing: -0.25px !important;
-        margin-bottom: 2px !important;
-    }
-
-    .by-line {
-        font-size: 13px !important;
+        letter-spacing: -0.45px !important;
         margin-bottom: 3px !important;
     }
 
+    .by-line {
+        font-size: 10.5px !important;
+        margin-bottom: 8px !important;
+    }
+
     .active-category {
-        font-size: 12px !important;
-        margin-bottom: 7px !important;
+        font-size: 13.5px !important;
+        margin-bottom: 11px !important;
     }
 
     /* Score cards */
     .score-grid {
         gap: 7px !important;
-        margin-bottom: 10px !important;
+        margin-bottom: 27px !important;
     }
 
     .score-card {
-        min-height: 64px !important;
+        min-height: 61px !important;
         padding: 6px 3px !important;
         border-radius: 16px !important;
     }
 
     .score-label {
-        font-size: 10px !important;
+        color: #737784 !important;
+        font-size: 9.7px !important;
         margin-bottom: 3px !important;
     }
 
     .score-number {
+        color: #555965 !important;
         font-size: 23px !important;
     }
 
-    /* Give the question a little breathing room */
+    /* Question */
     .question-shell {
-        margin-top: 7px !important;
-        margin-bottom: 6px !important;
+        margin: 0 0 8px 0 !important;
     }
 
     .question-label,
     .review-label {
         font-size: 15px !important;
-        margin-bottom: 5px !important;
+        margin-bottom: 13px !important;
     }
 
-    /* Chinese remains prominent */
+    /* Chinese */
     .chinese-short {
-        font-size: clamp(55px, 16vw, 70px) !important;
+        font-size: clamp(56px, 16vw, 68px) !important;
     }
 
     .chinese-medium {
-        font-size: clamp(38px, 11vw, 51px) !important;
+        font-size: clamp(38px, 11vw, 50px) !important;
     }
 
     .chinese-long {
-        font-size: clamp(27px, 7.2vw, 37px) !important;
+        font-size: clamp(27px, 7.2vw, 36px) !important;
     }
 
-    /* Answer buttons */
-    div[data-testid="stButton"] > button,
-    div[data-testid="stButton"] > button:hover,
-    div[data-testid="stButton"] > button:focus,
-    div[data-testid="stButton"] > button:active {
-        min-height: 48px !important;
-        padding: 0.48rem 0.65rem !important;
+    /* Answers */
+    .st-key-answer_area div[data-testid="stVerticalBlock"] {
+        gap: 0.38rem !important;
+    }
+
+    .st-key-answer_area div[data-testid="stButton"] > button,
+    .st-key-answer_area div[data-testid="stButton"] > button:hover,
+    .st-key-answer_area div[data-testid="stButton"] > button:focus,
+    .st-key-answer_area div[data-testid="stButton"] > button:active {
+        min-height: 46px !important;
+        padding: 0.43rem 0.60rem !important;
+        border-radius: 14px !important;
 
         background: #ffffff !important;
         background-color: #ffffff !important;
 
-        color: #414653 !important;
+        color: #4d5260 !important;
 
         border: 1px solid #dedfe5 !important;
-        border-radius: 14px !important;
 
         box-shadow: none !important;
     }
 
-    div[data-testid="stButton"] > button p,
-    div[data-testid="stButton"] > button span {
-        color: #414653 !important;
-        -webkit-text-fill-color: #414653 !important;
-        font-size: 15px !important;
+    .st-key-answer_area div[data-testid="stButton"] > button p,
+    .st-key-answer_area div[data-testid="stButton"] > button span {
+        font-size: 14.5px !important;
     }
 
-    /* Category area */
+    /* Category title */
     .bottom-category-title {
-        font-size: 12px !important;
-        margin-top: 8px !important;
-        margin-bottom: 4px !important;
-    }
-
-    div[data-testid="stRadio"] > div,
-    div[data-testid="stRadio"] [role="radiogroup"] {
-        justify-content: center !important;
-        gap: 0.24rem !important;
-        flex-wrap: wrap !important;
-    }
-
-    div[data-testid="stRadio"] label {
-        background: #ffffff !important;
-        background-color: #ffffff !important;
-
-        padding: 4px 7px !important;
-        border: 1px solid #e1e1e6 !important;
-    }
-
-    div[data-testid="stRadio"] label p {
         font-size: 11.5px !important;
-        color: #525866 !important;
-        -webkit-text-fill-color: #525866 !important;
+        margin-top: 14px !important;
+        margin-bottom: 5px !important;
     }
 
-    /* Reset + Quote */
-    div[data-testid="stHorizontalBlock"] {
-        align-items: center !important;
-        margin-top: 7px !important;
-        gap: 0.9rem !important;
+    /* Keep all 5 category pills compact */
+    .st-key-category_selector [data-testid="stHorizontalBlock"] {
+        gap: 0.18rem !important;
     }
 
-    .quote-text {
-        font-size: 15px !important;
-        line-height: 1.42 !important;
-        padding-top: 0 !important;
-        margin: 0 !important;
-        text-align: center !important;
-        white-space: normal !important;
+    .st-key-category_selector div[data-testid="stButton"] > button {
+        min-height: 31px !important;
+        height: 31px !important;
+
+        padding: 0 3px !important;
+
+        gap: 3.5px !important;
     }
 
-    div[data-testid="stHorizontalBlock"]
-    div[data-testid="stButton"] > button,
-    div[data-testid="stHorizontalBlock"]
-    div[data-testid="stButton"] > button:hover,
-    div[data-testid="stHorizontalBlock"]
-    div[data-testid="stButton"] > button:focus,
-    div[data-testid="stHorizontalBlock"]
-    div[data-testid="stButton"] > button:active {
-        width: 38px !important;
-        min-width: 38px !important;
-        max-width: 38px !important;
+    .st-key-category_selector div[data-testid="stButton"] > button::before {
+        width: 10px !important;
+        height: 10px !important;
+        min-width: 10px !important;
+    }
+
+    .st-key-category_selector
+    button[kind="primary"]::before,
+    .st-key-category_selector
+    [data-testid="stBaseButton-primary"]::before {
+        border-width: 2px !important;
+    }
+
+    .st-key-category_selector div[data-testid="stButton"] > button p,
+    .st-key-category_selector div[data-testid="stButton"] > button span {
+        font-size: 8.8px !important;
+        white-space: nowrap !important;
+    }
+
+    /* Bottom row follows immediately after categories */
+    .st-key-bottom_actions {
+        margin-top: 9px !important;
+    }
+
+    .st-key-bottom_actions [data-testid="stHorizontalBlock"] {
+        gap: 1rem !important;
+    }
+
+    .st-key-bottom_actions div[data-testid="stButton"] > button,
+    .st-key-bottom_actions div[data-testid="stButton"] > button:hover,
+    .st-key-bottom_actions div[data-testid="stButton"] > button:focus,
+    .st-key-bottom_actions div[data-testid="stButton"] > button:active {
+        width: 36px !important;
+        min-width: 36px !important;
+        max-width: 36px !important;
 
         min-height: 34px !important;
         height: 34px !important;
 
-        padding: 0 !important;
-
         background: #ffffff !important;
         background-color: #ffffff !important;
 
-        color: #707583 !important;
+        color: #737784 !important;
 
         border: 1px solid #dedfe5 !important;
-        border-radius: 10px !important;
-
-        box-shadow: none !important;
     }
 
-    div[data-testid="stHorizontalBlock"] button {
-        background: #ffffff !important;
-        background-color: #ffffff !important;
-        color: #707583 !important;
-        border-color: #dedfe5 !important;
+    /* About half the visual size of the Chinese word.
+       It may wrap into 2–3 lines. */
+    .quote-text {
+        font-size: clamp(19px, 7vw, 27px) !important;
+        line-height: 1.35 !important;
+        text-align: center !important;
+        white-space: normal !important;
     }
 }
 </style>
@@ -1573,28 +1616,29 @@ if progress["phase"] != "done":
         chinese_word_html=chinese_html(chinese_word)
     )
 
-    for i, option in enumerate(progress["options"]):
-        if st.button(
-            option,
-            use_container_width=True,
-            key=(
-                f"answer_{selected_set}_{question_id}_{kind}_"
-                f"{progress['attempts']}_{i}"
-            )
-        ):
-            is_correct = option == correct_answer
-
-            if not is_correct:
-                st.error(
-                    f"❌ คำตอบที่ถูกคือ\n\n"
-                    f"### {chinese_word} = {correct_answer}"
+    with st.container(key="answer_area"):
+        for i, option in enumerate(progress["options"]):
+            if st.button(
+                option,
+                use_container_width=True,
+                key=(
+                    f"answer_{selected_set}_{question_id}_{kind}_"
+                    f"{progress['attempts']}_{i}"
                 )
+            ):
+                is_correct = option == correct_answer
 
-                import time
-                time.sleep(1.35)
+                if not is_correct:
+                    st.error(
+                        f"❌ คำตอบที่ถูกคือ\n\n"
+                        f"### {chinese_word} = {correct_answer}"
+                    )
 
-            advance_after_answer(progress, vocab, is_correct)
-            st.rerun()
+                    import time
+                    time.sleep(1.35)
+
+                advance_after_answer(progress, vocab, is_correct)
+                st.rerun()
 
 
 # =========================================================
@@ -1628,7 +1672,7 @@ CATEGORY_ITEMS = [
     (5, "Testing / UAT"),
 ]
 
-# Keep the current learning category in position 3.
+# Keep the currently selected category in position 3.
 current_item = next(
     item for item in CATEGORY_ITEMS
     if item[0] == st.session_state.selected_set
@@ -1645,58 +1689,69 @@ display_items = (
     + other_items[2:]
 )
 
-# The native Streamlit radio circle is hidden by CSS.
-# Therefore there is exactly ONE visible circle in each label.
-display_labels = []
-label_to_set = {}
+# Use buttons instead of st.radio.
+# This guarantees:
+# - no black native radio circle
+# - no double circle
+# - exactly one CSS circle per category
+with st.container(key="category_selector"):
 
-for set_id, label in display_items:
-    if set_id == st.session_state.selected_set:
-        display_label = f"⭕ {label}"
-    else:
-        display_label = f"○ {label}"
+    # Give longer labels slightly more room.
+    column_ratios = [
+        max(0.85, min(1.55, len(label) / 9.0))
+        for _, label in display_items
+    ]
 
-    display_labels.append(display_label)
-    label_to_set[display_label] = set_id
-
-selected_label = st.radio(
-    "เลือกหมวดคำศัพท์",
-    options=display_labels,
-    index=2,
-    horizontal=True,
-    label_visibility="collapsed",
-    key=f"bottom_set_radio_{st.session_state.selected_set}"
-)
-
-new_set = label_to_set[selected_label]
-
-if new_set != st.session_state.selected_set:
-    st.session_state.selected_set = new_set
-    st.rerun()
-
-
-# Reset stays white and small.
-# Quote has plenty of space and may wrap to 2–3 lines.
-reset_col, quote_col = st.columns(
-    [0.70, 5.30],
-    gap="large",
-    vertical_alignment="center"
-)
-
-with reset_col:
-    if st.button(
-        "↻",
-        key=f"reset_set_{selected_set}",
-        help="เริ่มหมวดนี้ใหม่"
-    ):
-        st.session_state.progress_by_set[selected_set] = blank_progress()
-        st.rerun()
-
-with quote_col:
-    safe_quote = html.escape(st.session_state.quote_of_the_day)
-
-    st.markdown(
-        f'<div class="quote-text">“{safe_quote}”</div>',
-        unsafe_allow_html=True
+    category_columns = st.columns(
+        column_ratios,
+        gap="small"
     )
+
+    for index, (set_id, label) in enumerate(display_items):
+
+        is_selected = (
+            set_id == st.session_state.selected_set
+        )
+
+        with category_columns[index]:
+            if st.button(
+                label,
+                key=f"category_button_{set_id}_{st.session_state.selected_set}",
+                type="primary" if is_selected else "secondary",
+                use_container_width=True
+            ):
+                if not is_selected:
+                    st.session_state.selected_set = set_id
+                    st.rerun()
+
+
+# Bottom actions:
+# reset on the left, quote on the right.
+# Reset does NOT change the quote.
+with st.container(key="bottom_actions"):
+
+    reset_col, quote_col = st.columns(
+        [0.65, 5.35],
+        gap="large",
+        vertical_alignment="center"
+    )
+
+    with reset_col:
+        if st.button(
+            "↻",
+            key=f"reset_set_{selected_set}",
+            help="เริ่มหมวดนี้ใหม่"
+        ):
+            st.session_state.progress_by_set[selected_set] = blank_progress()
+            st.rerun()
+
+    with quote_col:
+        safe_quote = html.escape(
+            st.session_state.quote_of_the_day
+        )
+
+        st.markdown(
+            f'<div class="quote-text">“{safe_quote}”</div>',
+            unsafe_allow_html=True
+        )
 
