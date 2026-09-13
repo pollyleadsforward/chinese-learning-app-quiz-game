@@ -285,12 +285,7 @@ header, footer, #MainMenu,
 }
 
 /* =======================================================
-   CATEGORY SELECTOR — FINAL S23 LAYOUT
-   - five pills stay on ONE row
-   - no check mark
-   - full labels stay readable
-   - selected = pastel pill + pink-ring circle
-   - exactly ONE CSS circle per pill
+   CATEGORY SELECTOR — EXACT REFERENCE STYLE
    ======================================================= */
 
 .bottom-category-title {
@@ -304,28 +299,27 @@ header, footer, #MainMenu,
 .st-key-category_selector {
     width: 100% !important;
     max-width: 100% !important;
-    overflow: hidden !important;
+    overflow: visible !important;
 }
 
 .st-key-category_selector [data-testid="stHorizontalBlock"] {
     display: grid !important;
 
+    /* proportions matched to reference image */
     grid-template-columns:
-        minmax(0, 1.34fr)
-        minmax(0, 1.44fr)
-        minmax(0, 0.62fr)
-        minmax(0, 0.82fr)
-        minmax(0, 1.30fr) !important;
+        minmax(0, 1.25fr)
+        minmax(0, 1.32fr)
+        minmax(0, 0.72fr)
+        minmax(0, 0.87fr)
+        minmax(0, 1.22fr) !important;
 
-    gap: 4px !important;
+    gap: 7px !important;
 
     width: 100% !important;
     max-width: 100% !important;
 
     align-items: center !important;
     justify-content: stretch !important;
-
-    overflow: hidden !important;
 }
 
 .st-key-category_selector [data-testid="column"] {
@@ -337,8 +331,6 @@ header, footer, #MainMenu,
 
     padding: 0 !important;
     margin: 0 !important;
-
-    overflow: hidden !important;
 }
 
 .st-key-category_selector div[data-testid="stButton"] {
@@ -356,13 +348,13 @@ header, footer, #MainMenu,
     min-width: 0 !important;
     max-width: 100% !important;
 
-    min-height: 34px !important;
-    height: 34px !important;
+    min-height: 40px !important;
+    height: 40px !important;
 
-    padding: 0 4px !important;
+    padding: 0 8px !important;
 
     border-radius: 999px !important;
-    border: 1px solid #e0e1e6 !important;
+    border: 1px solid #dfe1e7 !important;
 
     background: #ffffff !important;
     background-color: #ffffff !important;
@@ -376,27 +368,27 @@ header, footer, #MainMenu,
     align-items: center !important;
     justify-content: center !important;
 
-    gap: 3px !important;
+    gap: 7px !important;
 
     white-space: nowrap !important;
-    overflow: hidden !important;
+    overflow: visible !important;
 }
 
-/* Exactly ONE circle */
+/* ONE circle only */
 .st-key-category_selector div[data-testid="stButton"] > button::before {
     content: "";
     display: inline-block;
 
-    width: 10px;
-    height: 10px;
-    min-width: 10px;
-    flex: 0 0 10px;
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    flex: 0 0 18px;
 
     border-radius: 50%;
     box-sizing: border-box;
 
     background: #ffffff !important;
-    border: 1.4px solid #d4d7df !important;
+    border: 1.5px solid #d4d7df !important;
 }
 
 /* Selected pill */
@@ -404,19 +396,19 @@ header, footer, #MainMenu,
 .st-key-category_selector [data-testid="stBaseButton-primary"] {
     background: linear-gradient(
         135deg,
-        #f8d8e8,
-        #e6d9ff,
-        #dff4e7
+        #f8d8e8 0%,
+        #e6ddff 55%,
+        #e3f3e9 100%
     ) !important;
 
-    border-color: #dfc3e7 !important;
+    border-color: #dfc7e8 !important;
 }
 
 /* Selected circle */
 .st-key-category_selector button[kind="primary"]::before,
 .st-key-category_selector [data-testid="stBaseButton-primary"]::before {
     background: #ffffff !important;
-    border: 2.4px solid #ff6477 !important;
+    border: 5px solid #ff6576 !important;
 }
 
 .st-key-category_selector div[data-testid="stButton"] > button p,
@@ -426,18 +418,19 @@ header, footer, #MainMenu,
 
     opacity: 1 !important;
 
-    font-size: 10px !important;
+    font-size: 12px !important;
     font-weight: 800 !important;
     line-height: 1 !important;
 
     white-space: nowrap !important;
     word-break: keep-all !important;
-    overflow-wrap: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
 
     min-width: 0 !important;
 }
 
-/* Selected text stays dark gray — NO check mark */
+/* selected text stays dark gray */
 .st-key-category_selector button[kind="primary"] p,
 .st-key-category_selector button[kind="primary"] span,
 .st-key-category_selector [data-testid="stBaseButton-primary"] p,
@@ -549,7 +542,7 @@ header, footer, #MainMenu,
 
     /* +20% from previous mockup, but still single line */
     .main-title {
-        font-size: clamp(35.28px, 10.388vw, 41.16px) !important;
+        font-size: clamp(32.46px, 9.557vw, 37.87px) !important;
         line-height: 1.01 !important;
         margin-bottom: 4px !important;
 
@@ -639,7 +632,7 @@ header, footer, #MainMenu,
         font-size: 14.5px !important;
     }
 
-    /* Category selector — S23: all FIVE pills on one row */
+    /* Category selector — EXACT REFERENCE on S23 Ultra */
     .bottom-category-title {
         font-size: 11.5px !important;
         margin-top: 12px !important;
@@ -649,26 +642,26 @@ header, footer, #MainMenu,
     .st-key-category_selector {
         width: 100% !important;
         max-width: 100% !important;
-        overflow: hidden !important;
+        overflow: visible !important;
     }
 
     .st-key-category_selector [data-testid="stHorizontalBlock"] {
         display: grid !important;
 
         grid-template-columns:
-            minmax(0, 1.34fr)
-            minmax(0, 1.44fr)
-            minmax(0, 0.62fr)
-            minmax(0, 0.82fr)
-            minmax(0, 1.30fr) !important;
+            minmax(0, 1.25fr)
+            minmax(0, 1.32fr)
+            minmax(0, 0.72fr)
+            minmax(0, 0.87fr)
+            minmax(0, 1.22fr) !important;
 
-        gap: 3px !important;
+        gap: 4px !important;
 
         width: 100% !important;
         max-width: 100% !important;
 
         align-items: center !important;
-        overflow: hidden !important;
+        justify-content: stretch !important;
     }
 
     .st-key-category_selector [data-testid="column"] {
@@ -678,8 +671,6 @@ header, footer, #MainMenu,
 
         padding: 0 !important;
         margin: 0 !important;
-
-        overflow: hidden !important;
     }
 
     .st-key-category_selector div[data-testid="stButton"] {
@@ -696,55 +687,56 @@ header, footer, #MainMenu,
         min-width: 0 !important;
         max-width: 100% !important;
 
-        min-height: 31px !important;
-        height: 31px !important;
+        min-height: 36px !important;
+        height: 36px !important;
 
-        padding: 0 2px !important;
-        gap: 2px !important;
+        padding: 0 3px !important;
+
+        border-radius: 999px !important;
+        border: 1px solid #dfe1e7 !important;
 
         background: #ffffff !important;
         background-color: #ffffff !important;
 
         color: #555b69 !important;
 
-        border: 1px solid #e0e1e6 !important;
-        border-radius: 999px !important;
+        gap: 3px !important;
 
         white-space: nowrap !important;
-        overflow: hidden !important;
+        overflow: visible !important;
     }
 
     .st-key-category_selector div[data-testid="stButton"] > button::before {
-        width: 8px !important;
-        height: 8px !important;
-        min-width: 8px !important;
-        flex: 0 0 8px !important;
+        width: 14px !important;
+        height: 14px !important;
+        min-width: 14px !important;
+        flex: 0 0 14px !important;
 
         background: #ffffff !important;
-        border: 1.25px solid #d4d7df !important;
+        border: 1.4px solid #d4d7df !important;
     }
 
     .st-key-category_selector button[kind="primary"]::before,
     .st-key-category_selector [data-testid="stBaseButton-primary"]::before {
         background: #ffffff !important;
-        border: 1.9px solid #ff6477 !important;
+        border: 4px solid #ff6576 !important;
     }
 
     .st-key-category_selector div[data-testid="stButton"] > button p,
     .st-key-category_selector div[data-testid="stButton"] > button span {
         color: #555b69 !important;
         -webkit-text-fill-color: #555b69 !important;
+
         opacity: 1 !important;
 
-        font-size: 8.35px !important;
+        font-size: 9.6px !important;
         font-weight: 800 !important;
         line-height: 1 !important;
 
         white-space: nowrap !important;
         word-break: keep-all !important;
-        overflow-wrap: normal !important;
-
-        min-width: 0 !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
     }
 
     .st-key-category_selector button[kind="primary"] p,
