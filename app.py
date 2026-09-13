@@ -61,12 +61,15 @@ header, footer, #MainMenu,
 }
 
 /* ---------- header ---------- */
+
 .main-title {
     text-align: center;
     font-size: clamp(34px, 5vw, 48px);
     font-weight: 900;
     line-height: 1.08;
     margin: 0 0 4px 0;
+    white-space: nowrap;
+
     background: linear-gradient(
         90deg,
         #f3a4c6,
@@ -78,6 +81,7 @@ header, footer, #MainMenu,
         #ffd2a5,
         #f5b1c8
     );
+
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -100,6 +104,7 @@ header, footer, #MainMenu,
 }
 
 /* ---------- score cards ---------- */
+
 .score-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -114,10 +119,12 @@ header, footer, #MainMenu,
     padding: 10px 6px;
     box-sizing: border-box;
     border-radius: 18px;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
     box-shadow: 0 3px 10px rgba(50,45,65,0.04);
 }
 
@@ -152,11 +159,13 @@ header, footer, #MainMenu,
 }
 
 /* ---------- question ---------- */
+
 .question-shell {
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+
     margin-top: 5px;
     margin-bottom: 12px;
 }
@@ -180,16 +189,20 @@ header, footer, #MainMenu,
     color: #8c7b91;
 }
 
+/* ---------- Chinese word ---------- */
+
 .chinese-short,
 .chinese-medium,
 .chinese-long {
     font-weight: 900;
     line-height: 1.02;
     text-align: center;
+
     display: inline-block;
     white-space: nowrap;
     max-width: 100%;
     margin: 0;
+
     background: linear-gradient(
         90deg,
         #f3a4c6,
@@ -201,98 +214,157 @@ header, footer, #MainMenu,
         #ffd2a5,
         #f5b1c8
     );
+
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
+/* 1–4 characters */
 .chinese-short {
     font-size: clamp(58px, 9vw, 86px);
 }
 
+/* 5–6 characters */
 .chinese-medium {
     font-size: clamp(42px, 7vw, 62px);
 }
 
+/* longer words */
 .chinese-long {
     font-size: clamp(30px, 5vw, 46px);
 }
 
 /* ---------- answer buttons ---------- */
+
 div[data-testid="stButton"] > button,
 div[data-testid="stButton"] > button:hover,
 div[data-testid="stButton"] > button:focus,
 div[data-testid="stButton"] > button:active {
+
     width: 100% !important;
     min-height: 56px !important;
+
     padding: 0.65rem 0.9rem !important;
+
     border-radius: 15px !important;
+
     background: #ffffff !important;
     background-color: #ffffff !important;
+
     color: #414653 !important;
+
     border: 1px solid #dcdde4 !important;
+
     box-shadow: none !important;
     outline: none !important;
 }
 
 div[data-testid="stButton"] > button p,
 div[data-testid="stButton"] > button span {
+
     color: #414653 !important;
     -webkit-text-fill-color: #414653 !important;
+
     font-size: 17px !important;
     font-weight: 500 !important;
 }
 
 /* ---------- category selector ---------- */
+
 .bottom-category-title {
     text-align: center;
     color: #707583;
+
     font-size: 14px;
     font-weight: 700;
+
     margin-top: 14px;
     margin-bottom: 7px;
 }
 
 div[data-testid="stRadio"] > div {
     justify-content: center !important;
+
     gap: 0.45rem !important;
+
     flex-wrap: wrap !important;
 }
 
 div[data-testid="stRadio"] label {
+
     background: #ffffff !important;
     background-color: #ffffff !important;
+
     border-radius: 999px !important;
+
     padding: 6px 11px !important;
+
     border: 1px solid #e0dfe5 !important;
+
     margin: 0 !important;
 }
 
 div[data-testid="stRadio"] label:has(input:checked) {
+
     background: linear-gradient(
         135deg,
         #f8d8e8,
         #e6d9ff,
         #dff4e7
     ) !important;
-    border: 1px solid rgba(170, 160, 185, 0.18) !important;
+
+    border: 1px solid rgba(
+        170,
+        160,
+        185,
+        0.18
+    ) !important;
 }
 
 div[data-testid="stRadio"] label p {
+
     color: #525866 !important;
+
     -webkit-text-fill-color: #525866 !important;
+
     font-size: 13px !important;
     font-weight: 800 !important;
 }
 
+/* =======================================================
+   IMPORTANT:
+   Hide Streamlit's own radio circle.
+   We use ○ and ⭕ ourselves.
+   This prevents Android dark mode turning it black.
+   ======================================================= */
+
+div[data-testid="stRadio"]
+label[data-baseweb="radio"]
+> div:first-child {
+    display: none !important;
+}
+
+div[data-testid="stRadio"]
+input[type="radio"] {
+    display: none !important;
+}
+
 /* ---------- quote ---------- */
+
 .quote-text {
+
     padding-top: 6px;
+
     text-align: center;
-    font-size: 13px;
+
+    font-size: 15px;
     font-weight: 800;
+
     font-style: italic;
+
     line-height: 1.3;
+
     background: linear-gradient(
         90deg,
         #eea5c9,
@@ -302,80 +374,68 @@ div[data-testid="stRadio"] label p {
         #d5dfa4,
         #efb9ce
     );
+
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
-/* Reset button small */
+/* ---------- small reset button ---------- */
+
 div[data-testid="stHorizontalBlock"]
-div[data-testid="stButton"] > button {
+div[data-testid="stButton"] > button,
+
+div[data-testid="stHorizontalBlock"]
+div[data-testid="stButton"] > button:hover,
+
+div[data-testid="stHorizontalBlock"]
+div[data-testid="stButton"] > button:focus,
+
+div[data-testid="stHorizontalBlock"]
+div[data-testid="stButton"] > button:active {
+
     width: 42px !important;
     min-width: 42px !important;
     max-width: 42px !important;
+
     min-height: 38px !important;
     height: 38px !important;
+
     padding: 0 !important;
+
     border-radius: 10px !important;
-}
 
-/* ---------- RADIO: WHITE WHEN UNSELECTED ---------- */
-
-div[data-testid="stRadio"] input[type="radio"] {
-    appearance: none !important;
-    -webkit-appearance: none !important;
-    width: 18px !important;
-    height: 18px !important;
-    border-radius: 50% !important;
-    border: 1.5px solid #d8d9df !important;
     background: #ffffff !important;
     background-color: #ffffff !important;
-    box-shadow: none !important;
-    flex: 0 0 18px !important;
-}
 
-div[data-testid="stRadio"] input[type="radio"]:checked {
-    background: #ffffff !important;
-    background-color: #ffffff !important;
-    border: 5px solid #ff6573 !important;
-}
+    color: #707583 !important;
 
-/* Streamlit/BaseWeb custom radio indicator */
-div[data-testid="stRadio"] label[data-baseweb="radio"]
-> div > div:first-child {
-    width: 18px !important;
-    height: 18px !important;
-    min-width: 18px !important;
-    border-radius: 50% !important;
-    background: #ffffff !important;
-    background-color: #ffffff !important;
-    border: 1.5px solid #d8d9df !important;
+    border: 1px solid #dedfe5 !important;
+
     box-shadow: none !important;
 }
 
-div[data-testid="stRadio"]
-label[data-baseweb="radio"]:has(input:checked)
-> div > div:first-child {
-    background: #ffffff !important;
-    background-color: #ffffff !important;
-    border: 5px solid #ff6573 !important;
-}
+div[data-testid="stHorizontalBlock"]
+div[data-testid="stButton"] > button p,
 
-div[data-testid="stRadio"]
-label[data-baseweb="radio"]
-> div > div:first-child * {
-    background: transparent !important;
-    box-shadow: none !important;
+div[data-testid="stHorizontalBlock"]
+div[data-testid="stButton"] > button span {
+
+    color: #707583 !important;
+
+    -webkit-text-fill-color: #707583 !important;
 }
 
 /* =======================================================
-   MOBILE
+   PHONE
    ======================================================= */
 
 @media (max-width: 520px) {
 
     .block-container {
+
         max-width: 100% !important;
+
         padding-top: 0.35rem !important;
         padding-left: 0.65rem !important;
         padding-right: 0.65rem !important;
@@ -386,37 +446,64 @@ label[data-baseweb="radio"]
         gap: 0.52rem !important;
     }
 
-    /* Bigger title */
+    /* ---------------------------------------------
+       Title:
+       large enough, but NEVER breaks into 2 lines
+       --------------------------------------------- */
+
     .main-title {
-        font-size: clamp(36px, 10.5vw, 48px) !important;
+
+        font-size: clamp(
+            27px,
+            8vw,
+            34px
+        ) !important;
+
         line-height: 1.05 !important;
+
         margin-bottom: 2px !important;
+
+        white-space: nowrap !important;
+
+        letter-spacing: -0.4px !important;
     }
 
     .by-line {
+
         font-size: 13px !important;
+
         margin-bottom: 4px !important;
     }
 
     .active-category {
+
         font-size: 12px !important;
+
         margin-bottom: 8px !important;
     }
 
-    /* Score */
+    /* ---------- Score ---------- */
+
     .score-grid {
+
         gap: 7px !important;
+
         margin-bottom: 14px !important;
     }
 
     .score-card {
+
         min-height: 68px !important;
+
         padding: 7px 3px !important;
+
         border-radius: 16px !important;
     }
 
     .score-label {
+
         font-size: 10px !important;
+
         margin-bottom: 3px !important;
     }
 
@@ -424,127 +511,184 @@ label[data-baseweb="radio"]
         font-size: 25px !important;
     }
 
-    /* Space before question */
+    /* ---------- Question ---------- */
+
     .question-shell {
+
         margin-top: 8px !important;
+
         margin-bottom: 8px !important;
     }
 
     .question-label,
     .review-label {
+
         font-size: 16px !important;
+
         margin-bottom: 7px !important;
     }
 
-    /* Bigger Chinese */
+    /* ---------- Bigger Chinese ---------- */
+
     .chinese-short {
-        font-size: clamp(62px, 18vw, 82px) !important;
+
+        font-size: clamp(
+            62px,
+            18vw,
+            82px
+        ) !important;
+
         line-height: 1 !important;
     }
 
     .chinese-medium {
-        font-size: clamp(45px, 13vw, 60px) !important;
+
+        font-size: clamp(
+            45px,
+            13vw,
+            60px
+        ) !important;
     }
 
     .chinese-long {
-        font-size: clamp(30px, 8vw, 42px) !important;
+
+        font-size: clamp(
+            30px,
+            8vw,
+            42px
+        ) !important;
     }
 
-    /* Answer buttons remain white */
+    /* ---------- White answers ---------- */
+
     div[data-testid="stButton"] > button,
     div[data-testid="stButton"] > button:hover,
     div[data-testid="stButton"] > button:focus,
     div[data-testid="stButton"] > button:active {
+
         min-height: 52px !important;
+
         background: #ffffff !important;
         background-color: #ffffff !important;
+
         color: #414653 !important;
+
         border: 1px solid #dedfe5 !important;
+
         border-radius: 14px !important;
+
         box-shadow: none !important;
     }
 
     div[data-testid="stButton"] > button p,
     div[data-testid="stButton"] > button span {
+
         color: #414653 !important;
+
         -webkit-text-fill-color: #414653 !important;
+
         font-size: 16px !important;
     }
 
-    /* Categories */
+    /* ---------- Categories ---------- */
+
     .bottom-category-title {
+
         font-size: 12px !important;
+
         margin-top: 12px !important;
+
         margin-bottom: 5px !important;
     }
 
     div[data-testid="stRadio"] > div {
+
         justify-content: center !important;
+
         gap: 0.30rem !important;
+
         flex-wrap: wrap !important;
     }
 
     div[data-testid="stRadio"] label {
+
         background: #ffffff !important;
         background-color: #ffffff !important;
+
         padding: 4px 8px !important;
+
         border: 1px solid #e1e1e6 !important;
     }
 
     div[data-testid="stRadio"] label p {
-        font-size: 11.5px !important;
+
+        font-size: 12px !important;
+
         color: #525866 !important;
+
         -webkit-text-fill-color: #525866 !important;
     }
 
-    /* White circles on mobile too */
-    div[data-testid="stRadio"] input[type="radio"] {
-        appearance: none !important;
-        -webkit-appearance: none !important;
-        width: 18px !important;
-        height: 18px !important;
-        border-radius: 50% !important;
-        border: 1.5px solid #d8d9df !important;
-        background: #ffffff !important;
-        background-color: #ffffff !important;
-        margin: 0 7px 0 0 !important;
-        box-shadow: none !important;
-        flex: 0 0 18px !important;
-    }
+    /* ---------- Reset + quote ---------- */
 
-    div[data-testid="stRadio"] input[type="radio"]:checked {
-        background: #ffffff !important;
-        background-color: #ffffff !important;
-        border: 5px solid #ff6573 !important;
-    }
-
-    /* Reset and quote stay together */
     div[data-testid="stHorizontalBlock"] {
+
         align-items: center !important;
+
         margin-top: 8px !important;
+
         gap: 1rem !important;
     }
 
     .quote-text {
-        font-size: 11px !important;
-        line-height: 1.25 !important;
-        padding-top: 0 !important;
+
+        font-size: 15px !important;
+
+        line-height: 1.4 !important;
+
+        padding-top: 2px !important;
+
         margin: 0 !important;
+
         text-align: center !important;
+
         white-space: normal !important;
     }
 
     div[data-testid="stHorizontalBlock"]
-    div[data-testid="stButton"] > button {
+    div[data-testid="stButton"] > button,
+
+    div[data-testid="stHorizontalBlock"]
+    div[data-testid="stButton"] > button:hover,
+
+    div[data-testid="stHorizontalBlock"]
+    div[data-testid="stButton"] > button:focus,
+
+    div[data-testid="stHorizontalBlock"]
+    div[data-testid="stButton"] > button:active {
+
         width: 38px !important;
         min-width: 38px !important;
         max-width: 38px !important;
+
         min-height: 34px !important;
         height: 34px !important;
+
         padding: 0 !important;
+
         border-radius: 10px !important;
+
+        background: #ffffff !important;
+        background-color: #ffffff !important;
+
+        color: #707583 !important;
+
+        border: 1px solid #dedfe5 !important;
+
+        box-shadow: none !important;
     }
 }
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -655,6 +799,7 @@ VOCAB_SET_1 = [
     ('标准', 'Standard')
 ]
 
+
 VOCAB_SET_2 = [
     ('这个', 'this'),
     ('需求', 'Requirement'),
@@ -757,6 +902,7 @@ VOCAB_SET_2 = [
     ('影响', 'Impact'),
     ('多少', 'how much, how many')
 ]
+
 
 VOCAB_SET_3 = [
     ('客户', 'customer'),
@@ -861,6 +1007,7 @@ VOCAB_SET_3 = [
     ('推理', 'Inference')
 ]
 
+
 VOCAB_SET_4 = [
     ('目前', 'Currently'),
     ('延迟', 'Delay'),
@@ -963,6 +1110,7 @@ VOCAB_SET_4 = [
     ('反馈', 'Feedback'),
     ('等级', 'level, grade')
 ]
+
 
 VOCAB_SET_5 = [
     ('暂时', 'temporarily'),
@@ -1106,6 +1254,7 @@ VOCAB_SET_5 = [
     ('单次请求成本', 'Cost per Request')
 ]
 
+
 VOCAB_SETS = {
     1: VOCAB_SET_1,
     2: VOCAB_SET_2,
@@ -1122,8 +1271,9 @@ SET_LABELS = {
     5: "Testing / UAT / Deployment",
 }
 
+
 # =========================================================
-# PROGRESS / LEARNING LOGIC
+# PER-SET PROGRESS
 # =========================================================
 
 def blank_progress():
@@ -1131,22 +1281,28 @@ def blank_progress():
         "correct": 0,
         "attempts": 0,
 
+        # Main deck
         "phase": "main",
         "main_order": [],
         "main_pos": 0,
 
+        # Words answered incorrectly
         "wrong_ids": [],
 
+        # Quick review queue
         "scheduled_reviews": [],
 
+        # Two final review rounds
         "final_order": [],
         "final_pos": 0,
         "final_round_wrong": [],
 
+        # Current question
         "question_id": None,
         "question_kind": None,
         "options": [],
 
+        # End popups
         "reminder_ack": False,
         "congrats_shown": False,
     }
@@ -1160,11 +1316,14 @@ QUOTES = [
     "Keep learning, keep growing.",
 ]
 
+
 if "quote_of_the_day" not in st.session_state:
     st.session_state.quote_of_the_day = random.choice(QUOTES)
 
+
 if "selected_set" not in st.session_state:
     st.session_state.selected_set = 1
+
 
 if "progress_by_set" not in st.session_state:
     st.session_state.progress_by_set = {
@@ -1180,6 +1339,7 @@ def get_progress():
 
 
 def make_options(vocab, question_id):
+
     correct_answer = vocab[question_id][1]
 
     wrong_pool = list({
@@ -1204,6 +1364,7 @@ def make_options(vocab, question_id):
 
 
 def initialize_main_round(progress, vocab):
+
     if not progress["main_order"]:
 
         progress["main_order"] = list(
@@ -1221,6 +1382,7 @@ def set_question(
     question_id,
     kind
 ):
+
     progress["question_id"] = question_id
     progress["question_kind"] = kind
 
@@ -1236,11 +1398,14 @@ def schedule_review(
     after_questions,
     kind
 ):
+
     progress["scheduled_reviews"].append({
         "qid": question_id,
+
         "due_at":
             progress["attempts"]
             + after_questions,
+
         "kind": kind,
     })
 
@@ -1258,6 +1423,7 @@ def pop_due_review(progress):
         progress["scheduled_reviews"][0]["due_at"]
         <= progress["attempts"]
     ):
+
         return progress[
             "scheduled_reviews"
         ].pop(0)
@@ -1269,6 +1435,7 @@ def start_final_review(
     progress,
     round_number
 ):
+
     progress["phase"] = (
         f"final{round_number}"
     )
@@ -1298,7 +1465,10 @@ def finish_session(progress):
     progress["options"] = []
 
 
-def new_question(progress, vocab):
+def new_question(
+    progress,
+    vocab
+):
 
     initialize_main_round(
         progress,
@@ -1457,13 +1627,14 @@ def advance_after_answer(
                 question_id
                 not in progress["wrong_ids"]
             ):
+
                 progress[
                     "wrong_ids"
                 ].append(
                     question_id
                 )
 
-            # Retry after 5
+            # return after 5 questions
             schedule_review(
                 progress,
                 question_id,
@@ -1476,12 +1647,12 @@ def advance_after_answer(
         ] += 1
 
     # =========================================
-    # FIRST QUICK REVIEW
+    # QUICK REVIEW 1
     # =========================================
 
     elif kind == "quick5":
 
-        # Retry again after 10
+        # return again after 10 questions
         schedule_review(
             progress,
             question_id,
@@ -1490,7 +1661,7 @@ def advance_after_answer(
         )
 
     # =========================================
-    # SECOND QUICK REVIEW
+    # QUICK REVIEW 2
     # =========================================
 
     elif kind == "quick10":
@@ -1519,6 +1690,7 @@ def advance_after_answer(
                 "final_round_wrong"
             ]
         ):
+
             progress[
                 "final_round_wrong"
             ].append(
@@ -1549,8 +1721,7 @@ def chinese_html(word):
 
     length = len(word)
 
-    # 1–4 characters:
-    # always one single line
+    # 1–4 characters stay on ONE LINE
     if length <= 4:
 
         return (
@@ -1559,8 +1730,7 @@ def chinese_html(word):
             f'</div>'
         )
 
-    # 5–6 characters:
-    # one line, slightly smaller
+    # 5–6 characters stay on one line too
     if length <= 6:
 
         return (
@@ -1569,7 +1739,6 @@ def chinese_html(word):
             f'</div>'
         )
 
-    # Long Chinese phrase
     return (
         f'<div class="chinese-long">'
         f'{safe_word}'
@@ -1737,6 +1906,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+
 selected_set = (
     st.session_state.selected_set
 )
@@ -1747,10 +1917,12 @@ vocab = VOCAB_SETS[
 
 progress = get_progress()
 
+
 if (
     progress["question_id"] is None
     and progress["phase"] != "done"
 ):
+
     new_question(
         progress,
         vocab
@@ -1772,6 +1944,7 @@ if progress["attempts"] > 0:
     )
 
 else:
+
     percentage = 0
 
 
@@ -1818,6 +1991,7 @@ score_html = (
     '</div>'
 )
 
+
 st.markdown(
     score_html,
     unsafe_allow_html=True
@@ -1846,6 +2020,7 @@ if progress["phase"] != "done":
         question_id
     ][1]
 
+
     if kind == "main":
 
         label_html = (
@@ -1862,6 +2037,7 @@ if progress["phase"] != "done":
             '</div>'
         )
 
+
     render_question_area(
         label_html=label_html,
         chinese_word_html=(
@@ -1874,7 +2050,7 @@ if progress["phase"] != "done":
 
     # =========================================
     # ANSWERS
-    # No A / B / C
+    # no A / B / C
     # =========================================
 
     for i, option in enumerate(
@@ -1976,8 +2152,7 @@ CATEGORY_ITEMS = [
 ]
 
 
-# Selected category is always
-# displayed in position 3.
+# Selected category always appears in position 3.
 
 current_item = next(
     item
@@ -2002,18 +2177,19 @@ display_items = (
 )
 
 
-display_labels = [
-    label
-    for _, label
-    in display_items
-]
+# =========================================================
+# IMPORTANT:
+# We use our own ○ / ⭕ circle.
+# Streamlit's native radio control is hidden by CSS.
+# This prevents the circle from turning black on Android.
+# =========================================================
 
+display_labels = []
+label_to_set = {}
 
-label_to_set = {
-    label: set_id
-    for set_id, label
-    in display_items
-}
+for set_id, label in display_items:
+    display_labels.append(label)
+    label_to_set[label] = set_id
 
 
 selected_label = st.radio(
