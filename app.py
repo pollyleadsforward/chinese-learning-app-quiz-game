@@ -285,13 +285,11 @@ header, footer, #MainMenu,
 }
 
 /* =======================================================
-   CATEGORY SELECTOR
-   FINAL FIX:
+   CATEGORY SELECTOR — FINAL LAUNCH
+   - five pills stay on ONE row
    - NO st.radio
-   - NO native black radio circle
-   - NO duplicate circle
-   - one CSS circle only
-   - compact pills that wrap 3 + 2 on mobile
+   - NO native black radio
+   - exactly ONE CSS circle
    ======================================================= */
 
 .bottom-category-title {
@@ -299,26 +297,29 @@ header, footer, #MainMenu,
     color: #727784;
     font-size: 12px;
     font-weight: 800;
-    margin: 16px 0 6px 0;
+    margin: 15px 0 6px 0;
 }
 
 .st-key-category_selector [data-testid="stHorizontalBlock"] {
     display: flex !important;
     flex-direction: row !important;
-    flex-wrap: wrap !important;
+    flex-wrap: nowrap !important;
     justify-content: center !important;
     align-items: center !important;
-    gap: 6px !important;
+    gap: 5px !important;
+    width: 100% !important;
 }
 
+/* Critical: prevent Streamlit from stacking columns on mobile */
 .st-key-category_selector [data-testid="column"] {
-    flex: 0 0 auto !important;
-    width: auto !important;
+    flex: 1 1 0 !important;
+    width: 0 !important;
     min-width: 0 !important;
+    max-width: none !important;
 }
 
 .st-key-category_selector div[data-testid="stButton"] {
-    width: auto !important;
+    width: 100% !important;
     margin: 0 !important;
 }
 
@@ -326,15 +327,14 @@ header, footer, #MainMenu,
 .st-key-category_selector div[data-testid="stButton"] > button:hover,
 .st-key-category_selector div[data-testid="stButton"] > button:focus,
 .st-key-category_selector div[data-testid="stButton"] > button:active {
-    width: auto !important;
+    width: 100% !important;
     min-width: 0 !important;
-    min-height: 34px !important;
-    height: 34px !important;
+    min-height: 33px !important;
+    height: 33px !important;
 
-    padding: 0 10px !important;
+    padding: 0 4px !important;
 
     border-radius: 999px !important;
-
     border: 1px solid #e0e1e6 !important;
 
     background: #ffffff !important;
@@ -345,29 +345,29 @@ header, footer, #MainMenu,
     box-shadow: none !important;
     outline: none !important;
 
-    display: inline-flex !important;
+    display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 6px !important;
+    gap: 4px !important;
 
     white-space: nowrap !important;
+    overflow: hidden !important;
 }
 
-/* exactly ONE circle */
+/* EXACTLY ONE category circle */
 .st-key-category_selector div[data-testid="stButton"] > button::before {
     content: "";
     display: inline-block;
 
-    width: 14px;
-    height: 14px;
-    min-width: 14px;
+    width: 11px;
+    height: 11px;
+    min-width: 11px;
 
     border-radius: 50%;
-
     box-sizing: border-box;
 
-    background: #ffffff;
-    border: 1.5px solid #d5d8df;
+    background: #ffffff !important;
+    border: 1.5px solid #d4d7df !important;
 }
 
 /* selected pill */
@@ -385,13 +385,13 @@ button[kind="primary"],
     border-color: #dfc3e7 !important;
 }
 
-/* selected circle */
+/* selected circle = white center + pink ring */
 .st-key-category_selector
 button[kind="primary"]::before,
 .st-key-category_selector
 [data-testid="stBaseButton-primary"]::before {
     background: #ffffff !important;
-    border: 3px solid #ff6477 !important;
+    border: 2.5px solid #ff6477 !important;
 }
 
 .st-key-category_selector div[data-testid="stButton"] > button p,
@@ -401,10 +401,13 @@ button[kind="primary"]::before,
 
     opacity: 1 !important;
 
-    font-size: 10.5px !important;
+    font-size: 9.1px !important;
     font-weight: 800 !important;
+    line-height: 1 !important;
 
     white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: clip !important;
 }
 
 /* =======================================================
@@ -509,7 +512,7 @@ button[kind="primary"]::before,
 
     /* +20% from previous mockup, but still single line */
     .main-title {
-        font-size: clamp(33px, 9.7vw, 39px) !important;
+        font-size: clamp(36px, 10.6vw, 42px) !important;
         line-height: 1.01 !important;
         margin-bottom: 4px !important;
 
@@ -599,61 +602,76 @@ button[kind="primary"]::before,
         font-size: 14.5px !important;
     }
 
-    /* category selector — compact 3 + 2 wrap */
+    /* Category selector — force all FIVE pills onto ONE row */
     .bottom-category-title {
         font-size: 11.5px !important;
-        margin-top: 13px !important;
+        margin-top: 12px !important;
         margin-bottom: 5px !important;
     }
 
     .st-key-category_selector [data-testid="stHorizontalBlock"] {
         display: flex !important;
         flex-direction: row !important;
-        flex-wrap: wrap !important;
+        flex-wrap: nowrap !important;
         justify-content: center !important;
         align-items: center !important;
-        gap: 5px !important;
+
+        width: 100% !important;
+        gap: 3px !important;
     }
 
     .st-key-category_selector [data-testid="column"] {
-        flex: 0 0 auto !important;
-        width: auto !important;
+        flex: 1 1 0 !important;
+        width: 0 !important;
         min-width: 0 !important;
+        max-width: none !important;
     }
 
     .st-key-category_selector div[data-testid="stButton"] {
-        width: auto !important;
+        width: 100% !important;
+        min-width: 0 !important;
     }
 
     .st-key-category_selector div[data-testid="stButton"] > button,
     .st-key-category_selector div[data-testid="stButton"] > button:hover,
     .st-key-category_selector div[data-testid="stButton"] > button:focus,
     .st-key-category_selector div[data-testid="stButton"] > button:active {
-        width: auto !important;
+        width: 100% !important;
         min-width: 0 !important;
 
         min-height: 31px !important;
         height: 31px !important;
 
-        padding: 0 7px !important;
+        padding: 0 2px !important;
 
-        gap: 4px !important;
+        gap: 2.5px !important;
 
+        background: #ffffff !important;
         background-color: #ffffff !important;
+
         color: #555b69 !important;
+
+        border: 1px solid #e0e1e6 !important;
+        border-radius: 999px !important;
+
+        overflow: hidden !important;
     }
 
     .st-key-category_selector div[data-testid="stButton"] > button::before {
-        width: 12px !important;
-        height: 12px !important;
-        min-width: 12px !important;
+        width: 9px !important;
+        height: 9px !important;
+        min-width: 9px !important;
+
+        background: #ffffff !important;
+        border: 1.4px solid #d4d7df !important;
     }
 
     .st-key-category_selector
     button[kind="primary"]::before,
     .st-key-category_selector
     [data-testid="stBaseButton-primary"]::before {
-        border-width: 2.5px !important;
+        background: #ffffff !important;
+        border: 2px solid #ff6477 !important;
     }
 
     .st-key-category_selector div[data-testid="stButton"] > button p,
@@ -662,8 +680,12 @@ button[kind="primary"]::before,
         -webkit-text-fill-color: #555b69 !important;
         opacity: 1 !important;
 
-        font-size: 9.6px !important;
+        font-size: 8.15px !important;
         font-weight: 800 !important;
+        line-height: 1 !important;
+
+        white-space: nowrap !important;
+        overflow: hidden !important;
     }
 
     /* reset + quote immediately below categories */
@@ -702,6 +724,22 @@ button[kind="primary"]::before,
         white-space: normal !important;
     }
 }
+
+/* FINAL reset protection against Android/PWA dark theme */
+.st-key-bottom_actions button,
+.st-key-bottom_actions button:hover,
+.st-key-bottom_actions button:focus,
+.st-key-bottom_actions button:active,
+.st-key-bottom_actions button[kind="secondary"],
+.st-key-bottom_actions [data-testid="stBaseButton-secondary"] {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #727784 !important;
+    -webkit-text-fill-color: #727784 !important;
+    border-color: #dedfe5 !important;
+    box-shadow: none !important;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
