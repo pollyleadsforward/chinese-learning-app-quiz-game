@@ -284,157 +284,54 @@ header, footer, #MainMenu,
     font-weight: 500 !important;
 }
 
-/* =======================================================
-   CATEGORY SELECTOR — FINAL VISIBLE LABELS
-   - 5 categories in one row
-   - full readable labels
-   - no check mark
-   - selected = pastel rainbow pill + pink ring
-   - exactly one circle per category
-   ======================================================= */
+# =========================================================
+# CATEGORY SELECTOR
+# =========================================================
 
-.bottom-category-title {
-    text-align: center;
-    color: #727784;
-    font-size: 12px;
-    font-weight: 800;
-    margin: 15px 0 6px 0;
+st.markdown(
+    '<div class="bottom-category-title">เลือกหมวดคำศัพท์</div>',
+    unsafe_allow_html=True
+)
+
+CATEGORY_ITEMS = [
+    (2, "System & API"),
+    (3, "Incident & Ops"),
+    (1, "CBS"),
+    (4, "AI / LLM"),
+    (5, "Testing / UAT"),
+]
+
+display_labels = [
+    label
+    for _, label in CATEGORY_ITEMS
+]
+
+label_to_set = {
+    label: set_id
+    for set_id, label in CATEGORY_ITEMS
 }
 
-.st-key-category_selector {
-    width: 100% !important;
-    max-width: 100% !important;
-    overflow: visible !important;
-}
+current_label = next(
+    label
+    for set_id, label in CATEGORY_ITEMS
+    if set_id == st.session_state.selected_set
+)
 
-.st-key-category_selector [data-testid="stHorizontalBlock"] {
-    display: grid !important;
-    grid-template-columns:
-        minmax(0, 1.22fr)
-        minmax(0, 1.30fr)
-        minmax(0, 0.70fr)
-        minmax(0, 0.85fr)
-        minmax(0, 1.18fr) !important;
+selected_label = st.radio(
+    "เลือกหมวดคำศัพท์",
+    options=display_labels,
+    index=display_labels.index(current_label),
+    horizontal=True,
+    label_visibility="collapsed",
+    key="bottom_set_radio"
+)
 
-    gap: 6px !important;
-    width: 100% !important;
-    max-width: 100% !important;
+new_set = label_to_set[selected_label]
 
-    align-items: center !important;
-    justify-content: stretch !important;
-}
-
-.st-key-category_selector [data-testid="column"] {
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-    flex: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-}
-
-.st-key-category_selector div[data-testid="stButton"] {
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-}
-
-.st-key-category_selector div[data-testid="stButton"] > button,
-.st-key-category_selector div[data-testid="stButton"] > button:hover,
-.st-key-category_selector div[data-testid="stButton"] > button:focus,
-.st-key-category_selector div[data-testid="stButton"] > button:active {
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-
-    min-height: 38px !important;
-    height: 38px !important;
-
-    padding: 0 6px !important;
-
-    border-radius: 999px !important;
-    border: 1px solid #dfe1e7 !important;
-
-    background: #ffffff !important;
-    background-color: #ffffff !important;
-
-    color: #555b69 !important;
-    box-shadow: none !important;
-    outline: none !important;
-
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 5px !important;
-
-    white-space: nowrap !important;
-    overflow: visible !important;
-}
-
-/* one circle only */
-.st-key-category_selector div[data-testid="stButton"] > button::before {
-    content: "";
-    display: inline-block;
-
-    width: 15px;
-    height: 15px;
-    min-width: 15px;
-    flex: 0 0 15px;
-
-    border-radius: 50%;
-    box-sizing: border-box;
-
-    background: #ffffff !important;
-    border: 1.5px solid #d4d7df !important;
-}
-
-/* selected pill */
-.st-key-category_selector button[kind="primary"],
-.st-key-category_selector [data-testid="stBaseButton-primary"] {
-    background: linear-gradient(
-        135deg,
-        #f8d8e8 0%,
-        #e6ddff 45%,
-        #dff4e7 100%
-    ) !important;
-    border-color: #dfc7e8 !important;
-}
-
-/* selected circle */
-.st-key-category_selector button[kind="primary"]::before,
-.st-key-category_selector [data-testid="stBaseButton-primary"]::before {
-    background: #ffffff !important;
-    border: 4px solid #ff6576 !important;
-}
-
-.st-key-category_selector div[data-testid="stButton"] > button p,
-.st-key-category_selector div[data-testid="stButton"] > button span {
-    color: #555b69 !important;
-    -webkit-text-fill-color: #555b69 !important;
-    opacity: 1 !important;
-
-    font-size: 11.4px !important;
-    font-weight: 800 !important;
-    line-height: 1 !important;
-
-    white-space: nowrap !important;
-    word-break: keep-all !important;
-    overflow: visible !important;
-    text-overflow: clip !important;
-    min-width: 0 !important;
-}
-
-.st-key-category_selector button[kind="primary"] p,
-.st-key-category_selector button[kind="primary"] span,
-.st-key-category_selector [data-testid="stBaseButton-primary"] p,
-.st-key-category_selector [data-testid="stBaseButton-primary"] span {
-    color: #555b69 !important;
-    -webkit-text-fill-color: #555b69 !important;
-    font-weight: 900 !important;
-}
-
-/* =======================================================
+if new_set != st.session_state.selected_set:
+    st.session_state.selected_set = new_set
+    st.rerun()
+    /* =======================================================
    RESET + QUOTE
    ======================================================= */
 
@@ -791,7 +688,42 @@ header, footer, #MainMenu,
     border-color: #dedfe5 !important;
     box-shadow: none !important;
 }
+/* ===== FIX SELECTED CATEGORY: PASTEL ONLY ===== */
 
+.st-key-category_selector button[kind="primary"],
+.st-key-category_selector [data-testid="stBaseButton-primary"] {
+    background: linear-gradient(
+        135deg,
+        #f8d8e8 0%,
+        #e8ddff 35%,
+        #dcecff 58%,
+        #dff4e7 100%
+    ) !important;
+
+    background-color: #f3e8f7 !important;
+    border: 1px solid #decce8 !important;
+
+    color: #555b69 !important;
+    -webkit-text-fill-color: #555b69 !important;
+
+    box-shadow: none !important;
+}
+
+.st-key-category_selector button[kind="primary"] p,
+.st-key-category_selector button[kind="primary"] span,
+.st-key-category_selector [data-testid="stBaseButton-primary"] p,
+.st-key-category_selector [data-testid="stBaseButton-primary"] span {
+    color: #555b69 !important;
+    -webkit-text-fill-color: #555b69 !important;
+    font-weight: 800 !important;
+}
+
+/* selected circle */
+.st-key-category_selector button[kind="primary"]::before,
+.st-key-category_selector [data-testid="stBaseButton-primary"]::before {
+    background: #ffffff !important;
+    border: 4px solid #ff6f83 !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
