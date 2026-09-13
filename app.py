@@ -26,7 +26,7 @@ st.set_page_config(
 st.markdown("""
 <style>
 /* =======================================================
-   FINAL LAUNCH UI
+   FINAL APPROVED MOBILE UI — Samsung S23 Ultra reference
    ======================================================= */
 
 html {
@@ -47,7 +47,7 @@ html, body,
     padding-right: 1.05rem !important;
 }
 
-/* Hide Streamlit chrome inside the app */
+/* Hide Streamlit's internal page chrome */
 header, footer, #MainMenu,
 [data-testid="stToolbar"],
 [data-testid="stStatusWidget"],
@@ -64,46 +64,58 @@ header, footer, #MainMenu,
 
 .main-title {
     text-align: center;
-    font-size: clamp(33px, 5vw, 45px);
+    font-size: clamp(36px, 5.2vw, 50px);
     font-weight: 900;
     line-height: 1.02;
-    margin: 0 0 3px 0;
+    margin: 0 0 4px 0;
     white-space: nowrap;
-    letter-spacing: -0.35px;
+    letter-spacing: -0.45px;
 
     background: linear-gradient(
         90deg,
-        #f2a8d0,
-        #d9b6f6,
-        #b9c1ff,
-        #a4dfff,
-        #a3e3cf,
-        #c8e9ad,
-        #f2d89f,
-        #f4b9bf
+        #efa6d5,
+        #d2b3fa,
+        #acc4ff,
+        #8fddff,
+        #90e8d3,
+        #beeaa9,
+        #efd79b,
+        #f3b7b8
     );
-
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
+/* Rainbow byline, deliberately smaller than line 3 */
 .by-line {
     text-align: center;
-    color: #737784;
-    font-size: 10.8px;
-    font-weight: 700;
+    font-size: 12px;
+    font-weight: 800;
     line-height: 1.15;
-    margin: 0 0 9px 0;
+    margin: 0 0 11px 0;
+
+    background: linear-gradient(
+        90deg,
+        #d7b0f7,
+        #9ec9ff,
+        #8ddfd7,
+        #b9e89e,
+        #f2c8a2,
+        #eea6c8
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .active-category {
     text-align: center;
-    color: #737784;
-    font-size: 14px;
-    font-weight: 750;
+    color: #727784;
+    font-size: 15.5px;
+    font-weight: 800;
     line-height: 1.2;
-    margin: 0 0 12px 0;
+    margin: 0 0 13px 0;
 }
 
 /* =======================================================
@@ -115,7 +127,7 @@ header, footer, #MainMenu,
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 10px;
     width: 100%;
-    margin: 0 0 28px 0;
+    margin: 0 0 30px 0;
 }
 
 .score-card {
@@ -148,18 +160,16 @@ header, footer, #MainMenu,
     border: 1.4px solid #9cddae;
 }
 
-/* Same gray family as line 3 */
 .score-label {
-    color: #737784;
+    color: #727784;
     font-size: 11px;
     font-weight: 800;
     white-space: nowrap;
     margin-bottom: 4px;
 }
 
-/* About 20% darker than line 3 */
 .score-number {
-    color: #555965;
+    color: #565b67;
     font-size: 27px;
     line-height: 1;
     font-weight: 900;
@@ -174,7 +184,7 @@ header, footer, #MainMenu,
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0 0 10px 0;
+    margin: 0 0 9px 0;
 }
 
 .question-center {
@@ -186,11 +196,11 @@ header, footer, #MainMenu,
 .question-label,
 .review-label {
     text-align: center;
-    color: #737784;
+    color: #727784;
     font-size: 17px;
-    font-weight: 750;
+    font-weight: 800;
     line-height: 1.2;
-    margin: 0 0 14px 0;
+    margin: 0 0 15px 0;
 }
 
 .review-label {
@@ -198,7 +208,7 @@ header, footer, #MainMenu,
 }
 
 /* =======================================================
-   CHINESE WORD
+   CHINESE WORD — approximately +20% vs previous approved mockup
    ======================================================= */
 
 .chinese-short,
@@ -214,34 +224,30 @@ header, footer, #MainMenu,
 
     background: linear-gradient(
         90deg,
-        #f2a8d0,
-        #d9b6f6,
-        #b9c1ff,
-        #a4dfff,
-        #a3e3cf,
-        #c8e9ad,
-        #f2d89f,
-        #f4b9bf
+        #efa6d5,
+        #d2b3fa,
+        #acc4ff,
+        #8fddff,
+        #90e8d3,
+        #beeaa9,
+        #efd79b,
+        #f3b7b8
     );
-
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
-/* 1–4 characters: one line and large */
 .chinese-short {
-    font-size: clamp(60px, 9vw, 84px);
+    font-size: clamp(72px, 11vw, 102px);
 }
 
-/* 5–6 characters: one line, smaller */
 .chinese-medium {
-    font-size: clamp(42px, 6.8vw, 60px);
+    font-size: clamp(49px, 8vw, 70px);
 }
 
-/* Longer phrases: one line, smaller again */
 .chinese-long {
-    font-size: clamp(29px, 4.8vw, 44px);
+    font-size: clamp(34px, 5.6vw, 50px);
 }
 
 /* =======================================================
@@ -249,7 +255,7 @@ header, footer, #MainMenu,
    ======================================================= */
 
 .st-key-answer_area div[data-testid="stVerticalBlock"] {
-    gap: 0.45rem !important;
+    gap: 0.42rem !important;
 }
 
 .st-key-answer_area div[data-testid="stButton"] > button,
@@ -257,18 +263,15 @@ header, footer, #MainMenu,
 .st-key-answer_area div[data-testid="stButton"] > button:focus,
 .st-key-answer_area div[data-testid="stButton"] > button:active {
     width: 100% !important;
-    min-height: 50px !important;
-    padding: 0.50rem 0.75rem !important;
+    min-height: 49px !important;
+    padding: 0.48rem 0.72rem !important;
 
     border-radius: 15px !important;
-
     background: #ffffff !important;
     background-color: #ffffff !important;
-
     color: #4d5260 !important;
 
     border: 1px solid #dedfe5 !important;
-
     box-shadow: none !important;
     outline: none !important;
 }
@@ -282,100 +285,104 @@ header, footer, #MainMenu,
 }
 
 /* =======================================================
-   CATEGORY AREA
-   Uses BUTTONS, not st.radio.
-   Therefore there is NO native radio circle to turn black
-   and NO possibility of two radio circles stacking.
-   The one circle shown is created only by CSS ::before.
+   CATEGORY SELECTOR
+   Uses the one native radio indicator only.
+   No ○ / ⭕ text is added anywhere.
    ======================================================= */
 
 .bottom-category-title {
     text-align: center;
-    color: #737784;
+    color: #727784;
     font-size: 12px;
-    font-weight: 750;
-    margin: 17px 0 6px 0;
+    font-weight: 800;
+    margin: 16px 0 6px 0;
 }
 
-.st-key-category_selector [data-testid="stHorizontalBlock"] {
+.st-key-category_selector div[role="radiogroup"] {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
     align-items: center !important;
-    gap: 0.28rem !important;
+    gap: 6px !important;
 }
 
-.st-key-category_selector div[data-testid="stButton"] > button {
-    width: 100% !important;
-    min-height: 34px !important;
-    height: 34px !important;
-
-    padding: 0 5px !important;
-
-    border-radius: 999px !important;
-
-    border: 1px solid #e0e1e6 !important;
+.st-key-category_selector label[data-baseweb="radio"] {
+    width: auto !important;
+    flex: 0 0 auto !important;
 
     background: #ffffff !important;
     background-color: #ffffff !important;
 
-    color: #555b69 !important;
+    border: 1px solid #e0e1e6 !important;
+    border-radius: 999px !important;
 
-    box-shadow: none !important;
-    outline: none !important;
+    padding: 5px 9px !important;
+    margin: 0 !important;
 
     display: flex !important;
     align-items: center !important;
-    justify-content: center !important;
-    gap: 5px !important;
 
-    white-space: nowrap !important;
+    color: #555b69 !important;
 }
 
-/* Exactly ONE circle per category */
-.st-key-category_selector div[data-testid="stButton"] > button::before {
-    content: "";
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    min-width: 12px;
-    border-radius: 50%;
-
-    background: #ffffff;
-    border: 1.5px solid #d8d9df;
-
-    box-sizing: border-box;
-}
-
-/* Selected pill */
+/* selected pill */
 .st-key-category_selector
-button[kind="primary"],
-.st-key-category_selector
-[data-testid="stBaseButton-primary"] {
+label[data-baseweb="radio"]:has(input[type="radio"]:checked) {
     background: linear-gradient(
         135deg,
         #f8d8e8,
         #e6d9ff,
         #dff4e7
     ) !important;
-
     border-color: #dfc3e7 !important;
 }
 
-/* Selected circle = white center, pink border */
+/*
+   Streamlit/BaseWeb radio structure:
+   the checked input is followed by the visible circle div.
+   Force it white/gray for unselected and white/pink for selected.
+*/
 .st-key-category_selector
-button[kind="primary"]::before,
-.st-key-category_selector
-[data-testid="stBaseButton-primary"]::before {
-    background: #ffffff !important;
-    border: 2.5px solid #ff6677 !important;
+label[data-baseweb="radio"] > div:first-child {
+    width: 15px !important;
+    min-width: 15px !important;
+    height: 15px !important;
+    margin-right: 6px !important;
 }
 
-.st-key-category_selector div[data-testid="stButton"] > button p,
-.st-key-category_selector div[data-testid="stButton"] > button span {
+.st-key-category_selector
+input[type="radio"] + div {
+    width: 15px !important;
+    height: 15px !important;
+    min-width: 15px !important;
+
+    box-sizing: border-box !important;
+    border-radius: 50% !important;
+
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+
+    border: 1.5px solid #d5d8df !important;
+    box-shadow: none !important;
+}
+
+/* selected: white center + pink ring */
+.st-key-category_selector
+input[type="radio"]:checked + div {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+
+    border: 4px solid #ff6477 !important;
+    box-shadow: none !important;
+}
+
+.st-key-category_selector label[data-baseweb="radio"] p {
     color: #555b69 !important;
     -webkit-text-fill-color: #555b69 !important;
 
-    font-size: 10.4px !important;
+    font-size: 10.5px !important;
     font-weight: 800 !important;
-
     white-space: nowrap !important;
 }
 
@@ -384,12 +391,12 @@ button[kind="primary"]::before,
    ======================================================= */
 
 .st-key-bottom_actions {
-    margin-top: 10px;
+    margin-top: 11px !important;
 }
 
 .st-key-bottom_actions [data-testid="stHorizontalBlock"] {
     align-items: center !important;
-    gap: 1.2rem !important;
+    gap: 1.15rem !important;
 }
 
 .st-key-bottom_actions div[data-testid="stButton"] > button,
@@ -400,8 +407,8 @@ button[kind="primary"]::before,
     min-width: 40px !important;
     max-width: 40px !important;
 
-    min-height: 36px !important;
-    height: 36px !important;
+    min-height: 37px !important;
+    height: 37px !important;
 
     padding: 0 !important;
 
@@ -410,54 +417,51 @@ button[kind="primary"]::before,
     background: #ffffff !important;
     background-color: #ffffff !important;
 
-    color: #737784 !important;
+    color: #727784 !important;
 
     border: 1px solid #dedfe5 !important;
-
     box-shadow: none !important;
     outline: none !important;
 }
 
 .st-key-bottom_actions div[data-testid="stButton"] > button p,
 .st-key-bottom_actions div[data-testid="stButton"] > button span {
-    color: #737784 !important;
-    -webkit-text-fill-color: #737784 !important;
+    color: #727784 !important;
+    -webkit-text-fill-color: #727784 !important;
     font-size: 17px !important;
     font-weight: 500 !important;
 }
 
+/* approximately +20% vs previous approved mockup */
 .quote-text {
     padding: 0;
     margin: 0;
 
     text-align: center;
-
-    font-size: clamp(19px, 3.5vw, 27px);
-    font-weight: 800;
+    font-size: clamp(23px, 4.2vw, 32px);
+    font-weight: 850;
     font-style: italic;
-    line-height: 1.35;
-
+    line-height: 1.32;
     white-space: normal;
 
     background: linear-gradient(
         90deg,
-        #f2a8d0,
-        #d9b6f6,
-        #b9c1ff,
-        #a4dfff,
-        #a3e3cf,
-        #c8e9ad,
-        #f2d89f,
-        #f4b9bf
+        #efa6d5,
+        #d2b3fa,
+        #acc4ff,
+        #8fddff,
+        #90e8d3,
+        #beeaa9,
+        #efd79b,
+        #f3b7b8
     );
-
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
 /* =======================================================
-   MOBILE
+   MOBILE — tuned to Samsung S23 Ultra proportions
    ======================================================= */
 
 @media (max-width: 520px) {
@@ -466,36 +470,36 @@ button[kind="primary"]::before,
         max-width: 100% !important;
 
         padding-top: 0.38rem !important;
-        padding-bottom: 0.55rem !important;
+        padding-bottom: 0.50rem !important;
 
         padding-left: 0.62rem !important;
         padding-right: 0.62rem !important;
     }
 
-    /* Title stays one line and visually spans roughly the
-       same width as the 3 score cards. */
+    /* +20% from previous mockup, but still single line */
     .main-title {
-        font-size: clamp(27px, 8vw, 33px) !important;
-        line-height: 1.02 !important;
+        font-size: clamp(33px, 9.7vw, 39px) !important;
+        line-height: 1.01 !important;
+        margin-bottom: 4px !important;
+
         white-space: nowrap !important;
-        letter-spacing: -0.45px !important;
-        margin-bottom: 3px !important;
+        letter-spacing: -0.75px !important;
     }
 
     .by-line {
-        font-size: 10.5px !important;
-        margin-bottom: 8px !important;
+        font-size: 12px !important;
+        margin-bottom: 10px !important;
     }
 
     .active-category {
-        font-size: 13.5px !important;
-        margin-bottom: 11px !important;
+        font-size: 15px !important;
+        margin-bottom: 12px !important;
     }
 
-    /* Score cards */
+    /* score */
     .score-grid {
         gap: 7px !important;
-        margin-bottom: 27px !important;
+        margin-bottom: 28px !important;
     }
 
     .score-card {
@@ -505,51 +509,49 @@ button[kind="primary"]::before,
     }
 
     .score-label {
-        color: #737784 !important;
-        font-size: 9.7px !important;
+        font-size: 9.6px !important;
         margin-bottom: 3px !important;
     }
 
     .score-number {
-        color: #555965 !important;
         font-size: 23px !important;
     }
 
-    /* Question */
+    /* question */
     .question-shell {
         margin: 0 0 8px 0 !important;
     }
 
     .question-label,
     .review-label {
-        font-size: 15px !important;
-        margin-bottom: 13px !important;
+        font-size: 15.5px !important;
+        margin-bottom: 14px !important;
     }
 
-    /* Chinese */
+    /* Chinese +20% */
     .chinese-short {
-        font-size: clamp(56px, 16vw, 68px) !important;
+        font-size: clamp(68px, 20vw, 84px) !important;
     }
 
     .chinese-medium {
-        font-size: clamp(38px, 11vw, 50px) !important;
+        font-size: clamp(46px, 13.4vw, 59px) !important;
     }
 
     .chinese-long {
-        font-size: clamp(27px, 7.2vw, 36px) !important;
+        font-size: clamp(31px, 8.5vw, 42px) !important;
     }
 
-    /* Answers */
+    /* answers */
     .st-key-answer_area div[data-testid="stVerticalBlock"] {
-        gap: 0.38rem !important;
+        gap: 0.36rem !important;
     }
 
     .st-key-answer_area div[data-testid="stButton"] > button,
     .st-key-answer_area div[data-testid="stButton"] > button:hover,
     .st-key-answer_area div[data-testid="stButton"] > button:focus,
     .st-key-answer_area div[data-testid="stButton"] > button:active {
-        min-height: 46px !important;
-        padding: 0.43rem 0.60rem !important;
+        min-height: 45px !important;
+        padding: 0.41rem 0.58rem !important;
         border-radius: 14px !important;
 
         background: #ffffff !important;
@@ -558,7 +560,6 @@ button[kind="primary"]::before,
         color: #4d5260 !important;
 
         border: 1px solid #dedfe5 !important;
-
         box-shadow: none !important;
     }
 
@@ -567,53 +568,53 @@ button[kind="primary"]::before,
         font-size: 14.5px !important;
     }
 
-    /* Category title */
+    /* category selector — compact 3+2 wrap */
     .bottom-category-title {
         font-size: 11.5px !important;
-        margin-top: 14px !important;
+        margin-top: 13px !important;
         margin-bottom: 5px !important;
     }
 
-    /* Keep all 5 category pills compact */
-    .st-key-category_selector [data-testid="stHorizontalBlock"] {
-        gap: 0.18rem !important;
+    .st-key-category_selector div[role="radiogroup"] {
+        gap: 5px !important;
     }
 
-    .st-key-category_selector div[data-testid="stButton"] > button {
-        min-height: 31px !important;
-        height: 31px !important;
-
-        padding: 0 3px !important;
-
-        gap: 3.5px !important;
-    }
-
-    .st-key-category_selector div[data-testid="stButton"] > button::before {
-        width: 10px !important;
-        height: 10px !important;
-        min-width: 10px !important;
+    .st-key-category_selector label[data-baseweb="radio"] {
+        padding: 4px 7px !important;
     }
 
     .st-key-category_selector
-    button[kind="primary"]::before,
+    label[data-baseweb="radio"] > div:first-child {
+        width: 13px !important;
+        min-width: 13px !important;
+        height: 13px !important;
+        margin-right: 5px !important;
+    }
+
     .st-key-category_selector
-    [data-testid="stBaseButton-primary"]::before {
-        border-width: 2px !important;
+    input[type="radio"] + div {
+        width: 13px !important;
+        min-width: 13px !important;
+        height: 13px !important;
     }
 
-    .st-key-category_selector div[data-testid="stButton"] > button p,
-    .st-key-category_selector div[data-testid="stButton"] > button span {
-        font-size: 8.8px !important;
-        white-space: nowrap !important;
+    .st-key-category_selector
+    input[type="radio"]:checked + div {
+        border-width: 3px !important;
     }
 
-    /* Bottom row follows immediately after categories */
+    .st-key-category_selector
+    label[data-baseweb="radio"] p {
+        font-size: 9.7px !important;
+    }
+
+    /* reset + quote immediately below categories */
     .st-key-bottom_actions {
-        margin-top: 9px !important;
+        margin-top: 10px !important;
     }
 
     .st-key-bottom_actions [data-testid="stHorizontalBlock"] {
-        gap: 1rem !important;
+        gap: 0.95rem !important;
     }
 
     .st-key-bottom_actions div[data-testid="stButton"] > button,
@@ -630,16 +631,15 @@ button[kind="primary"]::before,
         background: #ffffff !important;
         background-color: #ffffff !important;
 
-        color: #737784 !important;
+        color: #727784 !important;
 
         border: 1px solid #dedfe5 !important;
     }
 
-    /* About half the visual size of the Chinese word.
-       It may wrap into 2–3 lines. */
+    /* Quote +20%, wrapping into 2–3 lines is allowed */
     .quote-text {
-        font-size: clamp(19px, 7vw, 27px) !important;
-        line-height: 1.35 !important;
+        font-size: clamp(23px, 7.8vw, 31px) !important;
+        line-height: 1.32 !important;
         text-align: center !important;
         white-space: normal !important;
     }
@@ -1672,7 +1672,7 @@ CATEGORY_ITEMS = [
     (5, "Testing / UAT"),
 ]
 
-# Keep the currently selected category in position 3.
+# Keep the currently selected category in the middle (position 3).
 current_item = next(
     item for item in CATEGORY_ITEMS
     if item[0] == st.session_state.selected_set
@@ -1689,45 +1689,36 @@ display_items = (
     + other_items[2:]
 )
 
-# Use buttons instead of st.radio.
-# This guarantees:
-# - no black native radio circle
-# - no double circle
-# - exactly one CSS circle per category
+display_labels = [
+    label for _, label in display_items
+]
+
+label_to_set = {
+    label: set_id
+    for set_id, label in display_items
+}
+
+# Native Streamlit radio only:
+# exactly ONE visible circle per category.
 with st.container(key="category_selector"):
-
-    # Give longer labels slightly more room.
-    column_ratios = [
-        max(0.85, min(1.55, len(label) / 9.0))
-        for _, label in display_items
-    ]
-
-    category_columns = st.columns(
-        column_ratios,
-        gap="small"
+    selected_label = st.radio(
+        "เลือกหมวดคำศัพท์",
+        options=display_labels,
+        index=2,
+        horizontal=True,
+        label_visibility="collapsed",
+        key=f"bottom_set_radio_{st.session_state.selected_set}"
     )
 
-    for index, (set_id, label) in enumerate(display_items):
+new_set = label_to_set[selected_label]
 
-        is_selected = (
-            set_id == st.session_state.selected_set
-        )
-
-        with category_columns[index]:
-            if st.button(
-                label,
-                key=f"category_button_{set_id}_{st.session_state.selected_set}",
-                type="primary" if is_selected else "secondary",
-                use_container_width=True
-            ):
-                if not is_selected:
-                    st.session_state.selected_set = set_id
-                    st.rerun()
+if new_set != st.session_state.selected_set:
+    st.session_state.selected_set = new_set
+    st.rerun()
 
 
-# Bottom actions:
-# reset on the left, quote on the right.
-# Reset does NOT change the quote.
+# Reset left + quote right.
+# Reset DOES NOT change the quote.
 with st.container(key="bottom_actions"):
 
     reset_col, quote_col = st.columns(
