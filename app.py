@@ -286,8 +286,12 @@ header, footer, #MainMenu,
 
 /* =======================================================
    CATEGORY SELECTOR
-   Uses the one native radio indicator only.
-   No ○ / ⭕ text is added anywhere.
+   FINAL FIX:
+   - NO st.radio
+   - NO native black radio circle
+   - NO duplicate circle
+   - one CSS circle only
+   - compact pills that wrap 3 + 2 on mobile
    ======================================================= */
 
 .bottom-category-title {
@@ -298,7 +302,7 @@ header, footer, #MainMenu,
     margin: 16px 0 6px 0;
 }
 
-.st-key-category_selector div[role="radiogroup"] {
+.st-key-category_selector [data-testid="stHorizontalBlock"] {
     display: flex !important;
     flex-direction: row !important;
     flex-wrap: wrap !important;
@@ -307,82 +311,99 @@ header, footer, #MainMenu,
     gap: 6px !important;
 }
 
-.st-key-category_selector label[data-baseweb="radio"] {
-    width: auto !important;
+.st-key-category_selector [data-testid="column"] {
     flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+}
+
+.st-key-category_selector div[data-testid="stButton"] {
+    width: auto !important;
+    margin: 0 !important;
+}
+
+.st-key-category_selector div[data-testid="stButton"] > button,
+.st-key-category_selector div[data-testid="stButton"] > button:hover,
+.st-key-category_selector div[data-testid="stButton"] > button:focus,
+.st-key-category_selector div[data-testid="stButton"] > button:active {
+    width: auto !important;
+    min-width: 0 !important;
+    min-height: 34px !important;
+    height: 34px !important;
+
+    padding: 0 10px !important;
+
+    border-radius: 999px !important;
+
+    border: 1px solid #e0e1e6 !important;
 
     background: #ffffff !important;
     background-color: #ffffff !important;
 
-    border: 1px solid #e0e1e6 !important;
-    border-radius: 999px !important;
-
-    padding: 5px 9px !important;
-    margin: 0 !important;
-
-    display: flex !important;
-    align-items: center !important;
-
     color: #555b69 !important;
+
+    box-shadow: none !important;
+    outline: none !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+
+    white-space: nowrap !important;
+}
+
+/* exactly ONE circle */
+.st-key-category_selector div[data-testid="stButton"] > button::before {
+    content: "";
+    display: inline-block;
+
+    width: 14px;
+    height: 14px;
+    min-width: 14px;
+
+    border-radius: 50%;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+    border: 1.5px solid #d5d8df;
 }
 
 /* selected pill */
 .st-key-category_selector
-label[data-baseweb="radio"]:has(input[type="radio"]:checked) {
+button[kind="primary"],
+.st-key-category_selector
+[data-testid="stBaseButton-primary"] {
     background: linear-gradient(
         135deg,
         #f8d8e8,
         #e6d9ff,
         #dff4e7
     ) !important;
+
     border-color: #dfc3e7 !important;
 }
 
-/*
-   Streamlit/BaseWeb radio structure:
-   the checked input is followed by the visible circle div.
-   Force it white/gray for unselected and white/pink for selected.
-*/
+/* selected circle */
 .st-key-category_selector
-label[data-baseweb="radio"] > div:first-child {
-    width: 15px !important;
-    min-width: 15px !important;
-    height: 15px !important;
-    margin-right: 6px !important;
-}
-
+button[kind="primary"]::before,
 .st-key-category_selector
-input[type="radio"] + div {
-    width: 15px !important;
-    height: 15px !important;
-    min-width: 15px !important;
-
-    box-sizing: border-box !important;
-    border-radius: 50% !important;
-
+[data-testid="stBaseButton-primary"]::before {
     background: #ffffff !important;
-    background-color: #ffffff !important;
-
-    border: 1.5px solid #d5d8df !important;
-    box-shadow: none !important;
+    border: 3px solid #ff6477 !important;
 }
 
-/* selected: white center + pink ring */
-.st-key-category_selector
-input[type="radio"]:checked + div {
-    background: #ffffff !important;
-    background-color: #ffffff !important;
-
-    border: 4px solid #ff6477 !important;
-    box-shadow: none !important;
-}
-
-.st-key-category_selector label[data-baseweb="radio"] p {
+.st-key-category_selector div[data-testid="stButton"] > button p,
+.st-key-category_selector div[data-testid="stButton"] > button span {
     color: #555b69 !important;
     -webkit-text-fill-color: #555b69 !important;
 
+    opacity: 1 !important;
+
     font-size: 10.5px !important;
     font-weight: 800 !important;
+
     white-space: nowrap !important;
 }
 
@@ -430,6 +451,16 @@ input[type="radio"]:checked + div {
     -webkit-text-fill-color: #727784 !important;
     font-size: 17px !important;
     font-weight: 500 !important;
+}
+
+.st-key-bottom_actions button,
+.st-key-bottom_actions button[kind="secondary"],
+.st-key-bottom_actions [data-testid="stBaseButton-secondary"] {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #727784 !important;
+    border-color: #dedfe5 !important;
+    box-shadow: none !important;
 }
 
 /* approximately +20% vs previous approved mockup */
@@ -568,44 +599,71 @@ input[type="radio"]:checked + div {
         font-size: 14.5px !important;
     }
 
-    /* category selector — compact 3+2 wrap */
+    /* category selector — compact 3 + 2 wrap */
     .bottom-category-title {
         font-size: 11.5px !important;
         margin-top: 13px !important;
         margin-bottom: 5px !important;
     }
 
-    .st-key-category_selector div[role="radiogroup"] {
+    .st-key-category_selector [data-testid="stHorizontalBlock"] {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        align-items: center !important;
         gap: 5px !important;
     }
 
-    .st-key-category_selector label[data-baseweb="radio"] {
-        padding: 4px 7px !important;
+    .st-key-category_selector [data-testid="column"] {
+        flex: 0 0 auto !important;
+        width: auto !important;
+        min-width: 0 !important;
+    }
+
+    .st-key-category_selector div[data-testid="stButton"] {
+        width: auto !important;
+    }
+
+    .st-key-category_selector div[data-testid="stButton"] > button,
+    .st-key-category_selector div[data-testid="stButton"] > button:hover,
+    .st-key-category_selector div[data-testid="stButton"] > button:focus,
+    .st-key-category_selector div[data-testid="stButton"] > button:active {
+        width: auto !important;
+        min-width: 0 !important;
+
+        min-height: 31px !important;
+        height: 31px !important;
+
+        padding: 0 7px !important;
+
+        gap: 4px !important;
+
+        background-color: #ffffff !important;
+        color: #555b69 !important;
+    }
+
+    .st-key-category_selector div[data-testid="stButton"] > button::before {
+        width: 12px !important;
+        height: 12px !important;
+        min-width: 12px !important;
     }
 
     .st-key-category_selector
-    label[data-baseweb="radio"] > div:first-child {
-        width: 13px !important;
-        min-width: 13px !important;
-        height: 13px !important;
-        margin-right: 5px !important;
+    button[kind="primary"]::before,
+    .st-key-category_selector
+    [data-testid="stBaseButton-primary"]::before {
+        border-width: 2.5px !important;
     }
 
-    .st-key-category_selector
-    input[type="radio"] + div {
-        width: 13px !important;
-        min-width: 13px !important;
-        height: 13px !important;
-    }
+    .st-key-category_selector div[data-testid="stButton"] > button p,
+    .st-key-category_selector div[data-testid="stButton"] > button span {
+        color: #555b69 !important;
+        -webkit-text-fill-color: #555b69 !important;
+        opacity: 1 !important;
 
-    .st-key-category_selector
-    input[type="radio"]:checked + div {
-        border-width: 3px !important;
-    }
-
-    .st-key-category_selector
-    label[data-baseweb="radio"] p {
-        font-size: 9.7px !important;
+        font-size: 9.6px !important;
+        font-weight: 800 !important;
     }
 
     /* reset + quote immediately below categories */
@@ -1672,7 +1730,7 @@ CATEGORY_ITEMS = [
     (5, "Testing / UAT"),
 ]
 
-# Keep the currently selected category in the middle (position 3).
+# Keep the currently selected category in position 3.
 current_item = next(
     item for item in CATEGORY_ITEMS
     if item[0] == st.session_state.selected_set
@@ -1689,32 +1747,38 @@ display_items = (
     + other_items[2:]
 )
 
-display_labels = [
-    label for _, label in display_items
-]
-
-label_to_set = {
-    label: set_id
-    for set_id, label in display_items
-}
-
-# Native Streamlit radio only:
-# exactly ONE visible circle per category.
+# IMPORTANT:
+# Use buttons, NOT st.radio.
+# This permanently removes the Android native black radio controls.
+# Each pill gets exactly ONE circle from CSS ::before.
 with st.container(key="category_selector"):
-    selected_label = st.radio(
-        "เลือกหมวดคำศัพท์",
-        options=display_labels,
-        index=2,
-        horizontal=True,
-        label_visibility="collapsed",
-        key=f"bottom_set_radio_{st.session_state.selected_set}"
+
+    category_columns = st.columns(
+        [1, 1, 1, 1, 1],
+        gap="small"
     )
 
-new_set = label_to_set[selected_label]
+    for index, (set_id, label) in enumerate(display_items):
 
-if new_set != st.session_state.selected_set:
-    st.session_state.selected_set = new_set
-    st.rerun()
+        is_selected = (
+            set_id == st.session_state.selected_set
+        )
+
+        with category_columns[index]:
+
+            if st.button(
+                label,
+                key=(
+                    f"category_"
+                    f"{set_id}_"
+                    f"{st.session_state.selected_set}"
+                ),
+                type="primary" if is_selected else "secondary"
+            ):
+
+                if not is_selected:
+                    st.session_state.selected_set = set_id
+                    st.rerun()
 
 
 # Reset left + quote right.
@@ -1728,15 +1792,21 @@ with st.container(key="bottom_actions"):
     )
 
     with reset_col:
+
         if st.button(
             "↻",
             key=f"reset_set_{selected_set}",
             help="เริ่มหมวดนี้ใหม่"
         ):
-            st.session_state.progress_by_set[selected_set] = blank_progress()
+
+            st.session_state.progress_by_set[
+                selected_set
+            ] = blank_progress()
+
             st.rerun()
 
     with quote_col:
+
         safe_quote = html.escape(
             st.session_state.quote_of_the_day
         )
