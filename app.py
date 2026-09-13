@@ -285,11 +285,11 @@ header, footer, #MainMenu,
 }
 
 /* =======================================================
-   CATEGORY SELECTOR — MOBILE FIT FIX ONLY
-   - five pills stay inside screen width
-   - one row
-   - no horizontal overflow
-   - one white/pink circle only
+   CATEGORY SELECTOR — FINAL READABILITY FIX ONLY
+   - five pills stay on ONE row
+   - labels are readable
+   - selected item clearly shows ✓ + pastel/pink state
+   - exactly ONE CSS circle per pill
    ======================================================= */
 
 .bottom-category-title {
@@ -306,20 +306,16 @@ header, footer, #MainMenu,
     overflow: hidden !important;
 }
 
-/*
-   Use CSS GRID instead of forcing Streamlit columns with flex.
-   This keeps all 5 category pills inside the viewport.
-*/
 .st-key-category_selector [data-testid="stHorizontalBlock"] {
     display: grid !important;
     grid-template-columns:
-        minmax(0, 1.15fr)
-        minmax(0, 1.22fr)
-        minmax(0, 0.70fr)
-        minmax(0, 0.82fr)
-        minmax(0, 1.11fr) !important;
+        minmax(0, 1.20fr)
+        minmax(0, 1.28fr)
+        minmax(0, 0.68fr)
+        minmax(0, 0.78fr)
+        minmax(0, 1.18fr) !important;
 
-    gap: 5px !important;
+    gap: 3px !important;
     width: 100% !important;
     max-width: 100% !important;
 
@@ -357,10 +353,10 @@ header, footer, #MainMenu,
     min-width: 0 !important;
     max-width: 100% !important;
 
-    min-height: 33px !important;
-    height: 33px !important;
+    min-height: 34px !important;
+    height: 34px !important;
 
-    padding: 0 3px !important;
+    padding: 0 2px !important;
 
     border-radius: 999px !important;
     border: 1px solid #e0e1e6 !important;
@@ -377,35 +373,32 @@ header, footer, #MainMenu,
     align-items: center !important;
     justify-content: center !important;
 
-    gap: 3px !important;
+    gap: 2px !important;
 
     white-space: nowrap !important;
     overflow: hidden !important;
 }
 
-/* Exactly ONE category circle */
+/* Exactly ONE circle per pill */
 .st-key-category_selector div[data-testid="stButton"] > button::before {
     content: "";
     display: inline-block;
 
-    width: 10px;
-    height: 10px;
-    min-width: 10px;
-
-    flex: 0 0 10px;
+    width: 8px;
+    height: 8px;
+    min-width: 8px;
+    flex: 0 0 8px;
 
     border-radius: 50%;
     box-sizing: border-box;
 
     background: #ffffff !important;
-    border: 1.4px solid #d4d7df !important;
+    border: 1.3px solid #d4d7df !important;
 }
 
-/* Selected pill */
-.st-key-category_selector
-button[kind="primary"],
-.st-key-category_selector
-[data-testid="stBaseButton-primary"] {
+/* Selected pill: pastel background */
+.st-key-category_selector button[kind="primary"],
+.st-key-category_selector [data-testid="stBaseButton-primary"] {
     background: linear-gradient(
         135deg,
         #f8d8e8,
@@ -416,15 +409,14 @@ button[kind="primary"],
     border-color: #dfc3e7 !important;
 }
 
-/* Selected circle */
-.st-key-category_selector
-button[kind="primary"]::before,
-.st-key-category_selector
-[data-testid="stBaseButton-primary"]::before {
+/* Selected circle: pink ring */
+.st-key-category_selector button[kind="primary"]::before,
+.st-key-category_selector [data-testid="stBaseButton-primary"]::before {
     background: #ffffff !important;
-    border: 2.2px solid #ff6477 !important;
+    border: 2px solid #ff6477 !important;
 }
 
+/* Normal text */
 .st-key-category_selector div[data-testid="stButton"] > button p,
 .st-key-category_selector div[data-testid="stButton"] > button span {
     color: #555b69 !important;
@@ -432,16 +424,22 @@ button[kind="primary"]::before,
 
     opacity: 1 !important;
 
-    font-size: 9px !important;
+    font-size: 10px !important;
     font-weight: 800 !important;
     line-height: 1 !important;
 
     white-space: nowrap !important;
-
-    overflow: hidden !important;
-    text-overflow: clip !important;
-
     min-width: 0 !important;
+}
+
+/* Selected text including ✓ */
+.st-key-category_selector button[kind="primary"] p,
+.st-key-category_selector button[kind="primary"] span,
+.st-key-category_selector [data-testid="stBaseButton-primary"] p,
+.st-key-category_selector [data-testid="stBaseButton-primary"] span {
+    color: #d95b78 !important;
+    -webkit-text-fill-color: #d95b78 !important;
+    font-weight: 900 !important;
 }
 
 /* =======================================================
@@ -636,7 +634,7 @@ button[kind="primary"]::before,
         font-size: 14.5px !important;
     }
 
-    /* Category selector — fit FIVE pills inside phone width */
+    /* Category selector — readable + selected ✓, still one row */
     .bottom-category-title {
         font-size: 11.5px !important;
         margin-top: 12px !important;
@@ -653,11 +651,11 @@ button[kind="primary"]::before,
         display: grid !important;
 
         grid-template-columns:
-            minmax(0, 1.17fr)
-            minmax(0, 1.24fr)
-            minmax(0, 0.66fr)
+            minmax(0, 1.20fr)
+            minmax(0, 1.28fr)
+            minmax(0, 0.68fr)
             minmax(0, 0.78fr)
-            minmax(0, 1.15fr) !important;
+            minmax(0, 1.18fr) !important;
 
         gap: 3px !important;
 
@@ -692,12 +690,11 @@ button[kind="primary"]::before,
         min-width: 0 !important;
         max-width: 100% !important;
 
-        min-height: 30px !important;
-        height: 30px !important;
+        min-height: 32px !important;
+        height: 32px !important;
 
-        padding: 0 2px !important;
-
-        gap: 2px !important;
+        padding: 0 1px !important;
+        gap: 1.5px !important;
 
         background: #ffffff !important;
         background-color: #ffffff !important;
@@ -711,22 +708,19 @@ button[kind="primary"]::before,
     }
 
     .st-key-category_selector div[data-testid="stButton"] > button::before {
-        width: 8px !important;
-        height: 8px !important;
-        min-width: 8px !important;
-
-        flex: 0 0 8px !important;
+        width: 7px !important;
+        height: 7px !important;
+        min-width: 7px !important;
+        flex: 0 0 7px !important;
 
         background: #ffffff !important;
-        border: 1.3px solid #d4d7df !important;
+        border: 1.2px solid #d4d7df !important;
     }
 
-    .st-key-category_selector
-    button[kind="primary"]::before,
-    .st-key-category_selector
-    [data-testid="stBaseButton-primary"]::before {
+    .st-key-category_selector button[kind="primary"]::before,
+    .st-key-category_selector [data-testid="stBaseButton-primary"]::before {
         background: #ffffff !important;
-        border: 1.9px solid #ff6477 !important;
+        border: 1.8px solid #ff6477 !important;
     }
 
     .st-key-category_selector div[data-testid="stButton"] > button p,
@@ -735,14 +729,21 @@ button[kind="primary"]::before,
         -webkit-text-fill-color: #555b69 !important;
         opacity: 1 !important;
 
-        font-size: 7.55px !important;
+        font-size: 9.2px !important;
         font-weight: 800 !important;
         line-height: 1 !important;
 
         white-space: nowrap !important;
-
         min-width: 0 !important;
-        overflow: hidden !important;
+    }
+
+    .st-key-category_selector button[kind="primary"] p,
+    .st-key-category_selector button[kind="primary"] span,
+    .st-key-category_selector [data-testid="stBaseButton-primary"] p,
+    .st-key-category_selector [data-testid="stBaseButton-primary"] span {
+        color: #d95b78 !important;
+        -webkit-text-fill-color: #d95b78 !important;
+        font-weight: 900 !important;
     }
 
     /* reset + quote immediately below categories */
@@ -1861,8 +1862,14 @@ with st.container(key="category_selector"):
 
         with category_columns[index]:
 
+            button_label = (
+                f"✓ {label}"
+                if is_selected
+                else label
+            )
+
             if st.button(
-                label,
+                button_label,
                 key=(
                     f"category_"
                     f"{set_id}_"
