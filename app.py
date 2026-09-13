@@ -1,1856 +1,1003 @@
-import streamlit as st
-import random
 import html
-
-# =========================================================
-# APP ICON
-# =========================================================
-
-try:
-    from PIL import Image
-    app_icon = Image.open("app_icon.png")
-except Exception:
-    app_icon = "🇨🇳"
+import json
+import streamlit as st
+import streamlit.components.v1 as components
 
 st.set_page_config(
-    page_title="Chinese Learning App",
-    page_icon=app_icon,
+    page_title="Product Management Prep",
+    page_icon="🎯",
     layout="centered",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="collapsed",
 )
 
 # =========================================================
-# STYLE
+# QUESTION BANK — 36 QUESTIONS, FIXED ORDER, NO RANDOM
 # =========================================================
+QUESTIONS = [
+    {
+        "id": 1,
+        "category": "Product Strategy & Management",
+        "question": "ถ้าให้คุณวาง Strategy สำหรับ Personal Loan คุณจะเริ่มจากอะไร?",
+        "answer": "ฉันจะเริ่มจาก 5 เรื่องค่ะ: Target Customer, Customer Need, Risk, Value Proposition และ Economics แล้วจึงออกแบบ product, pricing, channel และ process ให้สอดคล้องกัน ไม่เริ่มจากคำถามว่า ‘เราจะขายอะไร’ แต่เริ่มจาก ‘ลูกค้ากลุ่มไหนมี unmet need ที่เราสามารถให้บริการได้อย่าง profitable และ sustainable’",
+    },
+    {
+        "id": 2,
+        "category": "Product Strategy & Management",
+        "question": "คุณจะรู้ได้อย่างไรว่าลูกค้าต้องการอะไร?",
+        "answer": "ดูทั้ง customer data และ customer voice ค่ะ เช่น application funnel, drop-off, approval/rejection reason, complaints, usage behavior รวมถึง qualitative research แล้วเอาข้อมูลมาหา pain point ก่อนพัฒนา product",
+    },
+    {
+        "id": 3,
+        "category": "Product Strategy & Management",
+        "question": "ถ้ามีหลาย Customer Segment จะเลือกกลุ่มไหนก่อน?",
+        "answer": "ฉันจะดู 4 มิติ ได้แก่ Market attractiveness, Customer need, Risk profile และ Bank capability กลุ่มที่มี need ชัด มี market size เพียงพอ risk สามารถบริหารได้ และธนาคารมี data/capability รองรับ จะเป็นกลุ่มที่ควร prioritize ก่อน",
+    },
+    {
+        "id": 4,
+        "category": "Product Strategy & Management",
+        "question": "Personal Loan ที่ดีควรแข่งขันด้วยอะไร นอกจากดอกเบี้ย?",
+        "answer": "แข่งขันได้หลายเรื่องค่ะ เช่น approval speed, ease of application, transparency, flexible repayment, relevant credit limit และ customer experience ถ้าแข่งขันด้วยราคาอย่างเดียวจะเข้าสู่ price war ได้ง่าย",
+    },
+    {
+        "id": 5,
+        "category": "Product Strategy & Management",
+        "question": "คุณจะออกแบบ Pricing อย่างไร?",
+        "answer": "ฉันมองเป็น risk-based pricing ค่ะ ต้อง balance customer affordability, expected loss, cost, acquisition expense และ target return ลูกค้าที่มีข้อมูลและความเสี่ยงต่างกันไม่จำเป็นต้องได้ราคาเดียวกัน",
+    },
+    {
+        "id": 6,
+        "category": "Product Strategy & Management",
+        "question": "ถ้าจะทำสินเชื่อให้ Self-employed คุณจะออกแบบอย่างไร?",
+        "answer": "ฉันจะไม่มอง Self-employed เป็นกลุ่มเดียว แต่แบ่งตาม quality of evidence เช่น มีทะเบียนหรือข้อมูลธุรกิจชัด มี transaction data เช่น QR/EDC หรือมีเพียง financial behavior จากบัญชี จากนั้นกำหนด eligibility, limit และ pricing ตามระดับความเชื่อมั่นของข้อมูล",
+    },
+    {
+        "id": 7,
+        "category": "Product Strategy & Management",
+        "question": "Product Strategy กับ Credit Policy ต่างกันอย่างไร?",
+        "answer": "Product Strategy ตอบว่าจะให้ใคร อะไร ด้วย value proposition แบบไหน และทำไมถึงน่าสนใจเชิงธุรกิจ ส่วน Credit Policy กำหนดว่า risk แบบไหนที่ธนาคารยอมรับ และเงื่อนไขอนุมัติเป็นอย่างไร สองเรื่องต้องออกแบบร่วมกัน",
+    },
+    {
+        "id": 8,
+        "category": "Product Strategy & Management",
+        "question": "คุณตั้ง KPI ของ Personal Loan อย่างไร?",
+        "answer": "ฉันจะไม่ดูแค่ยอดขาย แต่ดูครบทั้ง Growth + Customer + Risk + Economics + Operations เช่น application, approval, booking/disbursement, conversion, revenue, risk-adjusted return, delinquency/NPL, complaint และ SLA",
+    },
+    {
+        "id": 9,
+        "category": "Product Strategy & Management",
+        "question": "ถ้ายอด Loan Booking โตมาก คุณถือว่าประสบความสำเร็จหรือยัง?",
+        "answer": "ยังค่ะ Growth อย่างเดียวไม่พอ ต้องดู portfolio quality และ profitability ด้วย ถ้า booking โตแต่ NPL, complaint หรือ acquisition cost โตเร็วกว่า แปลว่า growth นั้นอาจไม่ sustainable",
+    },
+    {
+        "id": 10,
+        "category": "Product Strategy & Management",
+        "question": "Continuous Improvement ทำอย่างไร?",
+        "answer": "ฉันจะสร้าง feedback loop จาก production data → identify pain point → hypothesis → improvement → test → measure และทำต่อเนื่อง ไม่รอให้มี major project ถึงจะปรับ product",
+    },
+    {
+        "id": 11,
+        "category": "Production Quality",
+        "question": "‘Ensuring quality in production’ ใน JD คุณตีความว่าอะไร?",
+        "answer": "ไม่ใช่แค่ระบบไม่ล่มค่ะ แต่หมายถึงลูกค้าต้องได้รับผลลัพธ์ที่ถูกต้องตั้งแต่ application → decision → documentation → disbursement → servicing รวมถึง data accuracy, SLA, compliance และ customer communication",
+    },
+    {
+        "id": 12,
+        "category": "Production Quality",
+        "question": "หลัง Go-live คุณดูอะไรเป็นอันดับแรก?",
+        "answer": "ฉันจะดู critical funnel เช่น application success, approval result, disbursement success, error rate, exception, customer complaint และ reconciliation เทียบกับ baseline และ expected result",
+    },
+    {
+        "id": 13,
+        "category": "Production Quality",
+        "question": "ถ้ามี Incident หลัง Go-live คุณจะทำอย่างไร?",
+        "answer": "อันดับแรกคือ protect customer และ contain impact จากนั้นระบุ scope, workaround, owner และ SLA แล้วค่อยทำ root cause และ permanent fix หลังเหตุการณ์ต้องมี preventive action เพื่อไม่ให้เกิดซ้ำ",
+    },
+    {
+        "id": 14,
+        "category": "Production Quality",
+        "question": "คุณแยก Major Incident กับ Minor Issue อย่างไร?",
+        "answer": "ดูจาก customer impact, financial impact, regulatory risk, number of customers และ business continuity ไม่ใช่ดูจากความยากของ technical issue อย่างเดียว",
+    },
+    {
+        "id": 15,
+        "category": "Production Quality",
+        "question": "ถ้า System Issue กระทบลูกค้าแค่ 1 คน ยังต้อง investigate ไหม?",
+        "answer": "ต้องค่ะ เพราะต้องตอบให้ได้ว่าเป็น isolated case หรือ systemic logic issue ถ้าเป็น logic issue แม้วันนี้เจอคนเดียวก็อาจกระทบลูกค้ารายอื่นในอนาคต",
+    },
+    {
+        "id": 16,
+        "category": "Production Quality",
+        "question": "Product Owner ต้องรู้ Technical แค่ไหน?",
+        "answer": "ไม่จำเป็นต้องเขียนระบบเอง แต่ต้องเข้าใจ end-to-end flow, data, integration, business rule และ failure point มากพอที่จะตั้งคำถามกับ Technology และประเมิน customer/business impact ได้",
+    },
+    {
+        "id": 17,
+        "category": "Customer Behavior & Regulation",
+        "question": "คุณจะติดตามการเปลี่ยนแปลงของ Customer Behavior อย่างไร?",
+        "answer": "ดูทั้ง application behavior, channel usage, transaction pattern, repayment behavior, complaints และ research แล้วดูว่าการเปลี่ยนแปลงนั้นมีผลต่อ product proposition หรือ risk อย่างไร",
+    },
+    {
+        "id": 18,
+        "category": "Customer Behavior & Regulation",
+        "question": "ถ้าพฤติกรรมลูกค้าเปลี่ยน คุณจะรู้ได้อย่างไรว่าต้องแก้ Product?",
+        "answer": "ต้องดูว่า change นั้นเป็น temporary noise หรือ structural change ถ้าเกิดต่อเนื่องและกระทบ conversion, profitability, risk หรือ customer satisfaction จึงควรพิจารณา product redesign",
+    },
+    {
+        "id": 19,
+        "category": "Customer Behavior & Regulation",
+        "question": "ถ้ามีกฎใหม่ออกมา คุณจัดการอย่างไร?",
+        "answer": "ฉันจะทำ impact assessment ก่อนว่า policy, process, system, communication และ existing customer มีอะไรได้รับผลกระทบ จากนั้นทำงานกับ Compliance, Legal, Risk, Operations และ IT เพื่อแปลง regulation เป็น business requirement และ implementation plan",
+    },
+    {
+        "id": 20,
+        "category": "Customer Behavior & Regulation",
+        "question": "Product กับ Compliance ควรทำงานกันแบบไหน?",
+        "answer": "Compliance ไม่ควรเข้ามาเฉพาะตอนท้ายค่ะ ฉันชอบ involve ตั้งแต่ช่วง design เพื่อให้ requirement ถูกตั้งแต่ต้น ลด rework และทำให้ทีมเข้าใจด้วยว่า regulation ต้องการควบคุม risk อะไร",
+    },
+    {
+        "id": 21,
+        "category": "Customer Behavior & Regulation",
+        "question": "ถ้า Business อยาก Launch แต่ Compliance ยังมี Concern คุณจะทำอย่างไร?",
+        "answer": "ฉันจะไม่มองว่าเป็น Business vs Compliance แต่จะ clarify specific risk และ requirement ก่อน แล้วดูว่ามี mitigation หรือ scope adjustment ที่ทำให้ launch ได้อย่าง compliant หรือไม่ ถ้ายังมี material risk ก็ไม่ควรฝืน Go",
+    },
+    {
+        "id": 22,
+        "category": "Customer Behavior & Regulation",
+        "question": "ถ้ากฎทำให้ Conversion ลดลง คุณจะทำอย่างไร?",
+        "answer": "Compliance requirement เป็น constraint ที่ต้องรักษา แต่เรายัง optimize customer journey, wording, data collection และ process ได้ เป้าหมายคือรักษากฎโดยลด unnecessary friction",
+    },
+    {
+        "id": 23,
+        "category": "Customer Behavior & Regulation",
+        "question": "คุณจะป้องกัน Product Requirement ผิดจาก Regulation ได้อย่างไร?",
+        "answer": "ต้องมี traceability ตั้งแต่ regulation → policy interpretation → requirement → test case → production control เพื่อให้ทุกทีมรู้ว่าแต่ละ requirement มาจากอะไร",
+    },
+    {
+        "id": 24,
+        "category": "Market & Competitor",
+        "question": "เวลา Analyze Competitor คุณดูอะไร?",
+        "answer": "ไม่ดูแค่ interest rate ค่ะ ฉันจะดู target segment, eligibility, credit limit, pricing, tenor, application journey, approval speed, channel, campaign และ value proposition",
+    },
+    {
+        "id": 25,
+        "category": "Market & Competitor",
+        "question": "ถ้าคู่แข่งลดดอกเบี้ยแรง คุณจะลดตามไหม?",
+        "answer": "ไม่จำเป็นค่ะ ต้องรู้ก่อนว่าเขากำลัง target ลูกค้ากลุ่มไหน และ economics ของเรารองรับหรือไม่ บางครั้งการตอบด้วย better experience, targeted pricing หรือ differentiated segment มีเหตุผลกว่าการลดราคาทั้ง portfolio",
+    },
+    {
+        "id": 26,
+        "category": "Market & Competitor",
+        "question": "คุณหา Opportunity จาก Market Trend อย่างไร?",
+        "answer": "มองหาจุดที่มี customer need เพิ่มขึ้น แต่ existing solution ยังตอบไม่ดี แล้วประเมินร่วมกับ bank capability, data advantage และ risk appetite",
+    },
+    {
+        "id": 27,
+        "category": "Market & Competitor",
+        "question": "แล้วหา Risk จาก Market Trend อย่างไร?",
+        "answer": "ดูทั้ง credit deterioration, aggressive competition, customer indebtedness, fraud pattern, regulatory direction และ cost of acquisition เพราะบาง market growth อาจดู attractive แต่มี risk ซ่อนอยู่",
+    },
+    {
+        "id": 28,
+        "category": "Market & Competitor",
+        "question": "Competitor ทำ Feature ใหม่ เราควรทำตามไหม?",
+        "answer": "ไม่ควร copy โดยอัตโนมัติ ต้องถามว่า customer problem คืออะไร และ feature นั้นสร้าง value จริงหรือไม่ ถ้าเหมาะกับลูกค้าและ strategy ของเรา จึงค่อยนำมาปรับใช้",
+    },
+    {
+        "id": 29,
+        "category": "Product Testing & PMF",
+        "question": "PMF ใน Personal Loan คืออะไร?",
+        "answer": "สำหรับ Lending ฉันมองว่า PMF ไม่ใช่แค่มีคนสมัครเยอะ แต่คือ ลูกค้าเห็น value, ใช้ product จริง และ portfolio สร้าง economics ที่ดีภายใต้ acceptable risk ต้องมีทั้ง customer fit และ business fit",
+    },
+    {
+        "id": 30,
+        "category": "Product Testing & PMF",
+        "question": "จะวัด PMF ด้วยอะไร?",
+        "answer": "เช่น application demand, conversion, approval-to-booking, utilization/drawdown, repeat behavior, complaints, customer satisfaction, acquisition cost, portfolio quality และ profitability",
+    },
+    {
+        "id": 31,
+        "category": "Product Testing & PMF",
+        "question": "ก่อน Launch Product ใหม่ คุณจะ Test อย่างไร?",
+        "answer": "เริ่มจาก hypothesis และ success criteria แล้วทำ pilot กับ segment จำกัด กำหนด guardrail ด้าน risk, operations และ customer impact ก่อนขยาย scale",
+    },
+    {
+        "id": 32,
+        "category": "Product Testing & PMF",
+        "question": "Product Test ต่างจาก UAT อย่างไร?",
+        "answer": "UAT ตอบว่าระบบทำงานตาม requirement หรือไม่ แต่ Product Test ตอบว่า product นี้ตอบโจทย์ลูกค้าและธุรกิจหรือไม่ ระบบอาจผ่าน UAT แต่ product ยังไม่ผ่าน PMF ก็ได้",
+    },
+    {
+        "id": 33,
+        "category": "Product Testing & PMF",
+        "question": "ถ้า Pilot Conversion สูงมาก แต่ NPL เริ่มสูง คุณจะ Scale ไหม?",
+        "answer": "ยังไม่ scale ค่ะ ต้องเข้าใจก่อนว่า growth มาจาก segment ไหน และ risk สูงเพราะอะไร อาจต้องปรับ eligibility, limit, pricing หรือ underwriting ก่อน",
+    },
+    {
+        "id": 34,
+        "category": "Product Testing & PMF",
+        "question": "คุณกำหนด Go / No-Go อย่างไร?",
+        "answer": "ดู critical defects, customer impact, regulatory issue, operational readiness, workaround และ remaining risk ถ้ามี issue แต่มี workaround และ controlled risk อาจ Go ได้ แต่ material customer/regulatory risk ต้องแก้ก่อน",
+    },
+    {
+        "id": 35,
+        "category": "Head-Level Questions",
+        "question": "ถ้า Growth Target กับ Risk Target ขัดกัน คุณจะเลือกอะไร?",
+        "answer": "หน้าที่ของ Product ไม่ใช่เลือก Growth หรือ Risk แต่คือหา risk-adjusted growth ค่ะ Growth ที่ทำลาย portfolio quality ไม่ sustainable ขณะเดียวกัน risk control ที่ conservative เกินไปก็ทำให้เสีย opportunity ดังนั้นต้องปรับ segment, pricing, limit หรือ criteria ให้ balance",
+    },
+    {
+        "id": 36,
+        "category": "Head-Level Questions",
+        "question": "ถ้าคุณได้ตำแหน่งนี้ 90 วันแรกจะทำอะไร?",
+        "answer": "30 วันแรก: Understand portfolio, customers, performance, risk, team และ stakeholders\n60 วัน: Identify key gaps/opportunities และ prioritize\n90 วัน: Align roadmap และเริ่ม initiative ที่มี clear impact พร้อม KPI",
+    },
+]
 
-st.markdown("""
+CORE_SENTENCES = [
+    "I start from customer need, but I always balance it with risk and business economics.",
+    "I look at the product end to end, not only acquisition.",
+    "Growth alone is not success if portfolio quality is not sustainable.",
+    "I use data to identify the problem, then validate the solution before scaling.",
+    "For lending, PMF must include both customer fit and risk-adjusted profitability.",
+    "My role is to connect Product, Risk, Compliance, Operations and Technology toward the same business outcome.",
+]
+
+TELL_ME_CN = """目前，我负责数字贷款产品，主要关注从需求、测试、上线到上线后问题管理的端到端产品流程。\n\n我的经验主要有三个方面。第一是产品管理。我和不同团队合作，不断改善客户流程和产品体验。第二是生产环境和系统事故管理。发生问题时，我会先了解客户和业务影响，再分析原因，并推动临时方案和长期解决方案。第三是风险和合规。我会和风险、合规、法务、运营和技术团队合作，确保产品满足客户需求，也符合相关规定。\n\n我对这个职位很感兴趣，因为我希望从数字贷款进一步扩展到更全面的个人贷款产品管理，包括产品策略、客户需求、市场机会和产品市场匹配。\n\n我的优势是能够从端到端看产品，把客户、业务、风险和技术连接起来，并把生产环境中的问题转化为持续改善产品的机会。"""
+
+TELL_ME_PINYIN = """Mùqián, wǒ fùzé shùzì dàikuǎn chǎnpǐn, zhǔyào guānzhù cóng xūqiú, cèshì, shàngxiàn dào shàngxiàn hòu wèntí guǎnlǐ de duāndào duān chǎnpǐn liúchéng.\n\nWǒ de jīngyàn zhǔyào yǒu sān gè fāngmiàn. Dì yī shì chǎnpǐn guǎnlǐ. Wǒ hé bùtóng tuánduì hézuò, bùduàn gǎishàn kèhù liúchéng hé chǎnpǐn tǐyàn. Dì èr shì shēngchǎn huánjìng hé xìtǒng shìgù guǎnlǐ. Fāshēng wèntí shí, wǒ huì xiān liǎojiě kèhù hé yèwù yǐngxiǎng, zài fēnxī yuányīn, bìng tuīdòng línshí fāng’àn hé chángqī jiějué fāng’àn. Dì sān shì fēngxiǎn hé héguī. Wǒ huì hé fēngxiǎn, héguī, fǎwù, yùnyíng hé jìshù tuánduì hézuò, quèbǎo chǎnpǐn mǎnzú kèhù xūqiú, yě fúhé xiāngguān guīdìng.\n\nWǒ duì zhège zhíwèi hěn gǎn xìngqù, yīnwèi wǒ xīwàng cóng shùzì dàikuǎn jìnyíbù kuòzhǎn dào gèng quánmiàn de gèrén dàikuǎn chǎnpǐn guǎnlǐ, bāokuò chǎnpǐn cèlüè, kèhù xūqiú, shìchǎng jīhuì hé chǎnpǐn shìchǎng pǐpèi.\n\nWǒ de yōushì shì nénggòu cóng duāndào duān kàn chǎnpǐn, bǎ kèhù, yèwù, fēngxiǎn hé jìshù liánjiē qǐlái, bìng bǎ shēngchǎn huánjìng zhōng de wèntí zhuǎnhuà wéi chíxù gǎishàn chǎnpǐn de jīhuì."""
+
+TELL_ME_EN = """Currently, I work in Digital Lending, where I look after the end-to-end product journey, from requirements and testing through production and post-launch issue management.\n\nMy experience is mainly in three areas. First, product management, working across functions to develop and continuously improve the customer journey. Second, production and incident management, where I focus on understanding customer and business impact, identifying root causes, and driving both workarounds and long-term solutions. Third, risk and compliance, where I work closely with Risk, Compliance, Legal, Operations, and Technology to ensure that the product serves customer needs while operating within the right controls and regulations.\n\nWhat interests me about this role is the opportunity to expand from Digital Lending into a broader Personal Loan Product Management scope, including product strategy, customer needs, portfolio performance, market opportunities, and product-market fit.\n\nI believe my key strength is my ability to look at a product end to end, connect customer, business, risk, and technology perspectives, and turn production issues into opportunities for continuous product improvement."""
+
+TELL_ME_TH = """ปัจจุบันดิฉันดูแลงานด้าน Digital Lending โดยดูแล end-to-end product journey ตั้งแต่การพัฒนา requirement การทดสอบ ไปจนถึง production และการดูแลปัญหาหลังจากระบบขึ้นใช้งานค่ะ\n\nประสบการณ์หลักของดิฉันอยู่ใน 3 ด้านค่ะ หนึ่ง คือ Product Management การทำงานร่วมกับหลายทีมเพื่อพัฒนาและปรับปรุง customer journey สอง คือ Production & Incident Management โดยเฉพาะการวิเคราะห์ผลกระทบ หา root cause และวางทั้ง workaround และ long-term solution และสาม คือ Risk & Compliance ซึ่งต้องทำงานร่วมกับ Risk, Compliance, Legal, Operations และ Technology เพื่อให้ product ตอบโจทย์ลูกค้าและอยู่ภายใต้ข้อกำหนดที่เหมาะสม\n\nสิ่งที่ดิฉันสนใจสำหรับตำแหน่งนี้ คือโอกาสที่จะขยายจากการดูแล Digital Lending ไปสู่การดูแล Personal Loan Product ในภาพที่กว้างขึ้น ทั้งด้าน strategy, customer needs, portfolio performance, market opportunity และ product-market fit\n\nดิฉันคิดว่าจุดแข็งของตัวเองคือการมองปัญหาแบบ end to end เชื่อม customer, business, risk และ technology เข้าด้วยกัน และเปลี่ยนปัญหาที่เกิดขึ้นใน production ให้กลายเป็นโอกาสในการพัฒนา product ให้ดีขึ้นค่ะ"""
+
+# =========================================================
+# SESSION STATE
+# =========================================================
+if "page" not in st.session_state:
+    st.session_state.page = "Practice"
+if "current_index" not in st.session_state:
+    st.session_state.current_index = 0
+if "show_answer" not in st.session_state:
+    st.session_state.show_answer = False
+if "answer_status" not in st.session_state:
+    st.session_state.answer_status = {q["id"]: None for q in QUESTIONS}
+if "attempt_count" not in st.session_state:
+    st.session_state.attempt_count = 0
+
+
+def navigate(page: str):
+    st.session_state.page = page
+    st.session_state.current_index = 0
+    st.session_state.show_answer = False
+
+
+def get_review_questions():
+    return [q for q in QUESTIONS if st.session_state.answer_status.get(q["id"]) == "notyet"]
+
+
+def get_active_questions():
+    if st.session_state.page == "Review":
+        return get_review_questions()
+    return QUESTIONS
+
+
+def get_current_question():
+    active = get_active_questions()
+    if not active:
+        return None, active
+    if st.session_state.current_index >= len(active):
+        st.session_state.current_index = 0
+    return active[st.session_state.current_index], active
+
+
+def next_question():
+    active = get_active_questions()
+    if not active:
+        st.session_state.current_index = 0
+    else:
+        st.session_state.current_index = (st.session_state.current_index + 1) % len(active)
+    st.session_state.show_answer = False
+
+
+def mark_answer(status: str):
+    q, active_before = get_current_question()
+    if q is None:
+        return
+
+    old_index = st.session_state.current_index
+    st.session_state.answer_status[q["id"]] = status
+    st.session_state.attempt_count += 1
+    st.session_state.show_answer = False
+
+    if st.session_state.page == "Review":
+        active_after = get_review_questions()
+        if active_after:
+            # Keep the same index after removing a mastered question;
+            # the next weak question slides into this position.
+            st.session_state.current_index = old_index % len(active_after)
+        else:
+            st.session_state.current_index = 0
+    else:
+        st.session_state.current_index = (old_index + 1) % len(QUESTIONS)
+
+
+def reset_progress():
+    st.session_state.answer_status = {q["id"]: None for q in QUESTIONS}
+    st.session_state.attempt_count = 0
+    st.session_state.current_index = 0
+    st.session_state.show_answer = False
+
+
+def ready_count():
+    return sum(1 for v in st.session_state.answer_status.values() if v == "can")
+
+
+def weak_count():
+    return sum(1 for v in st.session_state.answer_status.values() if v == "notyet")
+
+
+def practiced_count():
+    return sum(1 for v in st.session_state.answer_status.values() if v is not None)
+
+
+# =========================================================
+# CSS — MOBILE FIRST
+# Important: styles are scoped by Streamlit container keys,
+# so changing one button does NOT accidentally recolor everything.
+# =========================================================
+st.markdown(
+    """
 <style>
-/* =======================================================
-   FINAL APPROVED MOBILE UI — Samsung S23 Ultra reference
-   ======================================================= */
-
-html {
-    color-scheme: light !important;
+:root {
+    --text: #47424a;
+    --muted: #8d8790;
+    --line: #eee8ed;
+    --pink: #f8dce8;
+    --peach: #f7e3cf;
+    --yellow: #f7efb7;
+    --mint: #dcefe1;
+    --lavender: #f1e8f7;
+    --answer: #f7f6fd;
 }
 
-html, body,
-[data-testid="stAppViewContainer"],
-[data-testid="stMain"] {
-    background: #fffdfd !important;
+html, body, [class*="css"] {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans Thai", Arial, sans-serif;
+}
+
+.stApp {
+    background: #ffffff !important;
 }
 
 .block-container {
-    max-width: 800px !important;
-    padding-top: 0.65rem !important;
-    padding-bottom: 0.85rem !important;
-    padding-left: 1.05rem !important;
-    padding-right: 1.05rem !important;
+    max-width: 760px;
+    padding-top: 1.15rem;
+    padding-left: 1.15rem;
+    padding-right: 1.15rem;
+    padding-bottom: 2rem;
 }
 
-/* Hide Streamlit's internal page chrome */
-header, footer, #MainMenu,
-[data-testid="stToolbar"],
-[data-testid="stStatusWidget"],
-[data-testid="stDecoration"],
-[data-testid="stAppDeployButton"],
-.stDeployButton {
-    display: none !important;
-    visibility: hidden !important;
+#MainMenu, footer, header {
+    visibility: hidden;
 }
 
-/* =======================================================
-   HEADER
-   ======================================================= */
-
-.main-title {
-    text-align: center;
-    font-size: clamp(36px, 5.2vw, 50px);
-    font-weight: 900;
-    line-height: 1.02;
-    margin: 0 0 4px 0;
-    white-space: nowrap;
-    letter-spacing: -0.45px;
-
-    background: linear-gradient(
-        90deg,
-        #efa6d5,
-        #d2b3fa,
-        #acc4ff,
-        #8fddff,
-        #90e8d3,
-        #beeaa9,
-        #efd79b,
-        #f3b7b8
-    );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-/* Rainbow byline, deliberately smaller than line 3 */
-.by-line {
-    text-align: center;
-    font-size: 12px;
-    font-weight: 800;
-    line-height: 1.15;
-    margin: 0 0 11px 0;
-
-    background: linear-gradient(
-        90deg,
-        #d7b0f7,
-        #9ec9ff,
-        #8ddfd7,
-        #b9e89e,
-        #f2c8a2,
-        #eea6c8
-    );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.active-category {
-    text-align: center;
-    color: #727784;
-    font-size: 15.5px;
-    font-weight: 800;
-    line-height: 1.2;
-    margin: 0 0 13px 0;
-}
-
-/* =======================================================
-   SCORE
-   ======================================================= */
-
-.score-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 10px;
-    width: 100%;
-    margin: 0 0 30px 0;
-}
-
-.score-card {
-    min-width: 0;
-    min-height: 72px;
-    padding: 8px 5px;
-    box-sizing: border-box;
-    border-radius: 18px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    box-shadow: 0 2px 8px rgba(50,45,65,0.03);
-}
-
-.score-purple {
-    background: #edddfb;
-    border: 1.4px solid #d7b3f6;
-}
-
-.score-pink {
-    background: #ffdee9;
-    border: 1.4px solid #f4b4cc;
-}
-
-.score-green {
-    background: #ddf4e4;
-    border: 1.4px solid #9cddae;
-}
-
-.score-label {
-    color: #727784;
-    font-size: 11px;
-    font-weight: 800;
-    white-space: nowrap;
-    margin-bottom: 4px;
-}
-
-.score-number {
-    color: #565b67;
-    font-size: 27px;
-    line-height: 1;
-    font-weight: 900;
-}
-
-/* =======================================================
-   QUESTION
-   ======================================================= */
-
-.question-shell {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 0 9px 0;
-}
-
-.question-center {
-    width: 100%;
-    min-width: 0;
-    text-align: center;
-}
-
-.question-label,
-.review-label {
-    text-align: center;
-    color: #727784;
-    font-size: 17px;
-    font-weight: 800;
-    line-height: 1.2;
-    margin: 0 0 15px 0;
-}
-
-.review-label {
-    color: #8c7b91;
-}
-
-/* =======================================================
-   CHINESE WORD — approximately +20% vs previous approved mockup
-   ======================================================= */
-
-.chinese-short,
-.chinese-medium,
-.chinese-long {
-    font-weight: 900;
-    line-height: 1.00;
-    text-align: center;
-    display: inline-block;
-    white-space: nowrap;
-    max-width: 100%;
+/* ---------- Header ---------- */
+.pm-title {
     margin: 0;
-
+    padding: 0;
+    white-space: nowrap;
+    font-size: clamp(1.72rem, 6vw, 3.05rem);
+    line-height: 1.05;
+    font-weight: 850;
+    letter-spacing: -0.035em;
     background: linear-gradient(
         90deg,
-        #efa6d5,
-        #d2b3fa,
-        #acc4ff,
-        #8fddff,
-        #90e8d3,
-        #beeaa9,
-        #efd79b,
-        #f3b7b8
+        #cbbcff 0%,
+        #a8d9ff 20%,
+        #b9eadf 40%,
+        #f5e8ab 60%,
+        #f7d1b8 80%,
+        #f4c1dd 100%
     );
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
     background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
 }
 
-.chinese-short {
-    font-size: clamp(72px, 11vw, 102px);
+.pm-subtitle {
+    color: #817b83;
+    font-size: clamp(0.95rem, 3.4vw, 1.18rem);
+    line-height: 1.3;
+    margin-top: 0.18rem;
+    margin-bottom: 0.55rem;
+    font-weight: 500;
+    white-space: nowrap;
 }
 
-.chinese-medium {
-    font-size: clamp(49px, 8vw, 70px);
+.soft-divider {
+    height: 1px;
+    background: var(--line);
+    margin: 0.9rem 0 0.95rem 0;
 }
 
-.chinese-long {
-    font-size: clamp(34px, 5.6vw, 50px);
-}
-
-/* =======================================================
-   ANSWER BUTTONS
-   ======================================================= */
-
-.st-key-answer_area div[data-testid="stVerticalBlock"] {
-    gap: 0.42rem !important;
-}
-
-.st-key-answer_area div[data-testid="stButton"] > button,
-.st-key-answer_area div[data-testid="stButton"] > button:hover,
-.st-key-answer_area div[data-testid="stButton"] > button:focus,
-.st-key-answer_area div[data-testid="stButton"] > button:active {
-    width: 100% !important;
-    min-height: 49px !important;
-    padding: 0.48rem 0.72rem !important;
-
-    border-radius: 15px !important;
-    background: #ffffff !important;
-    background-color: #ffffff !important;
-    color: #4d5260 !important;
-
-    border: 1px solid #dedfe5 !important;
-    box-shadow: none !important;
-    outline: none !important;
-}
-
-.st-key-answer_area div[data-testid="stButton"] > button p,
-.st-key-answer_area div[data-testid="stButton"] > button span {
-    color: #4d5260 !important;
-    -webkit-text-fill-color: #4d5260 !important;
-    font-size: 16px !important;
-    font-weight: 500 !important;
-}
-
-/* =======================================================
-   CATEGORY SELECTOR — FINAL LAUNCH
-   - five pills stay on ONE row
-   - NO st.radio
-   - NO native black radio
-   - exactly ONE CSS circle
-   ======================================================= */
-
-.bottom-category-title {
-    text-align: center;
-    color: #727784;
-    font-size: 12px;
-    font-weight: 800;
-    margin: 15px 0 6px 0;
-}
-
-.st-key-category_selector [data-testid="stHorizontalBlock"] {
+/* ---------- Force navigation to stay ONE ROW on mobile ---------- */
+.st-key-nav_row [data-testid="stHorizontalBlock"] {
     display: flex !important;
     flex-direction: row !important;
     flex-wrap: nowrap !important;
-    justify-content: center !important;
+    gap: 0.45rem !important;
     align-items: center !important;
-    gap: 5px !important;
-    width: 100% !important;
 }
 
-/* Critical: prevent Streamlit from stacking columns on mobile */
-.st-key-category_selector [data-testid="column"] {
+.st-key-nav_row [data-testid="column"] {
     flex: 1 1 0 !important;
-    width: 0 !important;
+    width: 25% !important;
     min-width: 0 !important;
-    max-width: none !important;
 }
 
-.st-key-category_selector div[data-testid="stButton"] {
-    width: 100% !important;
-    margin: 0 !important;
-}
-
-.st-key-category_selector div[data-testid="stButton"] > button,
-.st-key-category_selector div[data-testid="stButton"] > button:hover,
-.st-key-category_selector div[data-testid="stButton"] > button:focus,
-.st-key-category_selector div[data-testid="stButton"] > button:active {
-    width: 100% !important;
-    min-width: 0 !important;
-    min-height: 33px !important;
-    height: 33px !important;
-
-    padding: 0 4px !important;
-
-    border-radius: 999px !important;
-    border: 1px solid #e0e1e6 !important;
-
-    background: #ffffff !important;
-    background-color: #ffffff !important;
-
-    color: #555b69 !important;
-
-    box-shadow: none !important;
-    outline: none !important;
-
+.st-key-nav_row [data-testid="column"] > div {
     display: flex !important;
-    align-items: center !important;
     justify-content: center !important;
-    gap: 4px !important;
-
-    white-space: nowrap !important;
-    overflow: hidden !important;
 }
 
-/* EXACTLY ONE category circle */
-.st-key-category_selector div[data-testid="stButton"] > button::before {
-    content: "";
-    display: inline-block;
-
-    width: 11px;
-    height: 11px;
-    min-width: 11px;
-
-    border-radius: 50%;
-    box-sizing: border-box;
-
-    background: #ffffff !important;
-    border: 1.5px solid #d4d7df !important;
-}
-
-/* selected pill */
-.st-key-category_selector
-button[kind="primary"],
-.st-key-category_selector
-[data-testid="stBaseButton-primary"] {
-    background: linear-gradient(
-        135deg,
-        #f8d8e8,
-        #e6d9ff,
-        #dff4e7
-    ) !important;
-
-    border-color: #dfc3e7 !important;
-}
-
-/* selected circle = white center + pink ring */
-.st-key-category_selector
-button[kind="primary"]::before,
-.st-key-category_selector
-[data-testid="stBaseButton-primary"]::before {
-    background: #ffffff !important;
-    border: 2.5px solid #ff6477 !important;
-}
-
-.st-key-category_selector div[data-testid="stButton"] > button p,
-.st-key-category_selector div[data-testid="stButton"] > button span {
-    color: #555b69 !important;
-    -webkit-text-fill-color: #555b69 !important;
-
-    opacity: 1 !important;
-
-    font-size: 9.1px !important;
-    font-weight: 800 !important;
-    line-height: 1 !important;
-
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: clip !important;
-}
-
-/* =======================================================
-   RESET + QUOTE
-   ======================================================= */
-
-.st-key-bottom_actions {
-    margin-top: 11px !important;
-}
-
-.st-key-bottom_actions [data-testid="stHorizontalBlock"] {
-    align-items: center !important;
-    gap: 1.15rem !important;
-}
-
-.st-key-bottom_actions div[data-testid="stButton"] > button,
-.st-key-bottom_actions div[data-testid="stButton"] > button:hover,
-.st-key-bottom_actions div[data-testid="stButton"] > button:focus,
-.st-key-bottom_actions div[data-testid="stButton"] > button:active {
-    width: 40px !important;
-    min-width: 40px !important;
-    max-width: 40px !important;
-
-    min-height: 37px !important;
-    height: 37px !important;
-
-    padding: 0 !important;
-
-    border-radius: 10px !important;
-
-    background: #ffffff !important;
-    background-color: #ffffff !important;
-
-    color: #727784 !important;
-
-    border: 1px solid #dedfe5 !important;
+.st-key-nav_row button {
+    width: auto !important;
+    min-width: 0 !important;
+    min-height: 48px !important;
+    padding: 0.55rem 0.68rem !important;
+    border-radius: 18px !important;
+    border: 1px solid rgba(140, 125, 140, 0.10) !important;
     box-shadow: none !important;
-    outline: none !important;
-}
-
-.st-key-bottom_actions div[data-testid="stButton"] > button p,
-.st-key-bottom_actions div[data-testid="stButton"] > button span {
-    color: #727784 !important;
-    -webkit-text-fill-color: #727784 !important;
-    font-size: 17px !important;
+    color: #4f4a51 !important;
+    font-size: clamp(0.86rem, 3.3vw, 1rem) !important;
     font-weight: 500 !important;
 }
 
-.st-key-bottom_actions button,
-.st-key-bottom_actions button[kind="secondary"],
-.st-key-bottom_actions [data-testid="stBaseButton-secondary"] {
-    background: #ffffff !important;
-    background-color: #ffffff !important;
-    color: #727784 !important;
-    border-color: #dedfe5 !important;
+.st-key-nav_row [data-testid="column"]:nth-child(1) button {
+    background: #f8dce8 !important;
+}
+.st-key-nav_row [data-testid="column"]:nth-child(2) button {
+    background: #f7e3cf !important;
+}
+.st-key-nav_row [data-testid="column"]:nth-child(3) button {
+    background: #f7efb7 !important;
+}
+.st-key-nav_row [data-testid="column"]:nth-child(4) button {
+    background: #dcefe1 !important;
+}
+
+/* ---------- Stats ---------- */
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.65rem;
+    margin-top: 0.15rem;
+    margin-bottom: 0.65rem;
+}
+.stat-card {
+    background: #ffffff;
+    border: 1px solid #eee8ed;
+    border-radius: 22px;
+    padding: 0.95rem 0.35rem 0.85rem;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(120, 100, 120, 0.035);
+}
+.stat-value {
+    color: #403b44;
+    font-size: clamp(1.6rem, 6vw, 2.05rem);
+    line-height: 1;
+    font-weight: 850;
+    margin-bottom: 0.45rem;
+}
+.stat-label {
+    color: #8e8790;
+    font-size: clamp(0.78rem, 3vw, 0.95rem);
+    font-weight: 500;
+}
+
+/* ---------- Progress ---------- */
+[data-testid="stProgress"] {
+    margin-top: 0.15rem;
+}
+[data-testid="stProgress"] > div > div {
+    background-color: #f2edf2 !important;
+    border-radius: 999px !important;
+}
+[data-testid="stProgress"] > div > div > div {
+    background: linear-gradient(90deg, #eadff6, #f6dce9) !important;
+    border-radius: 999px !important;
+}
+.progress-caption {
+    color: #8a848c;
+    font-size: clamp(0.88rem, 3.3vw, 1rem);
+    line-height: 1.45;
+    margin-top: 0.45rem;
+    margin-bottom: 0.55rem;
+    font-weight: 500;
+}
+
+/* ---------- Practice card ---------- */
+.q-card {
+    background: #ffffff;
+    border: 1px solid #eee8ed;
+    border-radius: 28px;
+    padding: 1.25rem 1.35rem 1.35rem;
+    box-shadow: 0 2px 10px rgba(120, 100, 120, 0.035);
+    margin-top: 0.45rem;
+}
+.cat-pill {
+    display: inline-block;
+    background: #f1e8f7;
+    color: #73677c;
+    border-radius: 999px;
+    padding: 0.48rem 0.8rem;
+    font-size: clamp(0.78rem, 3vw, 0.92rem);
+    line-height: 1.2;
+    font-weight: 700;
+    margin-bottom: 0.9rem;
+}
+.question-text {
+    color: #3e3941;
+    font-size: clamp(1.22rem, 4.8vw, 1.62rem);
+    line-height: 1.46;
+    font-weight: 800;
+}
+.instruction {
+    color: #928a94;
+    text-align: center;
+    font-size: clamp(0.9rem, 3.4vw, 1rem);
+    margin: 0.7rem 0 0.45rem;
+}
+
+/* ---------- ONLY the show-answer button ---------- */
+.st-key-show_answer_button button {
+    width: auto !important;
+    min-height: 52px !important;
+    padding: 0.62rem 0.95rem !important;
+    border-radius: 18px !important;
+    border: 1px solid #eaddea !important;
+    background: linear-gradient(135deg, #f7e3f2 0%, #eee8fb 52%, #e6f0ff 100%) !important;
+    color: #5b5360 !important;
+    font-size: 1rem !important;
+    font-weight: 650 !important;
+    box-shadow: none !important;
+}
+.st-key-show_answer_button button:hover,
+.st-key-show_answer_button button:focus {
+    background: linear-gradient(135deg, #f7e3f2 0%, #eee8fb 52%, #e6f0ff 100%) !important;
+    color: #5b5360 !important;
+    border-color: #dfd1e1 !important;
+}
+
+/* ---------- Answer ---------- */
+.answer-box {
+    background: #f7f6fd;
+    border: 1px solid #e9e5ef;
+    border-radius: 26px;
+    padding: 1.25rem 1.3rem;
+    margin-top: 0.7rem;
+    margin-bottom: 0.6rem;
+}
+.answer-title {
+    color: #4b454f;
+    font-size: 1.07rem;
+    font-weight: 800;
+    margin-bottom: 0.8rem;
+}
+.answer-text {
+    color: #5d5760;
+    font-size: clamp(1.02rem, 3.9vw, 1.16rem);
+    line-height: 1.72;
+    font-weight: 450;
+    white-space: pre-wrap;
+}
+
+/* ---------- Answer status buttons: keep existing pink + peach ---------- */
+.st-key-answer_actions [data-testid="stHorizontalBlock"] {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 0.55rem !important;
+}
+.st-key-answer_actions [data-testid="column"] {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+}
+.st-key-answer_actions button {
+    width: auto !important;
+    min-height: 52px !important;
+    padding: 0.62rem 0.82rem !important;
+    border-radius: 18px !important;
+    border: 1px solid rgba(140, 125, 140, 0.08) !important;
+    color: #5a535c !important;
+    font-size: 0.98rem !important;
+    font-weight: 600 !important;
+    box-shadow: none !important;
+}
+.st-key-answer_actions [data-testid="column"]:nth-child(1) button {
+    background: #f8dce8 !important;
+}
+.st-key-answer_actions [data-testid="column"]:nth-child(2) button {
+    background: #f7e3cf !important;
+}
+
+/* ---------- Small utility buttons ---------- */
+.st-key-practice_utilities button,
+.st-key-home_actions button,
+.st-key-core_reset button {
+    width: 100% !important;
+    min-height: 50px !important;
+    border-radius: 18px !important;
+    border: 1px solid #eee5eb !important;
+    background: #fbf8fb !important;
+    color: #6b646d !important;
     box-shadow: none !important;
 }
 
-/* approximately +20% vs previous approved mockup */
-.quote-text {
-    padding: 0;
-    margin: 0;
-
+/* ---------- Home/Core ---------- */
+.info-card,
+.core-card,
+.tmy-card {
+    background: #fdfbfd;
+    border: 1px solid #eee7ed;
+    border-radius: 26px;
+    padding: 1.3rem 1.35rem;
+    color: #625c64;
+    line-height: 1.72;
+    margin-top: 0.55rem;
+}
+.section-title {
+    color: #6f6872;
+    font-weight: 800;
+    font-size: 1.08rem;
+    margin-bottom: 0.8rem;
+}
+.core-line {
+    padding: 0.68rem 0.78rem;
+    background: #ffffff;
+    border: 1px solid #f0eaf0;
+    border-radius: 16px;
+    margin-bottom: 0.55rem;
+    color: #645f66;
+    line-height: 1.5;
+}
+.lang-pill {
+    display: inline-block;
+    padding: 0.35rem 0.65rem;
+    border-radius: 999px;
+    background: #f1e8f7;
+    color: #726878;
+    font-weight: 800;
+    margin-top: 0.55rem;
+    margin-bottom: 0.5rem;
+}
+.tmy-text {
+    white-space: pre-wrap;
+    color: #5d5760;
+    line-height: 1.72;
+    font-size: 0.98rem;
+}
+.empty-card {
+    background: #fdfbfd;
+    border: 1px dashed #e8dfe8;
+    border-radius: 24px;
+    padding: 1.2rem;
     text-align: center;
-    font-size: clamp(23px, 4.2vw, 32px);
-    font-weight: 850;
-    font-style: italic;
-    line-height: 1.32;
-    white-space: normal;
-
-    background: linear-gradient(
-        90deg,
-        #efa6d5,
-        #d2b3fa,
-        #acc4ff,
-        #8fddff,
-        #90e8d3,
-        #beeaa9,
-        #efd79b,
-        #f3b7b8
-    );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #817a83;
+    margin-top: 0.7rem;
 }
 
-/* =======================================================
-   MOBILE — tuned to Samsung S23 Ultra proportions
-   ======================================================= */
-
-@media (max-width: 520px) {
-
+@media (max-width: 420px) {
     .block-container {
-        max-width: 100% !important;
-
-        padding-top: 0.38rem !important;
-        padding-bottom: 0.50rem !important;
-
-        padding-left: 0.62rem !important;
-        padding-right: 0.62rem !important;
+        padding-left: 0.72rem;
+        padding-right: 0.72rem;
+        padding-top: 0.85rem;
     }
-
-    /* +20% from previous mockup, but still single line */
-    .main-title {
-        font-size: clamp(36px, 10.6vw, 42px) !important;
-        line-height: 1.01 !important;
-        margin-bottom: 4px !important;
-
-        white-space: nowrap !important;
-        letter-spacing: -0.75px !important;
+    .st-key-nav_row [data-testid="stHorizontalBlock"] {
+        gap: 0.22rem !important;
     }
-
-    .by-line {
-        font-size: 12px !important;
-        margin-bottom: 10px !important;
-    }
-
-    .active-category {
-        font-size: 15px !important;
-        margin-bottom: 12px !important;
-    }
-
-    /* score */
-    .score-grid {
-        gap: 7px !important;
-        margin-bottom: 28px !important;
-    }
-
-    .score-card {
-        min-height: 61px !important;
-        padding: 6px 3px !important;
+    .st-key-nav_row button {
+        min-height: 46px !important;
+        padding: 0.48rem 0.5rem !important;
         border-radius: 16px !important;
     }
-
-    .score-label {
-        font-size: 9.6px !important;
-        margin-bottom: 3px !important;
+    .stat-grid {
+        gap: 0.42rem;
     }
-
-    .score-number {
-        font-size: 23px !important;
+    .stat-card {
+        border-radius: 19px;
+        padding: 0.85rem 0.2rem 0.75rem;
     }
-
-    /* question */
-    .question-shell {
-        margin: 0 0 8px 0 !important;
+    .q-card {
+        border-radius: 24px;
+        padding: 1rem 1.05rem 1.15rem;
     }
-
-    .question-label,
-    .review-label {
-        font-size: 15.5px !important;
-        margin-bottom: 14px !important;
-    }
-
-    /* Chinese +20% */
-    .chinese-short {
-        font-size: clamp(68px, 20vw, 84px) !important;
-    }
-
-    .chinese-medium {
-        font-size: clamp(46px, 13.4vw, 59px) !important;
-    }
-
-    .chinese-long {
-        font-size: clamp(31px, 8.5vw, 42px) !important;
-    }
-
-    /* answers */
-    .st-key-answer_area div[data-testid="stVerticalBlock"] {
-        gap: 0.36rem !important;
-    }
-
-    .st-key-answer_area div[data-testid="stButton"] > button,
-    .st-key-answer_area div[data-testid="stButton"] > button:hover,
-    .st-key-answer_area div[data-testid="stButton"] > button:focus,
-    .st-key-answer_area div[data-testid="stButton"] > button:active {
-        min-height: 45px !important;
-        padding: 0.41rem 0.58rem !important;
-        border-radius: 14px !important;
-
-        background: #ffffff !important;
-        background-color: #ffffff !important;
-
-        color: #4d5260 !important;
-
-        border: 1px solid #dedfe5 !important;
-        box-shadow: none !important;
-    }
-
-    .st-key-answer_area div[data-testid="stButton"] > button p,
-    .st-key-answer_area div[data-testid="stButton"] > button span {
-        font-size: 14.5px !important;
-    }
-
-    /* Category selector — force all FIVE pills onto ONE row */
-    .bottom-category-title {
-        font-size: 11.5px !important;
-        margin-top: 12px !important;
-        margin-bottom: 5px !important;
-    }
-
-    .st-key-category_selector [data-testid="stHorizontalBlock"] {
-        display: flex !important;
-        flex-direction: row !important;
-        flex-wrap: nowrap !important;
-        justify-content: center !important;
-        align-items: center !important;
-
-        width: 100% !important;
-        gap: 3px !important;
-    }
-
-    .st-key-category_selector [data-testid="column"] {
-        flex: 1 1 0 !important;
-        width: 0 !important;
-        min-width: 0 !important;
-        max-width: none !important;
-    }
-
-    .st-key-category_selector div[data-testid="stButton"] {
-        width: 100% !important;
-        min-width: 0 !important;
-    }
-
-    .st-key-category_selector div[data-testid="stButton"] > button,
-    .st-key-category_selector div[data-testid="stButton"] > button:hover,
-    .st-key-category_selector div[data-testid="stButton"] > button:focus,
-    .st-key-category_selector div[data-testid="stButton"] > button:active {
-        width: 100% !important;
-        min-width: 0 !important;
-
-        min-height: 31px !important;
-        height: 31px !important;
-
-        padding: 0 2px !important;
-
-        gap: 2.5px !important;
-
-        background: #ffffff !important;
-        background-color: #ffffff !important;
-
-        color: #555b69 !important;
-
-        border: 1px solid #e0e1e6 !important;
-        border-radius: 999px !important;
-
-        overflow: hidden !important;
-    }
-
-    .st-key-category_selector div[data-testid="stButton"] > button::before {
-        width: 9px !important;
-        height: 9px !important;
-        min-width: 9px !important;
-
-        background: #ffffff !important;
-        border: 1.4px solid #d4d7df !important;
-    }
-
-    .st-key-category_selector
-    button[kind="primary"]::before,
-    .st-key-category_selector
-    [data-testid="stBaseButton-primary"]::before {
-        background: #ffffff !important;
-        border: 2px solid #ff6477 !important;
-    }
-
-    .st-key-category_selector div[data-testid="stButton"] > button p,
-    .st-key-category_selector div[data-testid="stButton"] > button span {
-        color: #555b69 !important;
-        -webkit-text-fill-color: #555b69 !important;
-        opacity: 1 !important;
-
-        font-size: 8.15px !important;
-        font-weight: 800 !important;
-        line-height: 1 !important;
-
-        white-space: nowrap !important;
-        overflow: hidden !important;
-    }
-
-    /* reset + quote immediately below categories */
-    .st-key-bottom_actions {
-        margin-top: 10px !important;
-    }
-
-    .st-key-bottom_actions [data-testid="stHorizontalBlock"] {
-        gap: 0.95rem !important;
-    }
-
-    .st-key-bottom_actions div[data-testid="stButton"] > button,
-    .st-key-bottom_actions div[data-testid="stButton"] > button:hover,
-    .st-key-bottom_actions div[data-testid="stButton"] > button:focus,
-    .st-key-bottom_actions div[data-testid="stButton"] > button:active {
-        width: 36px !important;
-        min-width: 36px !important;
-        max-width: 36px !important;
-
-        min-height: 34px !important;
-        height: 34px !important;
-
-        background: #ffffff !important;
-        background-color: #ffffff !important;
-
-        color: #727784 !important;
-
-        border: 1px solid #dedfe5 !important;
-    }
-
-    /* Quote +20%, wrapping into 2–3 lines is allowed */
-    .quote-text {
-        font-size: clamp(23px, 7.8vw, 31px) !important;
-        line-height: 1.32 !important;
-        text-align: center !important;
-        white-space: normal !important;
+    .answer-box {
+        border-radius: 23px;
+        padding: 1.05rem 1.08rem;
     }
 }
-
-/* FINAL reset protection against Android/PWA dark theme */
-.st-key-bottom_actions button,
-.st-key-bottom_actions button:hover,
-.st-key-bottom_actions button:focus,
-.st-key-bottom_actions button:active,
-.st-key-bottom_actions button[kind="secondary"],
-.st-key-bottom_actions [data-testid="stBaseButton-secondary"] {
-    background: #ffffff !important;
-    background-color: #ffffff !important;
-    color: #727784 !important;
-    -webkit-text-fill-color: #727784 !important;
-    border-color: #dedfe5 !important;
-    box-shadow: none !important;
-}
-
 </style>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 # =========================================================
-# VOCABULARY
+# HEADER + NAVIGATION
 # =========================================================
+st.markdown('<div class="pm-title">Product Management Prep</div>', unsafe_allow_html=True)
+st.markdown('<div class="pm-subtitle">Speak first → compare → repeat weak answers</div>', unsafe_allow_html=True)
 
-VOCAB_SET_1 = [
-    ('系统', 'System'),
-    ('做系统', 'Build System'),
-    ('开发', 'Development'),
-    ('开发人员', 'Developer'),
-    ('需求', 'Requirement'),
-    ('请求', 'Request'),
-    ('调用接口', 'Call API'),
-    ('参数', 'Parameter'),
-    ('响应', 'Response'),
-    ('测试', 'Testing'),
-    ('测试系统', 'Test System'),
-    ('系统测试', 'System Testing'),
-    ('测试用例', 'Test Case'),
-    ('验收测试', 'UAT / Acceptance Testing'),
-    ('签字确认', 'Sign-off'),
-    ('确认', 'Confirm'),
-    ('流程', 'Process'),
-    ('人工流程', 'Manual Process'),
-    ('人工审核', 'Manual Review'),
-    ('自动', 'Automatic'),
-    ('自动化流程', 'Automation Process'),
-    ('上线', 'Go Live'),
-    ('系统事故', 'System Incident'),
-    ('解决问题', 'Fix / Solve Problem'),
-    ('异常', 'Exception'),
-    ('错误', 'Error'),
-    ('日志', 'Log'),
-    ('数据', 'Data'),
-    ('数据库', 'Database'),
-    ('数据源', 'Data Source'),
-    ('字段', 'Field'),
-    ('为空', 'Empty / Blank'),
-    ('空值', 'Null / Empty Value'),
-    ('数据验证', 'Data Validation'),
-    ('数据缺失', 'Missing Data'),
-    ('数据错误', 'Incorrect / Wrong Data'),
-    ('数据流', 'Data Flow'),
-    ('业务部门', 'Business Division'),
-    ('项目', 'Project'),
-    ('范围', 'Scope'),
-    ('需要', 'Need / A Must'),
-    ('先', 'Before / First'),
-    ('产品', 'Product'),
-    ('目标', 'Goal'),
-    ('前端', 'Frontend'),
-    ('后端', 'Backend'),
-    ('显示', 'Display'),
-    ('不正确', 'Incorrect'),
-    ('返回', 'Return'),
-    ('发生', 'Occur'),
-    ('层', 'Layer'),
-    ('用户', 'User'),
-    ('点击', 'Click'),
-    ('按钮', 'Button'),
-    ('传递', 'Pass / ส่งค่า'),
-    ('哪些', 'Which / อะไรบ้าง'),
-    ('使用', 'Use'),
-    ('令牌', 'Token'),
-    ('错误码', 'Error Code'),
-    ('时', 'When / ตอนที่'),
-    ('解释', 'Explain'),
-    ('架构', 'Architecture'),
-    ('传到', 'Flow To / A → B'),
-    ('连接', 'Connect'),
-    ('步骤', 'Step'),
-    ('同步', 'Synchronous'),
-    ('异步', 'Asynchronous'),
-    ('不可用', 'Unavailable'),
-    ('备用', 'Backup / Fallback'),
-    ('方案', 'Solution'),
-    ('备用方案', 'Contingency Plan'),
-    ('环境', 'Environment'),
-    ('版本', 'Version'),
-    ('流水线', 'Pipeline'),
-    ('失败', 'Fail'),
-    ('成功', 'Success'),
-    ('回滚', 'Rollback'),
-    ('出现', 'Appear / Occur'),
-    ('进行', 'Proceed / ดำเนินการ'),
-    ('发布', 'Release'),
-    ('金丝雀', 'Canary'),
-    ('提供', 'Provide'),
-    ('根本', 'Root'),
-    ('原因', 'Cause'),
-    ('根本原因', 'Root Cause'),
-    ('影响', 'Impact'),
-    ('明确', 'Clear / ชัดเจน'),
-    ('增加', 'Increase'),
-    ('复盘', 'Postmortem'),
-    ('主要', 'Main'),
-    ('衡量', 'Measure'),
-    ('而', 'But / แต่'),
-    ('不仅仅', 'Not Only / ไม่เพียงแค่'),
-    ('产出', 'Output'),
-    ('风险', 'Risk'),
-    ('最大', 'Biggest / Maximum'),
-    ('假设', 'Assumption'),
-    ('怎么', 'How'),
-    ('验证', 'Validate'),
-    ('标准', 'Standard')
-]
+with st.container(key="nav_row"):
+    c1, c2, c3, c4 = st.columns(4, gap="small")
+    with c1:
+        if st.button("Home", key="nav_home"):
+            navigate("Home")
+            st.rerun()
+    with c2:
+        if st.button("Practice", key="nav_practice"):
+            navigate("Practice")
+            st.rerun()
+    with c3:
+        if st.button("Review", key="nav_review"):
+            navigate("Review")
+            st.rerun()
+    with c4:
+        if st.button("Core", key="nav_core"):
+            navigate("Core")
+            st.rerun()
 
-
-VOCAB_SET_2 = [
-    ('这个', 'this'),
-    ('需求', 'Requirement'),
-    ('是', 'be, is'),
-    ('什么', 'what'),
-    ('业务', 'Business'),
-    ('部门', 'department'),
-    ('想', 'want, think'),
-    ('解决', 'Resolve'),
-    ('问题', 'Issue'),
-    ('项目', 'Project'),
-    ('的', 'possessive particle'),
-    ('范围', 'Scope'),
-    ('我们', 'we'),
-    ('需要', 'need'),
-    ('先', 'first, beforehand'),
-    ('确认', 'Confirm'),
-    ('产品', 'Product'),
-    ('目标', 'Goal'),
-    ('前端', 'Frontend'),
-    ('还是', 'or'),
-    ('后端', 'Backend'),
-    ('显示', 'display'),
-    ('数据', 'Data'),
-    ('不', 'not'),
-    ('正确', 'correct'),
-    ('返回', 'Return'),
-    ('了', 'completed-change particle'),
-    ('发生', 'Occur'),
-    ('在', 'at, in'),
-    ('哪', 'which'),
-    ('一', 'one'),
-    ('层', 'layer'),
-    ('用户', 'User'),
-    ('点击', 'click'),
-    ('按钮', 'button'),
-    ('后', 'after'),
-    ('没有', 'not have'),
-    ('响应', 'Response'),
-    ('怎么', 'how'),
-    ('调用', 'call, invoke'),
-    ('请求', 'Request'),
-    ('传', 'pass, transmit'),
-    ('哪些', 'which ones'),
-    ('参数', 'Parameter'),
-    ('使用', 'use'),
-    ('令牌', 'Token'),
-    ('错误', 'Error'),
-    ('时', 'when'),
-    ('系统', 'System'),
-    ('码', 'code'),
-    ('来自', 'come from'),
-    ('哪个', 'which'),
-    ('数据库', 'Database'),
-    ('主要', 'main, primary'),
-    ('数据源', 'Data Source'),
-    ('请', 'please'),
-    ('检查', 'check, inspect'),
-    ('里', 'inside'),
-    ('字段', 'Field'),
-    ('可以', 'can'),
-    ('为', 'be, become'),
-    ('空', 'empty, null'),
-    ('吗', 'question particle'),
-    ('两', 'two'),
-    ('个', 'general measure word'),
-    ('一致', 'consistent'),
-    ('给', 'give, for'),
-    ('我', 'I'),
-    ('解释', 'explain'),
-    ('一下', 'a bit'),
-    ('架构', 'Architecture'),
-    ('从', 'from'),
-    ('到', 'to'),
-    ('连接', 'Connect'),
-    ('步骤', 'step'),
-    ('同步', 'Synchronous'),
-    ('异步', 'Asynchronous'),
-    ('如果', 'if'),
-    ('可用', 'available'),
-    ('有', 'have'),
-    ('备用', 'backup, standby'),
-    ('方案', 'plan, solution'),
-    ('现在', 'now'),
-    ('环境', 'Environment'),
-    ('版本', 'Version'),
-    ('时候', 'time, when'),
-    ('上线', 'Go-live'),
-    ('流水线', 'Pipeline'),
-    ('失败', 'fail'),
-    ('出现', 'appear, occur'),
-    ('回滚', 'Rollback'),
-    ('进行', 'carry out, proceed'),
-    ('金丝雀', 'canary'),
-    ('发布', 'Release'),
-    ('提供', 'provide'),
-    ('日志', 'Log'),
-    ('根本', 'fundamental, root'),
-    ('原因', 'reason, cause'),
-    ('影响', 'Impact'),
-    ('多少', 'how much, how many')
-]
-
-
-VOCAB_SET_3 = [
-    ('客户', 'customer'),
-    ('时间', 'time'),
-    ('明显', 'obvious, significant'),
-    ('增加', 'increase'),
-    ('事故', 'Incident'),
-    ('做', 'do'),
-    ('复盘', 'Postmortem'),
-    ('衡量', 'measure'),
-    ('结果', 'Outcome'),
-    ('而', 'while, but'),
-    ('仅仅', 'merely, only'),
-    ('产出', 'output'),
-    ('风险', 'Risk'),
-    ('最', 'most'),
-    ('大', 'big'),
-    ('假设', 'Assumption'),
-    ('谁', 'who'),
-    ('验证', 'Validate'),
-    ('还', 'still, also'),
-    ('够', 'enough'),
-    ('明确', 'Clarify'),
-    ('非', 'non-'),
-    ('功能性', 'functional'),
-    ('必须', 'must'),
-    ('超过', 'exceed'),
-    ('秒', 'second'),
-    ('这', 'this'),
-    ('种', 'kind, type'),
-    ('异常', 'Exception'),
-    ('情况', 'situation'),
-    ('下', 'under, below'),
-    ('应该', 'should'),
-    ('处理', 'Handle'),
-    ('验收', 'Acceptance'),
-    ('标准', 'standard'),
-    ('必填', 'Mandatory'),
-    ('可选', 'Optional'),
-    ('变更', 'Change'),
-    ('向后', 'backward'),
-    ('兼容', 'Compatible'),
-    ('补充', 'supplement, add'),
-    ('场景', 'Scenario'),
-    ('任务', 'task'),
-    ('完成', 'Complete'),
-    ('测试', 'Testing'),
-    ('发现', 'discover, find'),
-    ('缺陷', 'Defect'),
-    ('会', 'will, can'),
-    ('回归', 'Regression'),
-    ('性能', 'Performance'),
-    ('怎么样', 'how is it'),
-    ('个人', 'personal'),
-    ('信息', 'information'),
-    ('依赖', 'Dependency'),
-    ('开发', 'Development'),
-    ('大概', 'approximately'),
-    ('多', 'many, much'),
-    ('长', 'long'),
-    ('缩小', 'reduce, shrink'),
-    ('技术', 'technology, technical'),
-    ('债', 'debt'),
-    ('接受', 'accept'),
-    ('这些', 'these'),
-    ('包含', 'contain, include'),
-    ('权限', 'Permission'),
-    ('访问', 'access'),
-    ('是否', 'whether'),
-    ('已经', 'already'),
-    ('加密', 'Encryption'),
-    ('记录', 'record'),
-    ('审计', 'Audit'),
-    ('服务', 'Service'),
-    ('账号', 'account'),
-    ('部署', 'Deployment'),
-    ('计划', 'plan'),
-    ('迁移', 'Migration'),
-    ('核对', 'Reconciliation'),
-    ('要', 'need to, will'),
-    ('监控', 'Monitoring'),
-    ('指标', 'Metric'),
-    ('今晚', 'tonight'),
-    ('生产', 'production'),
-    ('机器', 'machine'),
-    ('学习', 'learn, learning'),
-    ('语言', 'language'),
-    ('模型', 'Model'),
-    ('应用', 'application'),
-    ('所有', 'all'),
-    ('都', 'all'),
-    ('人工', 'manual, human'),
-    ('智能', 'intelligence'),
-    ('只是', 'only, merely'),
-    ('部分', 'part'),
-    ('输出', 'Output'),
-    ('存在', 'exist'),
-    ('确定性', 'certainty'),
-    ('定义', 'define'),
-    ('容忍度', 'tolerance'),
-    ('训练', 'Training'),
-    ('推理', 'Inference')
-]
-
-
-VOCAB_SET_4 = [
-    ('目前', 'Currently'),
-    ('延迟', 'Delay'),
-    ('支持', 'support'),
-    ('每', 'every'),
-    ('温度', 'temperature'),
-    ('设置', 'set, configure'),
-    ('上下文', 'Context'),
-    ('太', 'too'),
-    ('用', 'use'),
-    ('格式', 'Format'),
-    ('防止', 'prevent'),
-    ('提示词', 'Prompt'),
-    ('注入', 'Injection'),
-    ('嵌入', 'Embedding'),
-    ('切分', 'split, chunk'),
-    ('文档', 'document'),
-    ('元数据', 'Metadata'),
-    ('过滤', 'Filter'),
-    ('条件', 'condition'),
-    ('检索', 'Retrieval'),
-    ('相关', 'relevant, related'),
-    ('混合', 'hybrid, mixed'),
-    ('文件', 'Document'),
-    ('知识库', 'Knowledge Base'),
-    ('和', 'and'),
-    ('答案', 'answer'),
-    ('引用', 'Citation'),
-    ('来源', 'source'),
-    ('索引', 'Index'),
-    ('最后', 'last, final'),
-    ('更新', 'update'),
-    ('微调', 'Fine-tuning'),
-    ('对', 'toward, to'),
-    ('基准', 'benchmark, baseline'),
-    ('成本', 'Cost'),
-    ('更', 'more'),
-    ('高', 'high'),
-    ('经常', 'often'),
-    ('变化', 'change'),
-    ('所以', 'therefore'),
-    ('适合', 'suitable'),
-    ('评估', 'Evaluation'),
-    ('供应商', 'Vendor / Supplier'),
-    ('锁定', 'Lock-in'),
-    ('回答', 'answer'),
-    ('准确', 'accurate'),
-    ('质量', 'Quality'),
-    ('依据', 'Evidence'),
-    ('幻觉', 'Hallucination'),
-    ('率', 'rate'),
-    ('低于', 'below'),
-    ('百分之', 'percent'),
-    ('二', 'two'),
-    ('不足', 'insufficient'),
-    ('拒绝', 'Refuse'),
-    ('能', 'can'),
-    ('带来', 'bring'),
-    ('价值', 'Value'),
-    ('审核', 'review, audit'),
-    ('辅助', 'Assist'),
-    ('模式', 'mode'),
-    ('开始', 'Start'),
-    ('采用', 'adopt'),
-    ('护栏', 'Guardrail'),
-    ('端到', 'end-to-'),
-    ('端', 'end'),
-    ('工具', 'Tool'),
-    ('通过', 'pass, through'),
-    ('敏感', 'Sensitive'),
-    ('发送', 'send'),
-    ('外部', 'external'),
-    ('高峰期', 'peak period'),
-    ('并发', 'Concurrent'),
-    ('降低', 'reduce'),
-    ('使用量', 'usage'),
-    ('缓存', 'Cache'),
-    ('新鲜度', 'freshness'),
-    ('次', 'occurrence, time'),
-    ('实验', 'Experiment'),
-    ('新', 'new'),
-    ('影子', 'shadow'),
-    ('平台', 'Platform'),
-    ('人员', 'personnel'),
-    ('提高', 'improve, increase'),
-    ('自助', 'self-service'),
-    ('能力', 'capability'),
-    ('才', 'only then'),
-    ('模板', 'Template'),
-    ('团队', 'team'),
-    ('独立', 'independent'),
-    ('配额', 'Quota'),
-    ('北极星', 'North Star'),
-    ('试点', 'Pilot'),
-    ('将', 'will'),
-    ('一百', 'one hundred'),
-    ('名', 'measure word for people'),
-    ('显著', 'Significant'),
-    ('负面', 'negative'),
-    ('反馈', 'Feedback'),
-    ('等级', 'level, grade')
-]
-
-
-VOCAB_SET_5 = [
-    ('暂时', 'temporarily'),
-    ('关闭', 'close, disable'),
-    ('功能', 'Function'),
-    ('有关', 'related'),
-    ('负责人', 'Responsible person'),
-    ('整改', 'corrective rectification'),
-    ('措施', 'measure, action'),
-    ('今天', 'today'),
-    ('决定', 'Decision'),
-    ('三', 'three'),
-    ('件', 'measure word'),
-    ('事', 'matter, thing'),
-    ('说明', 'explain'),
-    ('当前', 'current'),
-    ('行为', 'behavior'),
-    ('预期', 'Expected'),
-    ('重现', 'Reproduce'),
-    ('替代', 'replace, alternative'),
-    ('提前', 'ahead of time'),
-    ('多久', 'how long'),
-    ('交付', 'Delivery'),
-    ('负责', 'be responsible'),
-    ('行动', 'action'),
-    ('项', 'item'),
-    ('日期', 'date'),
-    ('明天', 'tomorrow'),
-    ('再', 'again'),
-    ('跟进', 'Follow up'),
-    ('选择', 'choose'),
-    ('因为', 'because'),
-    ('核心', 'core'),
-    ('前', 'before, front'),
-    ('安全', 'Security'),
-    ('审查', 'review'),
-    ('接口', 'Interface'),
-    ('错误码', 'Error code'),
-    ('查询', 'Query'),
-    ('一致性', 'Consistency'),
-    ('根本原因', 'Root Cause'),
-    ('非功能性需求', 'NFR'),
-    ('测试数据', 'Test Data'),
-    ('技术债', 'Technical debt'),
-    ('敏感数据', 'Sensitive data'),
-    ('人工智能', 'Artificial'),
-    ('机器学习', 'Machine Learning'),
-    ('不确定性', 'Uncertainty'),
-    ('吞吐量', 'Throughput'),
-    ('温度参数', 'Temperature'),
-    ('向量', 'Vector'),
-    ('检索增强生成', 'RAG'),
-    ('基准测试', 'Benchmark'),
-    ('准确率', 'Accuracy'),
-    ('人工审核', 'Human-in-the-loop'),
-    ('采用率', 'Adoption'),
-    ('端到端', 'End-to-end'),
-    ('高峰', 'Peak'),
-    ('模型版本', 'Model Version'),
-    ('影子测试', 'Shadow test'),
-    ('生命周期', 'Lifecycle'),
-    ('开发人员', 'Developer'),
-    ('自助服务', 'Self-service'),
-    ('整改措施', 'Corrective action'),
-    ('替代方案', 'Alternative'),
-    ('核心指标', 'Core metric'),
-    ('安全审查', 'Security review'),
-    ('数据表', 'Table'),
-    ('队列', 'Queue'),
-    ('网络', 'Network'),
-    ('告警', 'Alert'),
-    ('可用性', 'Availability'),
-    ('可扩展性', 'Scalability'),
-    ('业务需求', 'Business Requirement'),
-    ('需求变更', 'Requirement Change'),
-    ('优先级', 'Priority'),
-    ('业务流程', 'Business Process'),
-    ('业务逻辑', 'Business Logic'),
-    ('使用场景', 'Use Case'),
-    ('验收标准', 'Acceptance Criteria'),
-    ('代码', 'Code'),
-    ('逻辑', 'Logic'),
-    ('修改', 'Modify'),
-    ('系统架构', 'System Architecture'),
-    ('微服务', 'Microservice'),
-    ('组件', 'Component'),
-    ('配置', 'Configuration'),
-    ('调用接口', 'Call'),
-    ('传参数', 'Pass Parameter'),
-    ('集成', 'Integration'),
-    ('传输数据', 'Data Transmission'),
-    ('超时', 'Timeout'),
-    ('网关', 'API Gateway'),
-    ('端点', 'Endpoint'),
-    ('身份验证', 'Authentication'),
-    ('授权', 'Authorization'),
-    ('源数据', 'Source Data'),
-    ('映射', 'Mapping'),
-    ('数据不一致', 'Data Mismatch'),
-    ('数据一致性', 'Data'),
-    ('数据迁移', 'Data Migration'),
-    ('数据验证', 'Data Validation'),
-    ('测试用例', 'Test Case'),
-    ('集成测试', 'Integration Test'),
-    ('验收测试', 'UAT'),
-    ('回归测试', 'Regression Test'),
-    ('性能测试', 'Performance Test'),
-    ('通过测试', 'Pass Testing'),
-    ('测试未通过', 'Fail Testing'),
-    ('开发环境', 'Development Environment'),
-    ('测试环境', 'Test Environment'),
-    ('生产环境', 'Production Environment'),
-    ('下线', 'Take Offline'),
-    ('部署计划', 'Deployment Plan'),
-    ('发布窗口', 'Release'),
-    ('错误日志', 'Error Log'),
-    ('恢复', 'Recover'),
-    ('临时解决方案', 'Workaround'),
-    ('预防措施', 'Preventive Action'),
-    ('已完成', 'Completed'),
-    ('进行中', 'In Progress'),
-    ('尚未开始', 'Not Started'),
-    ('等待', 'Waiting'),
-    ('阻塞', 'Blocked'),
-    ('延期', 'Postpone'),
-    ('预计', 'Estimate'),
-    ('进度', 'Progress'),
-    ('截止日期', 'Deadline'),
-    ('访问权限', 'Access Permission'),
-    ('个人数据', 'Personal Data'),
-    ('云服务', 'Cloud'),
-    ('服务器', 'Server'),
-    ('持续集成和持续交付', 'CI/CD'),
-    ('代码仓库', 'Git Repository'),
-    ('扩展', 'Scale'),
-    ('大语言模型', 'LLM'),
-    ('向量嵌入', 'Embedding'),
-    ('向量数据库', 'Vector Database'),
-    ('模型监控', 'Model Monitoring'),
-    ('隐私', 'Privacy'),
-    ('单次请求成本', 'Cost per Request')
-]
-
-
-VOCAB_SETS = {
-    1: VOCAB_SET_1,
-    2: VOCAB_SET_2,
-    3: VOCAB_SET_3,
-    4: VOCAB_SET_4,
-    5: VOCAB_SET_5,
-}
-
-SET_LABELS = {
-    1: "CBS · Core Banking System",
-    2: "System & API",
-    3: "Incident & Operations",
-    4: "AI / LLM / Platform",
-    5: "Testing / UAT / Deployment",
-}
-
-
+st.markdown('<div class="soft-divider"></div>', unsafe_allow_html=True)
 
 # =========================================================
-# PER-SET PROGRESS
+# STATS / PROGRESS — unchanged by audio button
 # =========================================================
-
-def blank_progress():
-    return {
-        "correct": 0,
-        "attempts": 0,
-
-        # Main deck: every word appears once.
-        "phase": "main",
-        "main_order": [],
-        "main_pos": 0,
-
-        # Words answered incorrectly during the main deck.
-        "wrong_ids": [],
-
-        # Quick review queue:
-        # wrong -> after 5 questions -> after another 10 questions.
-        "scheduled_reviews": [],
-
-        # Two final review rounds after the whole set is complete.
-        "final_order": [],
-        "final_pos": 0,
-        "final_round_wrong": [],
-
-        # Current question.
-        "question_id": None,
-        "question_kind": None,
-        "options": [],
-
-        # End popups.
-        "reminder_ack": False,
-        "congrats_shown": False,
-    }
-
-
-QUOTES = [
-    "Knowledge stays with you forever.",
-    "Every small thing you study adds to your inner strength.",
-    "No one can steal your skills or what is in your mind.",
-    "Every expert was once a beginner.",
-    "Keep learning, keep growing.",
-]
-
-if "quote_of_the_day" not in st.session_state:
-    st.session_state.quote_of_the_day = random.choice(QUOTES)
-
-if "selected_set" not in st.session_state:
-    st.session_state.selected_set = 1
-
-if "progress_by_set" not in st.session_state:
-    st.session_state.progress_by_set = {
-        i: blank_progress() for i in range(1, 6)
-    }
-
-
-def get_progress():
-    return st.session_state.progress_by_set[st.session_state.selected_set]
-
-
-def make_options(vocab, question_id):
-    correct_answer = vocab[question_id][1]
-
-    wrong_pool = list({
-        meaning
-        for _, meaning in vocab
-        if meaning != correct_answer
-    })
-
-    wrong_answers = random.sample(wrong_pool, 2)
-    options = [correct_answer, *wrong_answers]
-    random.shuffle(options)
-    return options
-
-
-def initialize_main_round(progress, vocab):
-    if not progress["main_order"]:
-        progress["main_order"] = list(range(len(vocab)))
-        random.shuffle(progress["main_order"])
-
-
-def set_question(progress, vocab, question_id, kind):
-    progress["question_id"] = question_id
-    progress["question_kind"] = kind
-    progress["options"] = make_options(vocab, question_id)
-
-
-def schedule_review(progress, question_id, after_questions, kind):
-    progress["scheduled_reviews"].append({
-        "qid": question_id,
-        "due_at": progress["attempts"] + after_questions,
-        "kind": kind,
-    })
-
-
-def pop_due_review(progress):
-    if not progress["scheduled_reviews"]:
-        return None
-
-    progress["scheduled_reviews"].sort(key=lambda item: item["due_at"])
-
-    if progress["scheduled_reviews"][0]["due_at"] <= progress["attempts"]:
-        return progress["scheduled_reviews"].pop(0)
-
-    return None
-
-
-def start_final_review(progress, round_number):
-    progress["phase"] = f"final{round_number}"
-    progress["final_order"] = list(progress["wrong_ids"])
-    random.shuffle(progress["final_order"])
-    progress["final_pos"] = 0
-
-    if round_number == 2:
-        progress["final_round_wrong"] = []
-
-
-def finish_session(progress):
-    progress["phase"] = "done"
-    progress["question_id"] = None
-    progress["question_kind"] = None
-    progress["options"] = []
-
-
-def new_question(progress, vocab):
-    initialize_main_round(progress, vocab)
-
-    # MAIN ROUND
-    if progress["phase"] == "main":
-        # Once every new word has appeared, go to the final review rounds.
-        if progress["main_pos"] >= len(progress["main_order"]):
-            progress["scheduled_reviews"] = []
-
-            if progress["wrong_ids"]:
-                start_final_review(progress, 1)
-            else:
-                finish_session(progress)
-                return
-        else:
-            due_review = pop_due_review(progress)
-
-            if due_review is not None:
-                set_question(
-                    progress,
-                    vocab,
-                    due_review["qid"],
-                    due_review["kind"]
-                )
-                return
-
-            question_id = progress["main_order"][progress["main_pos"]]
-            set_question(progress, vocab, question_id, "main")
-            return
-
-    # FINAL REVIEW 1
-    if progress["phase"] == "final1":
-        if progress["final_pos"] < len(progress["final_order"]):
-            question_id = progress["final_order"][progress["final_pos"]]
-            set_question(progress, vocab, question_id, "final1")
-            return
-
-        start_final_review(progress, 2)
-
-    # FINAL REVIEW 2
-    if progress["phase"] == "final2":
-        if progress["final_pos"] < len(progress["final_order"]):
-            question_id = progress["final_order"][progress["final_pos"]]
-            set_question(progress, vocab, question_id, "final2")
-            return
-
-        finish_session(progress)
-
-
-def advance_after_answer(progress, vocab, is_correct):
-    question_id = progress["question_id"]
-    kind = progress["question_kind"]
-
-    progress["attempts"] += 1
-
-    if is_correct:
-        progress["correct"] += 1
-
-    # Fresh word from the main deck.
-    if kind == "main":
-        if not is_correct:
-            if question_id not in progress["wrong_ids"]:
-                progress["wrong_ids"].append(question_id)
-
-            # First quick review after 5 other questions.
-            schedule_review(
-                progress,
-                question_id,
-                after_questions=5,
-                kind="quick5"
-            )
-
-        progress["main_pos"] += 1
-
-    # First quick review: schedule one more review after another 10 questions.
-    elif kind == "quick5":
-        schedule_review(
-            progress,
-            question_id,
-            after_questions=10,
-            kind="quick10"
-        )
-
-    # Second quick review: no more quick loops.
-    elif kind == "quick10":
-        pass
-
-    # Final review after the whole set.
-    elif kind == "final1":
-        progress["final_pos"] += 1
-
-    elif kind == "final2":
-        if not is_correct and question_id not in progress["final_round_wrong"]:
-            progress["final_round_wrong"].append(question_id)
-
-        progress["final_pos"] += 1
-
-    progress["question_id"] = None
-    progress["question_kind"] = None
-    progress["options"] = []
-
-    new_question(progress, vocab)
-
-
-def chinese_html(word):
-    safe_word = html.escape(word)
-    length = len(word)
-
-    # 1–4 Chinese characters: always one line.
-    if length <= 4:
-        return f'<div class="chinese-short">{safe_word}</div>'
-
-    # 5–6 characters: still one line, smaller.
-    if length <= 6:
-        return f'<div class="chinese-medium">{safe_word}</div>'
-
-    # Longer words: one line with smaller text.
-    return f'<div class="chinese-long">{safe_word}</div>'
-
-
-def render_question_area(label_html, chinese_word_html):
+ready = ready_count()
+weak = weak_count()
+practiced = practiced_count()
+attempts = st.session_state.attempt_count
+
+st.markdown(
+    f"""
+<div class="stat-grid">
+    <div class="stat-card">
+        <div class="stat-value">{ready}/36</div>
+        <div class="stat-label">พร้อมตอบ</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">{weak}</div>
+        <div class="stat-label">ต้องวนซ้ำ</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">{attempts}</div>
+        <div class="stat-label">ครั้งที่ตอบ</div>
+    </div>
+</div>
+""",
+    unsafe_allow_html=True,
+)
+
+st.progress(practiced / 36 if practiced else 0.0)
+st.markdown(
+    f'<div class="progress-caption">Progress {practiced}/36 · เป้าหมาย daily session ประมาณ 10–15 นาที</div>',
+    unsafe_allow_html=True,
+)
+
+# =========================================================
+# PAGES
+# =========================================================
+if st.session_state.page == "Home":
     st.markdown(
-        f"""
-        <div class="question-shell">
-            <div class="question-center">
-                {label_html}
-                {chinese_word_html}
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True
+        """
+<div class="info-card">
+    <div class="section-title">วิธีใช้</div>
+    1) เลือก <b>Practice</b> เพื่อฝึกตอบทีละข้อ<br>
+    2) พูดคำตอบของตัวเองก่อน<br>
+    3) ค่อยกด <b>ดูแนวคำตอบ</b><br>
+    4) ถ้าอยากฟัง ให้กดปุ่ม <b>🔊 ฟังคำตอบ</b> เอง — ระบบจะไม่อ่านให้อัตโนมัติ<br>
+    5) กด <b>ตอบได้ ✓</b> หรือ <b>ยังไม่ได้ ↻</b><br>
+    6) ไปทวนข้อที่อ่อนในหน้า <b>Review</b>
+</div>
+""",
+        unsafe_allow_html=True,
     )
 
-
-def show_reminder_dialog(vocab, progress):
-    if hasattr(st, "dialog"):
-        @st.dialog("🌷 ไม่เป็นไรนะ")
-        def reminder_dialog():
-            st.write("ทบทวนคำเหล่านี้อีกรอบนะ เดี๋ยวก็จำได้ค่ะ 💪")
-
-            for qid in progress["final_round_wrong"]:
-                chinese_word, meaning = vocab[qid]
-                st.markdown(f"**{chinese_word}** — {meaning}")
-
-            if st.button(
-                "ไปต่อ",
-                use_container_width=True,
-                key=f"reminder_continue_{st.session_state.selected_set}"
-            ):
-                progress["reminder_ack"] = True
-                st.rerun()
-
-        reminder_dialog()
-    else:
-        st.warning("🌷 ไม่เป็นไรนะ ทบทวนคำเหล่านี้อีกรอบ เดี๋ยวก็จำได้ค่ะ")
-        for qid in progress["final_round_wrong"]:
-            chinese_word, meaning = vocab[qid]
-            st.markdown(f"- **{chinese_word}** — {meaning}")
-
-        if st.button(
-            "ไปต่อ",
-            use_container_width=True,
-            key=f"reminder_continue_fallback_{st.session_state.selected_set}"
-        ):
-            progress["reminder_ack"] = True
+    with st.container(key="home_actions"):
+        if st.button("เริ่มฝึกเลย", key="home_start", use_container_width=True):
+            navigate("Practice")
+            st.rerun()
+        if st.button("เริ่ม Review ข้ออ่อน", key="home_review", use_container_width=True):
+            navigate("Review")
+            st.rerun()
+        if st.button("Reset Progress", key="home_reset", use_container_width=True):
+            reset_progress()
             st.rerun()
 
+elif st.session_state.page in ("Practice", "Review"):
+    q, active = get_current_question()
 
-def show_congratulations_dialog(progress):
-    if hasattr(st, "dialog"):
-        @st.dialog("🎉 Congratulations!")
-        def congratulations_dialog():
-            st.markdown("### You did a great job 👍")
-            st.markdown("**Keep going!**")
-
-        progress["congrats_shown"] = True
-        congratulations_dialog()
-    else:
-        progress["congrats_shown"] = True
-        st.success("🎉 Congratulations! You did a great job 👍 Keep going!")
-
-
-# =========================================================
-# HEADER
-# =========================================================
-
-st.markdown(
-    '<div class="main-title">Chinese Learning App</div>',
-    unsafe_allow_html=True
-)
-
-st.markdown(
-    '<div class="by-line">by pollyleadsforward</div>',
-    unsafe_allow_html=True
-)
-
-selected_set = st.session_state.selected_set
-vocab = VOCAB_SETS[selected_set]
-progress = get_progress()
-
-if progress["question_id"] is None and progress["phase"] != "done":
-    new_question(progress, vocab)
-
-
-# =========================================================
-# SCORE / PROGRESS
-# =========================================================
-
-if progress["attempts"] > 0:
-    percentage = round((progress["correct"] / progress["attempts"]) * 100)
-else:
-    percentage = 0
-
-main_done = min(progress["main_pos"], len(vocab))
-
-st.markdown(
-    f'<div class="active-category">📚 {SET_LABELS[selected_set]}</div>',
-    unsafe_allow_html=True
-)
-
-score_html = (
-    f'<div class="score-grid">'
-    f'<div class="score-card score-purple">'
-    f'<div class="score-label">✅ Correct</div>'
-    f'<div class="score-number">{progress["correct"]}</div>'
-    f'</div>'
-
-    f'<div class="score-card score-pink">'
-    f'<div class="score-label">📝 Answered</div>'
-    f'<div class="score-number">{progress["attempts"]}</div>'
-    f'</div>'
-
-    f'<div class="score-card score-green">'
-    f'<div class="score-label">🎯 Score</div>'
-    f'<div class="score-number">{percentage}%</div>'
-    f'</div>'
-    f'</div>'
-)
-
-st.markdown(score_html, unsafe_allow_html=True)
-
-
-# =========================================================
-# QUESTION
-# =========================================================
-
-if progress["phase"] != "done":
-    question_id = progress["question_id"]
-    kind = progress["question_kind"]
-
-    chinese_word = vocab[question_id][0]
-    correct_answer = vocab[question_id][1]
-
-    if kind == "main":
-        label_html = '<div class="question-label">คำนี้แปลว่าอะไร?</div>'
-    else:
-        label_html = '<div class="review-label">🌷 ทบทวนอีกครั้ง</div>'
-
-    render_question_area(
-        label_html=label_html,
-        chinese_word_html=chinese_html(chinese_word)
-    )
-
-    with st.container(key="answer_area"):
-        for i, option in enumerate(progress["options"]):
-            if st.button(
-                option,
-                use_container_width=True,
-                key=(
-                    f"answer_{selected_set}_{question_id}_{kind}_"
-                    f"{progress['attempts']}_{i}"
-                )
-            ):
-                is_correct = option == correct_answer
-
-                if not is_correct:
-                    st.error(
-                        f"❌ คำตอบที่ถูกคือ\n\n"
-                        f"### {chinese_word} = {correct_answer}"
-                    )
-
-                    import time
-                    time.sleep(1.35)
-
-                advance_after_answer(progress, vocab, is_correct)
-                st.rerun()
-
-
-# =========================================================
-# END OF SESSION
-# =========================================================
-
-else:
-    st.success("✅ จบการทบทวนคำศัพท์ชุดนี้แล้ว")
-
-    if progress["final_round_wrong"] and not progress["reminder_ack"]:
-        show_reminder_dialog(vocab, progress)
-
-    elif not progress["congrats_shown"]:
-        show_congratulations_dialog(progress)
-
-
-# =========================================================
-# CATEGORY SELECTOR + BOTTOM ACTIONS
-# =========================================================
-
-st.markdown(
-    '<div class="bottom-category-title">เลือกหมวดคำศัพท์</div>',
-    unsafe_allow_html=True
-)
-
-CATEGORY_ITEMS = [
-    (1, "CBS"),
-    (2, "System & API"),
-    (3, "Incident & Ops"),
-    (4, "AI / LLM"),
-    (5, "Testing / UAT"),
-]
-
-# Keep the currently selected category in position 3.
-current_item = next(
-    item for item in CATEGORY_ITEMS
-    if item[0] == st.session_state.selected_set
-)
-
-other_items = [
-    item for item in CATEGORY_ITEMS
-    if item[0] != st.session_state.selected_set
-]
-
-display_items = (
-    other_items[:2]
-    + [current_item]
-    + other_items[2:]
-)
-
-# IMPORTANT:
-# Use buttons, NOT st.radio.
-# This permanently removes the Android native black radio controls.
-# Each pill gets exactly ONE circle from CSS ::before.
-with st.container(key="category_selector"):
-
-    category_columns = st.columns(
-        [1, 1, 1, 1, 1],
-        gap="small"
-    )
-
-    for index, (set_id, label) in enumerate(display_items):
-
-        is_selected = (
-            set_id == st.session_state.selected_set
+    if q is None:
+        st.markdown(
+            '<div class="empty-card">ยังไม่มีข้อที่ต้องวนซ้ำค่ะ ✨<br>ตอนนี้ Review ว่างแล้ว</div>',
+            unsafe_allow_html=True,
         )
-
-        with category_columns[index]:
-
-            if st.button(
-                label,
-                key=(
-                    f"category_"
-                    f"{set_id}_"
-                    f"{st.session_state.selected_set}"
-                ),
-                type="primary" if is_selected else "secondary"
-            ):
-
-                if not is_selected:
-                    st.session_state.selected_set = set_id
-                    st.rerun()
-
-
-# Reset left + quote right.
-# Reset DOES NOT change the quote.
-with st.container(key="bottom_actions"):
-
-    reset_col, quote_col = st.columns(
-        [0.65, 5.35],
-        gap="large",
-        vertical_alignment="center"
-    )
-
-    with reset_col:
-
-        if st.button(
-            "↻",
-            key=f"reset_set_{selected_set}",
-            help="เริ่มหมวดนี้ใหม่"
-        ):
-
-            st.session_state.progress_by_set[
-                selected_set
-            ] = blank_progress()
-
-            st.rerun()
-
-    with quote_col:
-
-        safe_quote = html.escape(
-            st.session_state.quote_of_the_day
-        )
+    else:
+        q_text = html.escape(q["question"])
+        category = html.escape(q["category"])
+        answer_html = html.escape(q["answer"]).replace("\n", "<br>")
 
         st.markdown(
-            f'<div class="quote-text">“{safe_quote}”</div>',
-            unsafe_allow_html=True
+            f"""
+<div class="q-card">
+    <div class="cat-pill">{category}</div>
+    <div class="question-text">{q['id']}) {q_text}</div>
+</div>
+<div class="instruction">ตอบออกเสียงก่อน แล้วค่อยกดดูแนวคำตอบ</div>
+""",
+            unsafe_allow_html=True,
         )
 
+        # SHOW ANSWER BUTTON — pastel only, never black
+        if not st.session_state.show_answer:
+            with st.container(key="show_answer_button"):
+                if st.button("ดูแนวคำตอบ", key=f"show_answer_{q['id']}"):
+                    st.session_state.show_answer = True
+                    st.rerun()
+
+        if st.session_state.show_answer:
+            st.markdown(
+                f"""
+<div class="answer-box">
+    <div class="answer-title">แนวคำตอบ</div>
+    <div class="answer-text">{answer_html}</div>
+</div>
+""",
+                unsafe_allow_html=True,
+            )
+
+            # =====================================================
+            # MANUAL AUDIO BUTTON
+            # - NO autoplay
+            # - Click = speak
+            # - Click again = cancel current speech + read again
+            # - Completely independent from answer/progress state
+            # =====================================================
+            answer_json = json.dumps(q["answer"], ensure_ascii=False)
+            components.html(
+                f"""
+<!doctype html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    html, body {{
+        margin: 0;
+        padding: 0;
+        background: transparent;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans Thai", Arial, sans-serif;
+    }}
+    #listenBtn {{
+        width: 100%;
+        min-height: 72px;
+        border: 1px solid rgba(140,125,140,.10);
+        border-radius: 24px;
+        padding: 14px 18px;
+        font-size: 18px;
+        font-weight: 800;
+        color: #554f58;
+        background: linear-gradient(
+            90deg,
+            #f8dce8 0%,
+            #eee5fb 20%,
+            #dfeeff 40%,
+            #def1e6 60%,
+            #f7efb7 80%,
+            #f7ddcd 100%
+        );
+        box-shadow: none;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+    }}
+    #listenBtn:active {{
+        transform: scale(.99);
+    }}
+</style>
+</head>
+<body>
+<button id="listenBtn" type="button">🔊 ฟังคำตอบ</button>
+<script>
+const text = {answer_json};
+const btn = document.getElementById('listenBtn');
+
+function chooseVoice() {{
+    const voices = window.speechSynthesis.getVoices();
+    return voices.find(v => v.lang && v.lang.toLowerCase().startsWith('th')) || null;
+}}
+
+function speakAnswer() {{
+    if (!('speechSynthesis' in window)) return;
+
+    // Repeated tap = restart from the beginning.
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'th-TH';
+    utterance.rate = 0.92;
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
+
+    const voice = chooseVoice();
+    if (voice) utterance.voice = voice;
+
+    window.speechSynthesis.speak(utterance);
+}}
+
+btn.addEventListener('click', speakAnswer);
+</script>
+</body>
+</html>
+""",
+                height=88,
+                scrolling=False,
+            )
+
+            # Existing answer buttons stay pink + peach.
+            with st.container(key="answer_actions"):
+                a1, a2 = st.columns([1, 1], gap="small")
+                with a1:
+                    if st.button("ตอบได้ ✓", key=f"can_{q['id']}"):
+                        mark_answer("can")
+                        st.rerun()
+                with a2:
+                    if st.button("ยังไม่ได้ ↻", key=f"notyet_{q['id']}"):
+                        mark_answer("notyet")
+                        st.rerun()
+
+        with st.container(key="practice_utilities"):
+            u1, u2 = st.columns(2, gap="small")
+            with u1:
+                if st.button("ข้ามข้อนี้", key=f"skip_{st.session_state.page}_{q['id']}", use_container_width=True):
+                    next_question()
+                    st.rerun()
+            with u2:
+                if st.button("Reset Progress", key=f"reset_{st.session_state.page}", use_container_width=True):
+                    reset_progress()
+                    st.rerun()
+
+elif st.session_state.page == "Core":
+    st.markdown(
+        '<div class="core-card"><div class="section-title">6 Key Sentences to Keep in Mind</div>',
+        unsafe_allow_html=True,
+    )
+    for i, line in enumerate(CORE_SENTENCES, start=1):
+        st.markdown(
+            f'<div class="core-line"><b>{i}.</b> {html.escape(line)}</div>',
+            unsafe_allow_html=True,
+        )
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # Tell Me About Yourself order: CN → EN → TH
+    st.markdown(
+        f"""
+<div class="tmy-card">
+    <div class="section-title">Tell Me About Yourself</div>
+
+    <div class="lang-pill">CN</div>
+    <div class="tmy-text">{html.escape(TELL_ME_CN).replace(chr(10), '<br>')}</div>
+    <div class="tmy-text" style="margin-top:.65rem;color:#88818a;">{html.escape(TELL_ME_PINYIN).replace(chr(10), '<br>')}</div>
+
+    <div class="lang-pill">EN</div>
+    <div class="tmy-text">{html.escape(TELL_ME_EN).replace(chr(10), '<br>')}</div>
+
+    <div class="lang-pill">TH</div>
+    <div class="tmy-text">{html.escape(TELL_ME_TH).replace(chr(10), '<br>')}</div>
+</div>
+""",
+        unsafe_allow_html=True,
+    )
+
+    with st.container(key="core_reset"):
+        if st.button("Reset Progress", key="core_reset_button", use_container_width=True):
+            reset_progress()
+            st.rerun()
