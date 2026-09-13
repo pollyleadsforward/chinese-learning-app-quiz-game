@@ -25,32 +25,50 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-[data-testid="stAppViewContainer"] {
-    background: #fffdfd;
+/* =======================================================
+   MOBILE-FIRST CLEAN UI
+   ======================================================= */
+
+html, body,
+[data-testid="stAppViewContainer"],
+[data-testid="stMain"] {
+    background: #fffdfd !important;
 }
 
 .block-container {
     max-width: 560px !important;
-    padding-top: 0.40rem !important;
-    padding-bottom: 1.1rem !important;
-    padding-left: 0.70rem !important;
-    padding-right: 0.70rem !important;
+    padding-top: 0.22rem !important;
+    padding-bottom: 0.35rem !important;
+    padding-left: 0.58rem !important;
+    padding-right: 0.58rem !important;
+}
+
+/* Reduce Streamlit's default vertical spacing */
+[data-testid="stVerticalBlock"] {
+    gap: 0.42rem !important;
+}
+
+[data-testid="stElementContainer"] {
+    margin-bottom: 0 !important;
 }
 
 header, footer, #MainMenu,
 [data-testid="stToolbar"],
 [data-testid="stStatusWidget"],
-[data-testid="stDecoration"] {
+[data-testid="stDecoration"],
+[data-testid="stAppDeployButton"],
+.stDeployButton {
     display: none !important;
     visibility: hidden !important;
 }
 
+/* ---------- header ---------- */
 .main-title {
     text-align: center;
-    font-size: clamp(27px, 7vw, 40px);
+    font-size: clamp(26px, 7vw, 39px);
     font-weight: 900;
-    line-height: 1.12;
-    margin: 0 0 3px 0;
+    line-height: 1.06;
+    margin: 0 0 1px 0;
     background: linear-gradient(
         90deg,
         #f3a4c6,
@@ -70,9 +88,9 @@ header, footer, #MainMenu,
 .by-line {
     text-align: center;
     color: #707583;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
-    margin-bottom: 6px;
+    margin: 0 0 2px 0;
 }
 
 .active-category {
@@ -80,44 +98,44 @@ header, footer, #MainMenu,
     color: #707583;
     font-size: 12px;
     font-weight: 700;
-    margin: 2px 0 7px 0;
+    margin: 0 0 3px 0;
 }
 
-/* ---------- score cards ---------- */
+/* ---------- score cards: KEEP Correct / Answered / Score ---------- */
 .score-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 7px;
+    gap: 6px;
     width: 100%;
-    margin-bottom: 8px;
+    margin: 0 0 3px 0;
 }
 
 .score-card {
     min-width: 0;
-    min-height: 70px;
-    padding: 7px 3px;
+    min-height: 62px;
+    padding: 5px 2px;
     box-sizing: border-box;
-    border-radius: 16px;
+    border-radius: 15px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 3px 9px rgba(50,45,65,0.04);
+    box-shadow: 0 2px 7px rgba(50,45,65,0.035);
 }
 
 .score-purple {
     background: #edddfb;
-    border: 1.5px solid #d7b3f6;
+    border: 1.4px solid #d7b3f6;
 }
 
 .score-pink {
     background: #ffdee9;
-    border: 1.5px solid #f4b4cc;
+    border: 1.4px solid #f4b4cc;
 }
 
 .score-green {
     background: #ddf4e4;
-    border: 1.5px solid #9cddae;
+    border: 1.4px solid #9cddae;
 }
 
 .score-label {
@@ -125,12 +143,12 @@ header, footer, #MainMenu,
     font-size: 10px;
     font-weight: 800;
     white-space: nowrap;
-    margin-bottom: 3px;
+    margin-bottom: 2px;
 }
 
 .score-number {
     color: #2e303b;
-    font-size: 23px;
+    font-size: 22px;
     line-height: 1;
     font-weight: 900;
 }
@@ -141,8 +159,7 @@ header, footer, #MainMenu,
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 2px;
-    margin-bottom: 7px;
+    margin: 0 0 2px 0;
 }
 
 .question-center {
@@ -151,31 +168,29 @@ header, footer, #MainMenu,
     text-align: center;
 }
 
-.question-label {
+.question-label,
+.review-label {
     text-align: center;
     color: #707583;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
-    margin: 0 0 3px 0;
+    margin: 0 0 1px 0;
 }
 
 .review-label {
-    text-align: center;
-    color: #8c62b0;
-    font-size: 12px;
-    font-weight: 800;
-    margin: 0 0 3px 0;
+    color: #8c7b91;
 }
 
 .chinese-short,
 .chinese-medium,
 .chinese-long {
     font-weight: 900;
-    line-height: 1.03;
+    line-height: 1.00;
     text-align: center;
     display: inline-block;
     white-space: nowrap;
     max-width: 100%;
+    margin: 0;
     background: linear-gradient(
         90deg,
         #f3a4c6,
@@ -192,36 +207,49 @@ header, footer, #MainMenu,
     background-clip: text;
 }
 
-/* 1–4 characters stay on ONE line */
+/* 1–4 Chinese characters = one line */
 .chinese-short {
-    font-size: clamp(48px, 14vw, 70px);
+    font-size: clamp(46px, 13vw, 66px);
 }
 
-/* 5–6 characters also stay on one line, just smaller */
+/* 5–6 = still one line, smaller */
 .chinese-medium {
-    font-size: clamp(32px, 9.5vw, 50px);
+    font-size: clamp(31px, 8.9vw, 46px);
 }
 
 .chinese-long {
-    font-size: clamp(23px, 6.7vw, 36px);
+    font-size: clamp(22px, 6.1vw, 33px);
 }
 
-.small-note {
-    text-align: center;
-    color: #858996;
-    font-size: 11px;
-    font-weight: 600;
-    margin: 2px 0 4px 0;
+/* ---------- ANSWER BUTTONS ----------
+   Force white even when phone / webview uses dark theme.
+*/
+div[data-testid="stButton"] {
+    margin: 0 !important;
 }
 
-/* ---------- answer buttons ---------- */
-div[data-testid="stButton"] > button {
-    min-height: 48px;
-    border-radius: 14px !important;
+div[data-testid="stButton"] > button,
+div[data-testid="stButton"] > button:hover,
+div[data-testid="stButton"] > button:focus,
+div[data-testid="stButton"] > button:active {
+    width: 100% !important;
+    min-height: 43px !important;
+    padding: 0.38rem 0.65rem !important;
+    border-radius: 13px !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #414653 !important;
+    border: 1px solid #dcdde4 !important;
+    box-shadow: none !important;
+    outline: none !important;
 }
 
-div[data-testid="stButton"] > button p {
-    font-size: 16px !important;
+div[data-testid="stButton"] > button p,
+div[data-testid="stButton"] > button span {
+    color: #414653 !important;
+    -webkit-text-fill-color: #414653 !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
 }
 
 /* ---------- category selector ---------- */
@@ -230,22 +258,27 @@ div[data-testid="stButton"] > button p {
     color: #707583;
     font-size: 12px;
     font-weight: 700;
-    margin-top: 7px;
-    margin-bottom: 4px;
+    margin: 1px 0 2px 0;
+}
+
+div[data-testid="stRadio"] {
+    margin: 0 !important;
 }
 
 div[data-testid="stRadio"] > div {
     justify-content: center !important;
-    gap: 0.35rem !important;
+    gap: 0.26rem !important;
     flex-wrap: wrap !important;
 }
 
-/* Unselected categories = white */
+/* Unselected category pills = WHITE */
 div[data-testid="stRadio"] label {
     background: #ffffff !important;
-    border-radius: 999px;
-    padding: 5px 9px !important;
-    border: 1px solid rgba(170, 160, 185, 0.28) !important;
+    background-color: #ffffff !important;
+    border-radius: 999px !important;
+    padding: 4px 8px !important;
+    border: 1px solid #e0dfe5 !important;
+    margin: 0 !important;
 }
 
 /* Selected category = pastel */
@@ -261,19 +294,44 @@ div[data-testid="stRadio"] label:has(input:checked) {
 
 div[data-testid="stRadio"] label p {
     color: #525866 !important;
-    font-size: 12px !important;
+    -webkit-text-fill-color: #525866 !important;
+    font-size: 11.5px !important;
     font-weight: 800 !important;
 }
 
-/* ---------- quote ---------- */
+/* ---------- reset + quote on SAME ROW on mobile ---------- */
+div[data-testid="stHorizontalBlock"] {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    gap: 1rem !important;
+    margin-top: 1px !important;
+}
+
+div[data-testid="stHorizontalBlock"] > div[data-testid="column"] {
+    min-width: 0 !important;
+}
+
+/* Reset is a tiny icon button, not a large block */
+div[data-testid="stHorizontalBlock"]
+div[data-testid="stButton"] > button {
+    width: 38px !important;
+    min-width: 38px !important;
+    max-width: 38px !important;
+    min-height: 34px !important;
+    height: 34px !important;
+    padding: 0 !important;
+    border-radius: 10px !important;
+}
+
 .quote-text {
-    padding-top: 10px;
-    padding-left: 8px;
+    padding: 0 2px;
     text-align: center;
-    font-size: clamp(11px, 3vw, 13px);
+    font-size: clamp(9.8px, 2.7vw, 12px);
     font-weight: 800;
     font-style: italic;
-    line-height: 1.35;
+    line-height: 1.18;
     background: linear-gradient(
         90deg,
         #eea5c9,
@@ -288,31 +346,83 @@ div[data-testid="stRadio"] label p {
     background-clip: text;
 }
 
-/* On small screens keep everything compact */
+/* ---------- very small phones ---------- */
 @media (max-width: 480px) {
     .block-container {
-        padding-left: 0.55rem !important;
-        padding-right: 0.55rem !important;
+        padding-top: 0.15rem !important;
+        padding-bottom: 0.2rem !important;
+        padding-left: 0.48rem !important;
+        padding-right: 0.48rem !important;
+    }
+
+    [data-testid="stVerticalBlock"] {
+        gap: 0.34rem !important;
+    }
+
+    .main-title {
+        font-size: clamp(25px, 7.2vw, 35px);
+    }
+
+    .by-line {
+        font-size: 12px;
+    }
+
+    .active-category {
+        font-size: 11.5px;
     }
 
     .score-card {
-        min-height: 66px;
+        min-height: 58px;
+        border-radius: 14px;
     }
 
     .score-number {
-        font-size: 22px;
+        font-size: 21px;
+    }
+
+    .question-label,
+    .review-label {
+        font-size: 13.5px;
     }
 
     .chinese-short {
-        font-size: clamp(45px, 14vw, 64px);
+        font-size: clamp(44px, 13vw, 60px);
     }
 
     .chinese-medium {
-        font-size: clamp(30px, 9vw, 45px);
+        font-size: clamp(29px, 8.5vw, 42px);
     }
 
     .chinese-long {
-        font-size: clamp(22px, 6.4vw, 32px);
+        font-size: clamp(21px, 5.8vw, 30px);
+    }
+
+    div[data-testid="stButton"] > button,
+    div[data-testid="stButton"] > button:hover,
+    div[data-testid="stButton"] > button:focus,
+    div[data-testid="stButton"] > button:active {
+        min-height: 41px !important;
+    }
+
+    div[data-testid="stButton"] > button p,
+    div[data-testid="stButton"] > button span {
+        font-size: 14.5px !important;
+    }
+
+    .bottom-category-title {
+        margin-top: 0 !important;
+    }
+
+    div[data-testid="stRadio"] > div {
+        gap: 0.20rem !important;
+    }
+
+    div[data-testid="stRadio"] label {
+        padding: 3px 7px !important;
+    }
+
+    div[data-testid="stRadio"] label p {
+        font-size: 11px !important;
     }
 }
 </style>
@@ -1267,26 +1377,6 @@ st.markdown(score_html, unsafe_allow_html=True)
 
 
 # =========================================================
-# PHASE STATUS
-# =========================================================
-
-if progress["phase"] == "main":
-    pass
-
-elif progress["phase"] == "final1":
-    st.markdown(
-        f'<div class="small-note">🌷 Final Review 1 · {progress["final_pos"]}/{len(progress["final_order"])}</div>',
-        unsafe_allow_html=True
-    )
-
-elif progress["phase"] == "final2":
-    st.markdown(
-        f'<div class="small-note">🌷 Final Review 2 · {progress["final_pos"]}/{len(progress["final_order"])}</div>',
-        unsafe_allow_html=True
-    )
-
-
-# =========================================================
 # QUESTION
 # =========================================================
 
@@ -1297,27 +1387,19 @@ if progress["phase"] != "done":
     chinese_word = vocab[question_id][0]
     correct_answer = vocab[question_id][1]
 
-    if kind == "quick5":
-        label_html = '<div class="review-label">🧠 ทบทวนคำที่เคยผิด · +5</div>'
-    elif kind == "quick10":
-        label_html = '<div class="review-label">🧠 ทบทวนคำที่เคยผิด · +10</div>'
-    elif kind == "final1":
-        label_html = '<div class="review-label">🌷 Final Review · รอบ 1</div>'
-    elif kind == "final2":
-        label_html = '<div class="review-label">🌷 Final Review · รอบ 2</div>'
-    else:
+    if kind == "main":
         label_html = '<div class="question-label">คำนี้แปลว่าอะไร?</div>'
+    else:
+        label_html = '<div class="review-label">🌷 ทบทวนอีกครั้ง</div>'
 
     render_question_area(
         label_html=label_html,
         chinese_word_html=chinese_html(chinese_word)
     )
 
-    letters = ["A", "B", "C"]
-
     for i, option in enumerate(progress["options"]):
         if st.button(
-            f"{letters[i]}. {option}",
+            option,
             use_container_width=True,
             key=(
                 f"answer_{selected_set}_{question_id}_{kind}_"
@@ -1327,25 +1409,13 @@ if progress["phase"] != "done":
             is_correct = option == correct_answer
 
             if not is_correct:
-                if kind == "main":
-                    extra_message = "คำนี้จะกลับมาทบทวนอีกหลัง +5 และ +10 ข้อ"
-                elif kind == "quick5":
-                    extra_message = "คำนี้จะกลับมาอีกครั้งหลังอีก 10 ข้อ"
-                elif kind == "quick10":
-                    extra_message = "ทบทวนรอบ +10 เรียบร้อยแล้ว"
-                elif kind == "final1":
-                    extra_message = "ยังมี Final Review รอบ 2 อีกครั้ง"
-                else:
-                    extra_message = "จำคำตอบนี้ไว้อีกนิดนะคะ 🌷"
-
                 st.error(
                     f"❌ คำตอบที่ถูกคือ\n\n"
-                    f"### {chinese_word} = {correct_answer}\n\n"
-                    f"{extra_message}"
+                    f"### {chinese_word} = {correct_answer}"
                 )
 
                 import time
-                time.sleep(1.5)
+                time.sleep(1.35)
 
             advance_after_answer(progress, vocab, is_correct)
             st.rerun()
@@ -1368,8 +1438,6 @@ else:
 # =========================================================
 # CATEGORY SELECTOR + BOTTOM ACTIONS
 # =========================================================
-
-st.divider()
 
 st.markdown(
     '<div class="bottom-category-title">เลือกหมวดคำศัพท์</div>',
@@ -1423,7 +1491,7 @@ if new_set != st.session_state.selected_set:
 # Bottom line:
 # reset icon stays far left, quote is visually separated to the right.
 reset_col, spacer_col, quote_col = st.columns(
-    [0.65, 0.95, 5.4],
+    [0.55, 1.45, 5.0],
     gap="large"
 )
 
