@@ -31,6 +31,10 @@ st.markdown("""
    Only small phones get tighter spacing.
    ======================================================= */
 
+html {
+    color-scheme: light !important;
+}
+
 html, body,
 [data-testid="stAppViewContainer"],
 [data-testid="stMain"] {
@@ -281,7 +285,7 @@ div[data-testid="stRadio"] label p {
     font-weight: 800 !important;
 }
 
-/* ---------- bottom reset + quote ---------- */
+/* ---------- quote ---------- */
 .quote-text {
     padding-top: 6px;
     text-align: center;
@@ -303,7 +307,7 @@ div[data-testid="stRadio"] label p {
     background-clip: text;
 }
 
-/* Only the reset button inside the bottom columns is small */
+/* Reset button small */
 div[data-testid="stHorizontalBlock"]
 div[data-testid="stButton"] > button {
     width: 42px !important;
@@ -315,117 +319,219 @@ div[data-testid="stButton"] > button {
     border-radius: 10px !important;
 }
 
+/* ---------- RADIO: WHITE WHEN UNSELECTED ---------- */
+
+div[data-testid="stRadio"] input[type="radio"] {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    width: 18px !important;
+    height: 18px !important;
+    border-radius: 50% !important;
+    border: 1.5px solid #d8d9df !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    box-shadow: none !important;
+    flex: 0 0 18px !important;
+}
+
+div[data-testid="stRadio"] input[type="radio"]:checked {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    border: 5px solid #ff6573 !important;
+}
+
+/* Streamlit/BaseWeb custom radio indicator */
+div[data-testid="stRadio"] label[data-baseweb="radio"]
+> div > div:first-child {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    border-radius: 50% !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    border: 1.5px solid #d8d9df !important;
+    box-shadow: none !important;
+}
+
+div[data-testid="stRadio"]
+label[data-baseweb="radio"]:has(input:checked)
+> div > div:first-child {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    border: 5px solid #ff6573 !important;
+}
+
+div[data-testid="stRadio"]
+label[data-baseweb="radio"]
+> div > div:first-child * {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
 /* =======================================================
-   PHONE ONLY
-   Keep everything visible without crushing desktop layout.
+   MOBILE
    ======================================================= */
+
 @media (max-width: 520px) {
+
     .block-container {
         max-width: 100% !important;
         padding-top: 0.35rem !important;
-        padding-bottom: 0.55rem !important;
-        padding-left: 0.70rem !important;
-        padding-right: 0.70rem !important;
+        padding-left: 0.65rem !important;
+        padding-right: 0.65rem !important;
+        padding-bottom: 0.50rem !important;
     }
 
     [data-testid="stVerticalBlock"] {
-        gap: 0.48rem !important;
+        gap: 0.52rem !important;
     }
 
+    /* Bigger title */
     .main-title {
-        font-size: clamp(29px, 8.8vw, 38px);
-        margin-bottom: 2px;
+        font-size: clamp(36px, 10.5vw, 48px) !important;
+        line-height: 1.05 !important;
+        margin-bottom: 2px !important;
     }
 
     .by-line {
-        font-size: 13px;
-        margin-bottom: 4px;
+        font-size: 13px !important;
+        margin-bottom: 4px !important;
     }
 
     .active-category {
-        font-size: 12px;
-        margin-bottom: 7px;
+        font-size: 12px !important;
+        margin-bottom: 8px !important;
     }
 
+    /* Score */
     .score-grid {
-        gap: 7px;
-        margin-bottom: 8px;
+        gap: 7px !important;
+        margin-bottom: 14px !important;
     }
 
     .score-card {
-        min-height: 68px;
-        padding: 7px 3px;
-        border-radius: 16px;
+        min-height: 68px !important;
+        padding: 7px 3px !important;
+        border-radius: 16px !important;
     }
 
     .score-label {
-        font-size: 10px;
-        margin-bottom: 3px;
+        font-size: 10px !important;
+        margin-bottom: 3px !important;
     }
 
     .score-number {
-        font-size: 24px;
+        font-size: 25px !important;
     }
 
+    /* Space before question */
     .question-shell {
-        margin-top: 2px;
-        margin-bottom: 6px;
+        margin-top: 8px !important;
+        margin-bottom: 8px !important;
     }
 
     .question-label,
     .review-label {
-        font-size: 15px;
-        margin-bottom: 3px;
+        font-size: 16px !important;
+        margin-bottom: 7px !important;
     }
 
+    /* Bigger Chinese */
     .chinese-short {
-        font-size: clamp(49px, 14vw, 68px);
+        font-size: clamp(62px, 18vw, 82px) !important;
+        line-height: 1 !important;
     }
 
     .chinese-medium {
-        font-size: clamp(34px, 10vw, 50px);
+        font-size: clamp(45px, 13vw, 60px) !important;
     }
 
     .chinese-long {
-        font-size: clamp(24px, 7vw, 36px);
+        font-size: clamp(30px, 8vw, 42px) !important;
     }
 
+    /* Answer buttons remain white */
     div[data-testid="stButton"] > button,
     div[data-testid="stButton"] > button:hover,
     div[data-testid="stButton"] > button:focus,
     div[data-testid="stButton"] > button:active {
-        min-height: 48px !important;
-        padding: 0.5rem 0.7rem !important;
+        min-height: 52px !important;
+        background: #ffffff !important;
+        background-color: #ffffff !important;
+        color: #414653 !important;
+        border: 1px solid #dedfe5 !important;
         border-radius: 14px !important;
+        box-shadow: none !important;
     }
 
     div[data-testid="stButton"] > button p,
     div[data-testid="stButton"] > button span {
-        font-size: 15.5px !important;
+        color: #414653 !important;
+        -webkit-text-fill-color: #414653 !important;
+        font-size: 16px !important;
     }
 
+    /* Categories */
     .bottom-category-title {
-        font-size: 12px;
-        margin-top: 8px;
-        margin-bottom: 4px;
+        font-size: 12px !important;
+        margin-top: 12px !important;
+        margin-bottom: 5px !important;
     }
 
     div[data-testid="stRadio"] > div {
-        gap: 0.28rem !important;
+        justify-content: center !important;
+        gap: 0.30rem !important;
+        flex-wrap: wrap !important;
     }
 
     div[data-testid="stRadio"] label {
+        background: #ffffff !important;
+        background-color: #ffffff !important;
         padding: 4px 8px !important;
+        border: 1px solid #e1e1e6 !important;
     }
 
     div[data-testid="stRadio"] label p {
         font-size: 11.5px !important;
+        color: #525866 !important;
+        -webkit-text-fill-color: #525866 !important;
+    }
+
+    /* White circles on mobile too */
+    div[data-testid="stRadio"] input[type="radio"] {
+        appearance: none !important;
+        -webkit-appearance: none !important;
+        width: 18px !important;
+        height: 18px !important;
+        border-radius: 50% !important;
+        border: 1.5px solid #d8d9df !important;
+        background: #ffffff !important;
+        background-color: #ffffff !important;
+        margin: 0 7px 0 0 !important;
+        box-shadow: none !important;
+        flex: 0 0 18px !important;
+    }
+
+    div[data-testid="stRadio"] input[type="radio"]:checked {
+        background: #ffffff !important;
+        background-color: #ffffff !important;
+        border: 5px solid #ff6573 !important;
+    }
+
+    /* Reset and quote stay together */
+    div[data-testid="stHorizontalBlock"] {
+        align-items: center !important;
+        margin-top: 8px !important;
+        gap: 1rem !important;
     }
 
     .quote-text {
-        font-size: 10.5px;
-        line-height: 1.2;
-        padding-top: 4px;
+        font-size: 11px !important;
+        line-height: 1.25 !important;
+        padding-top: 0 !important;
+        margin: 0 !important;
+        text-align: center !important;
+        white-space: normal !important;
     }
 
     div[data-testid="stHorizontalBlock"]
@@ -435,6 +541,8 @@ div[data-testid="stButton"] > button {
         max-width: 38px !important;
         min-height: 34px !important;
         height: 34px !important;
+        padding: 0 !important;
+        border-radius: 10px !important;
     }
 }
 </style>
@@ -547,7 +655,6 @@ VOCAB_SET_1 = [
     ('标准', 'Standard')
 ]
 
-
 VOCAB_SET_2 = [
     ('这个', 'this'),
     ('需求', 'Requirement'),
@@ -650,7 +757,6 @@ VOCAB_SET_2 = [
     ('影响', 'Impact'),
     ('多少', 'how much, how many')
 ]
-
 
 VOCAB_SET_3 = [
     ('客户', 'customer'),
@@ -755,7 +861,6 @@ VOCAB_SET_3 = [
     ('推理', 'Inference')
 ]
 
-
 VOCAB_SET_4 = [
     ('目前', 'Currently'),
     ('延迟', 'Delay'),
@@ -858,7 +963,6 @@ VOCAB_SET_4 = [
     ('反馈', 'Feedback'),
     ('等级', 'level, grade')
 ]
-
 
 VOCAB_SET_5 = [
     ('暂时', 'temporarily'),
@@ -1002,7 +1106,6 @@ VOCAB_SET_5 = [
     ('单次请求成本', 'Cost per Request')
 ]
 
-
 VOCAB_SETS = {
     1: VOCAB_SET_1,
     2: VOCAB_SET_2,
@@ -1019,10 +1122,8 @@ SET_LABELS = {
     5: "Testing / UAT / Deployment",
 }
 
-
-
 # =========================================================
-# PER-SET PROGRESS
+# PROGRESS / LEARNING LOGIC
 # =========================================================
 
 def blank_progress():
@@ -1030,29 +1131,22 @@ def blank_progress():
         "correct": 0,
         "attempts": 0,
 
-        # Main deck: every word appears once.
         "phase": "main",
         "main_order": [],
         "main_pos": 0,
 
-        # Words answered incorrectly during the main deck.
         "wrong_ids": [],
 
-        # Quick review queue:
-        # wrong -> after 5 questions -> after another 10 questions.
         "scheduled_reviews": [],
 
-        # Two final review rounds after the whole set is complete.
         "final_order": [],
         "final_pos": 0,
         "final_round_wrong": [],
 
-        # Current question.
         "question_id": None,
         "question_kind": None,
         "options": [],
 
-        # End popups.
         "reminder_ack": False,
         "congrats_shown": False,
     }
@@ -1074,12 +1168,15 @@ if "selected_set" not in st.session_state:
 
 if "progress_by_set" not in st.session_state:
     st.session_state.progress_by_set = {
-        i: blank_progress() for i in range(1, 6)
+        i: blank_progress()
+        for i in range(1, 6)
     }
 
 
 def get_progress():
-    return st.session_state.progress_by_set[st.session_state.selected_set]
+    return st.session_state.progress_by_set[
+        st.session_state.selected_set
+    ]
 
 
 def make_options(vocab, question_id):
@@ -1091,126 +1188,282 @@ def make_options(vocab, question_id):
         if meaning != correct_answer
     })
 
-    wrong_answers = random.sample(wrong_pool, 2)
-    options = [correct_answer, *wrong_answers]
+    wrong_answers = random.sample(
+        wrong_pool,
+        2
+    )
+
+    options = [
+        correct_answer,
+        *wrong_answers
+    ]
+
     random.shuffle(options)
+
     return options
 
 
 def initialize_main_round(progress, vocab):
     if not progress["main_order"]:
-        progress["main_order"] = list(range(len(vocab)))
-        random.shuffle(progress["main_order"])
+
+        progress["main_order"] = list(
+            range(len(vocab))
+        )
+
+        random.shuffle(
+            progress["main_order"]
+        )
 
 
-def set_question(progress, vocab, question_id, kind):
+def set_question(
+    progress,
+    vocab,
+    question_id,
+    kind
+):
     progress["question_id"] = question_id
     progress["question_kind"] = kind
-    progress["options"] = make_options(vocab, question_id)
+
+    progress["options"] = make_options(
+        vocab,
+        question_id
+    )
 
 
-def schedule_review(progress, question_id, after_questions, kind):
+def schedule_review(
+    progress,
+    question_id,
+    after_questions,
+    kind
+):
     progress["scheduled_reviews"].append({
         "qid": question_id,
-        "due_at": progress["attempts"] + after_questions,
+        "due_at":
+            progress["attempts"]
+            + after_questions,
         "kind": kind,
     })
 
 
 def pop_due_review(progress):
+
     if not progress["scheduled_reviews"]:
         return None
 
-    progress["scheduled_reviews"].sort(key=lambda item: item["due_at"])
+    progress["scheduled_reviews"].sort(
+        key=lambda item: item["due_at"]
+    )
 
-    if progress["scheduled_reviews"][0]["due_at"] <= progress["attempts"]:
-        return progress["scheduled_reviews"].pop(0)
+    if (
+        progress["scheduled_reviews"][0]["due_at"]
+        <= progress["attempts"]
+    ):
+        return progress[
+            "scheduled_reviews"
+        ].pop(0)
 
     return None
 
 
-def start_final_review(progress, round_number):
-    progress["phase"] = f"final{round_number}"
-    progress["final_order"] = list(progress["wrong_ids"])
-    random.shuffle(progress["final_order"])
+def start_final_review(
+    progress,
+    round_number
+):
+    progress["phase"] = (
+        f"final{round_number}"
+    )
+
+    progress["final_order"] = list(
+        progress["wrong_ids"]
+    )
+
+    random.shuffle(
+        progress["final_order"]
+    )
+
     progress["final_pos"] = 0
 
     if round_number == 2:
-        progress["final_round_wrong"] = []
+        progress[
+            "final_round_wrong"
+        ] = []
 
 
 def finish_session(progress):
+
     progress["phase"] = "done"
+
     progress["question_id"] = None
     progress["question_kind"] = None
     progress["options"] = []
 
 
 def new_question(progress, vocab):
-    initialize_main_round(progress, vocab)
 
+    initialize_main_round(
+        progress,
+        vocab
+    )
+
+    # =========================================
     # MAIN ROUND
+    # =========================================
+
     if progress["phase"] == "main":
-        # Once every new word has appeared, go to the final review rounds.
-        if progress["main_pos"] >= len(progress["main_order"]):
-            progress["scheduled_reviews"] = []
+
+        if (
+            progress["main_pos"]
+            >= len(progress["main_order"])
+        ):
+
+            progress[
+                "scheduled_reviews"
+            ] = []
 
             if progress["wrong_ids"]:
-                start_final_review(progress, 1)
+
+                start_final_review(
+                    progress,
+                    1
+                )
+
             else:
-                finish_session(progress)
+
+                finish_session(
+                    progress
+                )
+
                 return
+
         else:
-            due_review = pop_due_review(progress)
+
+            due_review = pop_due_review(
+                progress
+            )
 
             if due_review is not None:
+
                 set_question(
                     progress,
                     vocab,
                     due_review["qid"],
                     due_review["kind"]
                 )
+
                 return
 
-            question_id = progress["main_order"][progress["main_pos"]]
-            set_question(progress, vocab, question_id, "main")
+            question_id = (
+                progress["main_order"]
+                [progress["main_pos"]]
+            )
+
+            set_question(
+                progress,
+                vocab,
+                question_id,
+                "main"
+            )
+
             return
 
+    # =========================================
     # FINAL REVIEW 1
+    # =========================================
+
     if progress["phase"] == "final1":
-        if progress["final_pos"] < len(progress["final_order"]):
-            question_id = progress["final_order"][progress["final_pos"]]
-            set_question(progress, vocab, question_id, "final1")
+
+        if (
+            progress["final_pos"]
+            < len(progress["final_order"])
+        ):
+
+            question_id = (
+                progress["final_order"]
+                [progress["final_pos"]]
+            )
+
+            set_question(
+                progress,
+                vocab,
+                question_id,
+                "final1"
+            )
+
             return
 
-        start_final_review(progress, 2)
+        start_final_review(
+            progress,
+            2
+        )
 
+    # =========================================
     # FINAL REVIEW 2
+    # =========================================
+
     if progress["phase"] == "final2":
-        if progress["final_pos"] < len(progress["final_order"]):
-            question_id = progress["final_order"][progress["final_pos"]]
-            set_question(progress, vocab, question_id, "final2")
+
+        if (
+            progress["final_pos"]
+            < len(progress["final_order"])
+        ):
+
+            question_id = (
+                progress["final_order"]
+                [progress["final_pos"]]
+            )
+
+            set_question(
+                progress,
+                vocab,
+                question_id,
+                "final2"
+            )
+
             return
 
-        finish_session(progress)
+        finish_session(
+            progress
+        )
 
 
-def advance_after_answer(progress, vocab, is_correct):
-    question_id = progress["question_id"]
-    kind = progress["question_kind"]
+def advance_after_answer(
+    progress,
+    vocab,
+    is_correct
+):
+
+    question_id = progress[
+        "question_id"
+    ]
+
+    kind = progress[
+        "question_kind"
+    ]
 
     progress["attempts"] += 1
 
     if is_correct:
         progress["correct"] += 1
 
-    # Fresh word from the main deck.
-    if kind == "main":
-        if not is_correct:
-            if question_id not in progress["wrong_ids"]:
-                progress["wrong_ids"].append(question_id)
+    # =========================================
+    # NEW WORD
+    # =========================================
 
-            # First quick review after 5 other questions.
+    if kind == "main":
+
+        if not is_correct:
+
+            if (
+                question_id
+                not in progress["wrong_ids"]
+            ):
+                progress[
+                    "wrong_ids"
+                ].append(
+                    question_id
+                )
+
+            # Retry after 5
             schedule_review(
                 progress,
                 question_id,
@@ -1218,10 +1471,17 @@ def advance_after_answer(progress, vocab, is_correct):
                 kind="quick5"
             )
 
-        progress["main_pos"] += 1
+        progress[
+            "main_pos"
+        ] += 1
 
-    # First quick review: schedule one more review after another 10 questions.
+    # =========================================
+    # FIRST QUICK REVIEW
+    # =========================================
+
     elif kind == "quick5":
+
+        # Retry again after 10
         schedule_review(
             progress,
             question_id,
@@ -1229,44 +1489,99 @@ def advance_after_answer(progress, vocab, is_correct):
             kind="quick10"
         )
 
-    # Second quick review: no more quick loops.
+    # =========================================
+    # SECOND QUICK REVIEW
+    # =========================================
+
     elif kind == "quick10":
         pass
 
-    # Final review after the whole set.
+    # =========================================
+    # FINAL REVIEW 1
+    # =========================================
+
     elif kind == "final1":
-        progress["final_pos"] += 1
+
+        progress[
+            "final_pos"
+        ] += 1
+
+    # =========================================
+    # FINAL REVIEW 2
+    # =========================================
 
     elif kind == "final2":
-        if not is_correct and question_id not in progress["final_round_wrong"]:
-            progress["final_round_wrong"].append(question_id)
 
-        progress["final_pos"] += 1
+        if (
+            not is_correct
+            and question_id
+            not in progress[
+                "final_round_wrong"
+            ]
+        ):
+            progress[
+                "final_round_wrong"
+            ].append(
+                question_id
+            )
+
+        progress[
+            "final_pos"
+        ] += 1
 
     progress["question_id"] = None
     progress["question_kind"] = None
     progress["options"] = []
 
-    new_question(progress, vocab)
+    new_question(
+        progress,
+        vocab
+    )
 
+
+# =========================================================
+# DISPLAY HELPERS
+# =========================================================
 
 def chinese_html(word):
+
     safe_word = html.escape(word)
+
     length = len(word)
 
-    # 1–4 Chinese characters: always one line.
+    # 1–4 characters:
+    # always one single line
     if length <= 4:
-        return f'<div class="chinese-short">{safe_word}</div>'
 
-    # 5–6 characters: still one line, smaller.
+        return (
+            f'<div class="chinese-short">'
+            f'{safe_word}'
+            f'</div>'
+        )
+
+    # 5–6 characters:
+    # one line, slightly smaller
     if length <= 6:
-        return f'<div class="chinese-medium">{safe_word}</div>'
 
-    # Longer words: one line with smaller text.
-    return f'<div class="chinese-long">{safe_word}</div>'
+        return (
+            f'<div class="chinese-medium">'
+            f'{safe_word}'
+            f'</div>'
+        )
+
+    # Long Chinese phrase
+    return (
+        f'<div class="chinese-long">'
+        f'{safe_word}'
+        f'</div>'
+    )
 
 
-def render_question_area(label_html, chinese_word_html):
+def render_question_area(
+    label_html,
+    chinese_word_html
+):
+
     st.markdown(
         f"""
         <div class="question-shell">
@@ -1280,52 +1595,128 @@ def render_question_area(label_html, chinese_word_html):
     )
 
 
-def show_reminder_dialog(vocab, progress):
+# =========================================================
+# POPUPS
+# =========================================================
+
+def show_reminder_dialog(
+    vocab,
+    progress
+):
+
     if hasattr(st, "dialog"):
+
         @st.dialog("🌷 ไม่เป็นไรนะ")
         def reminder_dialog():
-            st.write("ทบทวนคำเหล่านี้อีกรอบนะ เดี๋ยวก็จำได้ค่ะ 💪")
 
-            for qid in progress["final_round_wrong"]:
-                chinese_word, meaning = vocab[qid]
-                st.markdown(f"**{chinese_word}** — {meaning}")
+            st.write(
+                "ทบทวนคำเหล่านี้อีกรอบนะ "
+                "เดี๋ยวก็จำได้ค่ะ 💪"
+            )
+
+            for qid in progress[
+                "final_round_wrong"
+            ]:
+
+                chinese_word, meaning = (
+                    vocab[qid]
+                )
+
+                st.markdown(
+                    f"**{chinese_word}**"
+                    f" — {meaning}"
+                )
 
             if st.button(
                 "ไปต่อ",
                 use_container_width=True,
-                key=f"reminder_continue_{st.session_state.selected_set}"
+                key=(
+                    "reminder_continue_"
+                    f"{st.session_state.selected_set}"
+                )
             ):
-                progress["reminder_ack"] = True
+
+                progress[
+                    "reminder_ack"
+                ] = True
+
                 st.rerun()
 
         reminder_dialog()
+
     else:
-        st.warning("🌷 ไม่เป็นไรนะ ทบทวนคำเหล่านี้อีกรอบ เดี๋ยวก็จำได้ค่ะ")
-        for qid in progress["final_round_wrong"]:
-            chinese_word, meaning = vocab[qid]
-            st.markdown(f"- **{chinese_word}** — {meaning}")
+
+        st.warning(
+            "🌷 ไม่เป็นไรนะ "
+            "ทบทวนคำเหล่านี้อีกรอบ "
+            "เดี๋ยวก็จำได้ค่ะ"
+        )
+
+        for qid in progress[
+            "final_round_wrong"
+        ]:
+
+            chinese_word, meaning = (
+                vocab[qid]
+            )
+
+            st.markdown(
+                f"- **{chinese_word}**"
+                f" — {meaning}"
+            )
 
         if st.button(
             "ไปต่อ",
             use_container_width=True,
-            key=f"reminder_continue_fallback_{st.session_state.selected_set}"
+            key=(
+                "reminder_continue_fallback_"
+                f"{st.session_state.selected_set}"
+            )
         ):
-            progress["reminder_ack"] = True
+
+            progress[
+                "reminder_ack"
+            ] = True
+
             st.rerun()
 
 
-def show_congratulations_dialog(progress):
-    if hasattr(st, "dialog"):
-        @st.dialog("🎉 Congratulations!")
-        def congratulations_dialog():
-            st.markdown("### You did a great job 👍")
-            st.markdown("**Keep going!**")
+def show_congratulations_dialog(
+    progress
+):
 
-        progress["congrats_shown"] = True
+    if hasattr(st, "dialog"):
+
+        @st.dialog(
+            "🎉 Congratulations!"
+        )
+        def congratulations_dialog():
+
+            st.markdown(
+                "### You did a great job 👍"
+            )
+
+            st.markdown(
+                "**Keep going!**"
+            )
+
+        progress[
+            "congrats_shown"
+        ] = True
+
         congratulations_dialog()
+
     else:
-        progress["congrats_shown"] = True
-        st.success("🎉 Congratulations! You did a great job 👍 Keep going!")
+
+        progress[
+            "congrats_shown"
+        ] = True
+
+        st.success(
+            "🎉 Congratulations! "
+            "You did a great job 👍 "
+            "Keep going!"
+        )
 
 
 # =========================================================
@@ -1333,59 +1724,104 @@ def show_congratulations_dialog(progress):
 # =========================================================
 
 st.markdown(
-    '<div class="main-title">Chinese Learning App</div>',
+    '<div class="main-title">'
+    'Chinese Learning App'
+    '</div>',
     unsafe_allow_html=True
 )
 
 st.markdown(
-    '<div class="by-line">by pollyleadsforward</div>',
+    '<div class="by-line">'
+    'by pollyleadsforward'
+    '</div>',
     unsafe_allow_html=True
 )
 
-selected_set = st.session_state.selected_set
-vocab = VOCAB_SETS[selected_set]
+selected_set = (
+    st.session_state.selected_set
+)
+
+vocab = VOCAB_SETS[
+    selected_set
+]
+
 progress = get_progress()
 
-if progress["question_id"] is None and progress["phase"] != "done":
-    new_question(progress, vocab)
+if (
+    progress["question_id"] is None
+    and progress["phase"] != "done"
+):
+    new_question(
+        progress,
+        vocab
+    )
 
 
 # =========================================================
-# SCORE / PROGRESS
+# SCORE
 # =========================================================
 
 if progress["attempts"] > 0:
-    percentage = round((progress["correct"] / progress["attempts"]) * 100)
+
+    percentage = round(
+        (
+            progress["correct"]
+            / progress["attempts"]
+        )
+        * 100
+    )
+
 else:
     percentage = 0
 
-main_done = min(progress["main_pos"], len(vocab))
 
 st.markdown(
-    f'<div class="active-category">📚 {SET_LABELS[selected_set]}</div>',
+    (
+        '<div class="active-category">'
+        f'📚 {SET_LABELS[selected_set]}'
+        '</div>'
+    ),
     unsafe_allow_html=True
 )
 
+
 score_html = (
-    f'<div class="score-grid">'
-    f'<div class="score-card score-purple">'
-    f'<div class="score-label">✅ Correct</div>'
-    f'<div class="score-number">{progress["correct"]}</div>'
-    f'</div>'
+    '<div class="score-grid">'
 
-    f'<div class="score-card score-pink">'
-    f'<div class="score-label">📝 Answered</div>'
-    f'<div class="score-number">{progress["attempts"]}</div>'
-    f'</div>'
+    '<div class="score-card score-purple">'
+    '<div class="score-label">'
+    '✅ Correct'
+    '</div>'
+    f'<div class="score-number">'
+    f'{progress["correct"]}'
+    '</div>'
+    '</div>'
 
-    f'<div class="score-card score-green">'
-    f'<div class="score-label">🎯 Score</div>'
-    f'<div class="score-number">{percentage}%</div>'
-    f'</div>'
-    f'</div>'
+    '<div class="score-card score-pink">'
+    '<div class="score-label">'
+    '📝 Answered'
+    '</div>'
+    f'<div class="score-number">'
+    f'{progress["attempts"]}'
+    '</div>'
+    '</div>'
+
+    '<div class="score-card score-green">'
+    '<div class="score-label">'
+    '🎯 Score'
+    '</div>'
+    f'<div class="score-number">'
+    f'{percentage}%'
+    '</div>'
+    '</div>'
+
+    '</div>'
 )
 
-st.markdown(score_html, unsafe_allow_html=True)
+st.markdown(
+    score_html,
+    unsafe_allow_html=True
+)
 
 
 # =========================================================
@@ -1393,68 +1829,143 @@ st.markdown(score_html, unsafe_allow_html=True)
 # =========================================================
 
 if progress["phase"] != "done":
-    question_id = progress["question_id"]
-    kind = progress["question_kind"]
 
-    chinese_word = vocab[question_id][0]
-    correct_answer = vocab[question_id][1]
+    question_id = progress[
+        "question_id"
+    ]
+
+    kind = progress[
+        "question_kind"
+    ]
+
+    chinese_word = vocab[
+        question_id
+    ][0]
+
+    correct_answer = vocab[
+        question_id
+    ][1]
 
     if kind == "main":
-        label_html = '<div class="question-label">คำนี้แปลว่าอะไร?</div>'
+
+        label_html = (
+            '<div class="question-label">'
+            'คำนี้แปลว่าอะไร?'
+            '</div>'
+        )
+
     else:
-        label_html = '<div class="review-label">🌷 ทบทวนอีกครั้ง</div>'
+
+        label_html = (
+            '<div class="review-label">'
+            '🌷 ทบทวนอีกครั้ง'
+            '</div>'
+        )
 
     render_question_area(
         label_html=label_html,
-        chinese_word_html=chinese_html(chinese_word)
+        chinese_word_html=(
+            chinese_html(
+                chinese_word
+            )
+        )
     )
 
-    for i, option in enumerate(progress["options"]):
+
+    # =========================================
+    # ANSWERS
+    # No A / B / C
+    # =========================================
+
+    for i, option in enumerate(
+        progress["options"]
+    ):
+
         if st.button(
             option,
             use_container_width=True,
             key=(
-                f"answer_{selected_set}_{question_id}_{kind}_"
-                f"{progress['attempts']}_{i}"
+                f"answer_"
+                f"{selected_set}_"
+                f"{question_id}_"
+                f"{kind}_"
+                f"{progress['attempts']}_"
+                f"{i}"
             )
         ):
-            is_correct = option == correct_answer
+
+            is_correct = (
+                option
+                == correct_answer
+            )
 
             if not is_correct:
+
                 st.error(
-                    f"❌ คำตอบที่ถูกคือ\n\n"
-                    f"### {chinese_word} = {correct_answer}"
+                    "❌ คำตอบที่ถูกคือ"
+                    "\n\n"
+                    f"### {chinese_word}"
+                    f" = {correct_answer}"
                 )
 
                 import time
-                time.sleep(1.35)
 
-            advance_after_answer(progress, vocab, is_correct)
+                time.sleep(
+                    1.35
+                )
+
+            advance_after_answer(
+                progress,
+                vocab,
+                is_correct
+            )
+
             st.rerun()
 
 
 # =========================================================
-# END OF SESSION
+# END SESSION
 # =========================================================
 
 else:
-    st.success("✅ จบการทบทวนคำศัพท์ชุดนี้แล้ว")
 
-    if progress["final_round_wrong"] and not progress["reminder_ack"]:
-        show_reminder_dialog(vocab, progress)
+    st.success(
+        "✅ จบการทบทวน"
+        "คำศัพท์ชุดนี้แล้ว"
+    )
 
-    elif not progress["congrats_shown"]:
-        show_congratulations_dialog(progress)
+    if (
+        progress["final_round_wrong"]
+        and not progress[
+            "reminder_ack"
+        ]
+    ):
+
+        show_reminder_dialog(
+            vocab,
+            progress
+        )
+
+    elif not progress[
+        "congrats_shown"
+    ]:
+
+        show_congratulations_dialog(
+            progress
+        )
 
 
 # =========================================================
-# CATEGORY SELECTOR + BOTTOM ACTIONS
+# CATEGORY SELECTOR
 # =========================================================
 
 st.markdown(
-    '<div class="bottom-category-title">เลือกหมวดคำศัพท์</div>',
+    '<div class="bottom-category-title">'
+    'เลือกหมวดคำศัพท์'
+    '</div>',
     unsafe_allow_html=True
 )
+
 
 CATEGORY_ITEMS = [
     (1, "CBS"),
@@ -1464,16 +1975,25 @@ CATEGORY_ITEMS = [
     (5, "Testing / UAT"),
 ]
 
-# Keep the currently selected category in the middle (position 3).
+
+# Selected category is always
+# displayed in position 3.
+
 current_item = next(
-    item for item in CATEGORY_ITEMS
-    if item[0] == st.session_state.selected_set
+    item
+    for item in CATEGORY_ITEMS
+    if item[0]
+    == st.session_state.selected_set
 )
 
+
 other_items = [
-    item for item in CATEGORY_ITEMS
-    if item[0] != st.session_state.selected_set
+    item
+    for item in CATEGORY_ITEMS
+    if item[0]
+    != st.session_state.selected_set
 ]
+
 
 display_items = (
     other_items[:2]
@@ -1481,8 +2001,20 @@ display_items = (
     + other_items[2:]
 )
 
-display_labels = [label for _, label in display_items]
-label_to_set = {label: set_id for set_id, label in display_items}
+
+display_labels = [
+    label
+    for _, label
+    in display_items
+]
+
+
+label_to_set = {
+    label: set_id
+    for set_id, label
+    in display_items
+}
+
 
 selected_label = st.radio(
     "เลือกหมวดคำศัพท์",
@@ -1490,36 +2022,74 @@ selected_label = st.radio(
     index=2,
     horizontal=True,
     label_visibility="collapsed",
-    key=f"bottom_set_radio_{st.session_state.selected_set}"
+    key=(
+        "bottom_set_radio_"
+        f"{st.session_state.selected_set}"
+    )
 )
 
-new_set = label_to_set[selected_label]
 
-if new_set != st.session_state.selected_set:
-    st.session_state.selected_set = new_set
+new_set = label_to_set[
+    selected_label
+]
+
+
+if (
+    new_set
+    != st.session_state.selected_set
+):
+
+    st.session_state.selected_set = (
+        new_set
+    )
+
     st.rerun()
 
 
-# Bottom line:
-# reset icon stays far left, quote is visually separated to the right.
-reset_col, spacer_col, quote_col = st.columns(
-    [0.55, 1.45, 5.0],
-    gap="large"
+# =========================================================
+# RESET + QUOTE
+# =========================================================
+
+reset_col, quote_col = st.columns(
+    [0.7, 5.3],
+    gap="large",
+    vertical_alignment="center"
 )
 
+
 with reset_col:
+
     if st.button(
         "↻",
-        key=f"reset_set_{selected_set}",
+        key=(
+            f"reset_set_"
+            f"{selected_set}"
+        ),
         help="เริ่มหมวดนี้ใหม่"
     ):
-        st.session_state.progress_by_set[selected_set] = blank_progress()
+
+        st.session_state[
+            "progress_by_set"
+        ][selected_set] = (
+            blank_progress()
+        )
+
         st.rerun()
 
+
 with quote_col:
-    safe_quote = html.escape(st.session_state.quote_of_the_day)
-    st.markdown(
-        f'<div class="quote-text">“{safe_quote}”</div>',
-        unsafe_allow_html=True
+
+    safe_quote = html.escape(
+        st.session_state[
+            "quote_of_the_day"
+        ]
     )
 
+    st.markdown(
+        (
+            '<div class="quote-text">'
+            f'“{safe_quote}”'
+            '</div>'
+        ),
+        unsafe_allow_html=True
+    )
