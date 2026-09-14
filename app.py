@@ -147,6 +147,22 @@ header, footer, #MainMenu, [data-testid="stToolbar"],
 }
 .st-key-category_selector button[kind="primary"] p,
 .st-key-category_selector button[kind="primary"] span { font-weight:900 !important; }
+.st-key-category_selector button[kind="secondary"]::before,
+.st-key-category_selector [data-testid="stBaseButton-secondary"]::before {
+    content:"" !important; display:block !important; width:11px !important; height:11px !important;
+    min-width:11px !important; flex:0 0 11px !important; border-radius:50% !important;
+    background:#fff !important; border:1.4px solid #d5d8df !important; box-sizing:border-box !important;
+}
+.st-key-category_selector button[kind="primary"]::before,
+.st-key-category_selector [data-testid="stBaseButton-primary"]::before {
+    content:"" !important; display:block !important; width:12px !important; height:12px !important;
+    min-width:12px !important; flex:0 0 12px !important; border-radius:50% !important;
+    background:#ffd9df !important; border:3px solid #ff6f83 !important; box-sizing:border-box !important;
+}
+.st-key-category_selector button[kind="secondary"],
+.st-key-category_selector button[kind="primary"] {
+    display:flex !important; align-items:center !important; justify-content:center !important; gap:6px !important;
+}
 .st-key-bottom_actions { margin-top:11px !important; }
 .st-key-bottom_actions button {
     width:40px !important; min-width:40px !important; height:37px !important;
@@ -170,20 +186,79 @@ header, footer, #MainMenu, [data-testid="stToolbar"],
     .chinese-medium { font-size:clamp(46px,13.4vw,59px) !important; }
     .chinese-long { font-size:clamp(31px,8.5vw,42px) !important; }
     .st-key-category_selector [data-testid="stHorizontalBlock"] {
-        display:grid !important;
-        grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
-        column-gap:4px !important; row-gap:4px !important;
-        width:100% !important; align-items:center !important;
+        display: grid !important;
+        grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+        column-gap: 5px !important;
+        row-gap: 5px !important;
+        width: 100% !important;
+        align-items: center !important;
+    }
+
+    /* First row: 3 equal buttons. Second row: 2 centered buttons. */
+    .st-key-category_selector [data-testid="column"]:nth-child(1) {
+        grid-column: 1 / span 2 !important;
+    }
+    .st-key-category_selector [data-testid="column"]:nth-child(2) {
+        grid-column: 3 / span 2 !important;
+    }
+    .st-key-category_selector [data-testid="column"]:nth-child(3) {
+        grid-column: 5 / span 2 !important;
+    }
+    .st-key-category_selector [data-testid="column"]:nth-child(4) {
+        grid-column: 2 / span 2 !important;
+    }
+    .st-key-category_selector [data-testid="column"]:nth-child(5) {
+        grid-column: 4 / span 2 !important;
     }
     .st-key-category_selector [data-testid="column"] { width:100% !important; min-width:0 !important; padding:0 !important; }
     .st-key-category_selector button[kind="secondary"],
     .st-key-category_selector button[kind="primary"] {
-        height:36px !important; min-height:36px !important; padding:0 5px !important;
-        border-radius:999px !important;
+        height: 34px !important;
+        min-height: 34px !important;
+        padding: 0 7px !important;
+        border-radius: 999px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 5px !important;
     }
-    .st-key-category_selector button p, .st-key-category_selector button span {
-        font-size:10.5px !important; line-height:1.05 !important;
-        letter-spacing:-0.15px !important; white-space:nowrap !important;
+
+    /* One white circle for every unselected category. */
+    .st-key-category_selector button[kind="secondary"]::before,
+    .st-key-category_selector [data-testid="stBaseButton-secondary"]::before {
+        content: "" !important;
+        display: block !important;
+        width: 10px !important;
+        height: 10px !important;
+        min-width: 10px !important;
+        flex: 0 0 10px !important;
+        border-radius: 50% !important;
+        background: #ffffff !important;
+        border: 1.4px solid #d5d8df !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Selected category: soft red ring with a pale red center. */
+    .st-key-category_selector button[kind="primary"]::before,
+    .st-key-category_selector [data-testid="stBaseButton-primary"]::before {
+        content: "" !important;
+        display: block !important;
+        width: 11px !important;
+        height: 11px !important;
+        min-width: 11px !important;
+        flex: 0 0 11px !important;
+        border-radius: 50% !important;
+        background: #ffd9df !important;
+        border: 3px solid #ff6f83 !important;
+        box-sizing: border-box !important;
+    }
+
+    .st-key-category_selector button p,
+    .st-key-category_selector button span {
+        font-size: 10.5px !important;
+        line-height: 1.05 !important;
+        letter-spacing: -0.12px !important;
+        white-space: nowrap !important;
     }
     .quote-text { font-size:clamp(23px,7.8vw,31px) !important; }
 }
