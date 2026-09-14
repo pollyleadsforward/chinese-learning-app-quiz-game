@@ -171,17 +171,19 @@ header, footer, #MainMenu, [data-testid="stToolbar"],
     .chinese-long { font-size:clamp(31px,8.5vw,42px) !important; }
     .st-key-category_selector [data-testid="stHorizontalBlock"] {
         display:grid !important;
-        grid-template-columns:1.2fr 1.3fr .7fr .85fr 1.18fr !important;
-        gap:3px !important; width:100% !important; align-items:center !important;
+        grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+        column-gap:4px !important; row-gap:4px !important;
+        width:100% !important; align-items:center !important;
     }
     .st-key-category_selector [data-testid="column"] { width:100% !important; min-width:0 !important; padding:0 !important; }
     .st-key-category_selector button[kind="secondary"],
     .st-key-category_selector button[kind="primary"] {
-        height:32px !important; min-height:32px !important; padding:0 2px !important;
+        height:36px !important; min-height:36px !important; padding:0 5px !important;
         border-radius:999px !important;
     }
     .st-key-category_selector button p, .st-key-category_selector button span {
-        font-size:8.2px !important; white-space:nowrap !important;
+        font-size:10.5px !important; line-height:1.05 !important;
+        letter-spacing:-0.15px !important; white-space:nowrap !important;
     }
     .quote-text { font-size:clamp(23px,7.8vw,31px) !important; }
 }
